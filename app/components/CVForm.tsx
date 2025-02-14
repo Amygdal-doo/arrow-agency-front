@@ -23,7 +23,7 @@ const userFormSchema = z.object({
 
 type UserFormInputs = z.infer<typeof userFormSchema>;
 
-const Form = () => {
+const CVForm = () => {
   const [fileName, setFileName] = useState<string | null>(null);
   const [technologies, setTechnologies] = useState<string[]>([]);
   const [techInput, setTechInput] = useState("");
@@ -64,7 +64,7 @@ const Form = () => {
       }
 
       const response: AxiosResponse = await axios.post(
-        "/api/pdf/cv",
+        "https://arrow-agency-back-production.up.railway.app/api/pdf/cv",
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
@@ -246,4 +246,4 @@ const Form = () => {
   );
 };
 
-export default Form;
+export default CVForm;
