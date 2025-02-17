@@ -4,7 +4,8 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
-import axios, { AxiosResponse } from "axios";
+import { AxiosResponse } from "axios";
+import { apiService } from "@/core/services/apiService";
 
 const userFormSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
@@ -63,8 +64,8 @@ const CVForm = () => {
         formData.append("technologies", JSON.stringify(data.technologies));
       }
 
-      const response: AxiosResponse = await axios.post(
-        "https://arrow-agency-back-production.up.railway.app/api/pdf/cv",
+      const response: AxiosResponse = await apiService.post(
+        "applicant/cv",
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
@@ -131,8 +132,8 @@ const CVForm = () => {
       className="w-full max-w-md min-2-lg mx-auto space-y-4 pb-16 pt-8 px-8 rounded-md shadow-2xl"
     >
       <div className="flex justify-center pb-8 flex-col items-center">
-        <p className="text-2xl font-bold text-gray-500 pr-10">Amygdal</p>
-        <p className="text-2xl font-bold text-orange-500 pl-20">CV Editor</p>
+        <p className="text-2xl font-bold text-[#0a0a23] pr-10">Amygdal</p>
+        <p className="text-2xl font-bold text-[#A020F0] pl-20">CV Editor</p>
       </div>
 
       <div>
@@ -183,7 +184,7 @@ const CVForm = () => {
           />
           <label
             htmlFor="file-upload"
-            className="bg-gray-500 text-white text-sm w-full font-bold py-2 px-4 rounded cursor-pointer inline-block text-center"
+            className="bg-[#0a0a23] text-white text-sm w-full font-bold py-2 px-4 rounded cursor-pointer inline-block text-center"
           >
             Upload File
           </label>
@@ -212,7 +213,7 @@ const CVForm = () => {
           <button
             type="button"
             onClick={handleAddTechnology}
-            className="bg-gray-500 text-sm font-bold text-white py-2 px-4 rounded"
+            className="bg-[#0a0a23] text-sm font-bold text-white py-2 px-4 rounded"
           >
             Add
           </button>
@@ -238,7 +239,7 @@ const CVForm = () => {
 
       <button
         type="submit"
-        className="w-full bg-orange-500 text-sm font-bold text-white p-2 rounded"
+        className="w-full bg-[#A020F0] text-sm font-bold text-white p-2 rounded"
       >
         Submit
       </button>
