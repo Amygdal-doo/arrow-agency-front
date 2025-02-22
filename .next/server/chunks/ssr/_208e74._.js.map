@@ -1,9 +1,0 @@
-{
-  "version": 3,
-  "sources": [],
-  "sections": [
-    {"offset": {"line": 7, "column": 0}, "map": {"version":3,"sources":["file:///Users/aisabektas/projects/arrow-agency-front/app/profile/page.tsx"],"sourcesContent":["import { useSession } from \"next-auth/react\";\n\nexport default function Profile() {\n  const { data: session, status } = useSession();\n  return <div>{JSON.stringify(session, null, 2)}</div>;\n}\n"],"names":[],"mappings":";;;;AAAA;;;AAEe,SAAS;IACtB,MAAM,EAAE,MAAM,OAAO,EAAE,MAAM,EAAE,GAAG,CAAA,GAAA,8IAAA,CAAA,aAAU,AAAD;IAC3C,qBAAO,8OAAC;kBAAK,KAAK,SAAS,CAAC,SAAS,MAAM;;;;;;AAC7C"}},
-    {"offset": {"line": 24, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":"A"}},
-    {"offset": {"line": 35, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":""}},
-    {"offset": {"line": 35, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":"A"}}]
-}

@@ -1,8 +1,9 @@
 import { jobListings } from "@/app/conts/jobList";
 import { notFound } from "next/navigation";
 
-export default function JobDetails({ params }: { params: { id: string } }) {
-  const job = jobListings.find((job) => job.id === parseInt(params.id));
+export default async function JobDetails({ params }: { params: Promise<{ id: string }> }) {
+  const id = (await params).id
+  const job = jobListings.find((job) => job.id === parseInt(id));
 
   if (!job) {
     notFound();
