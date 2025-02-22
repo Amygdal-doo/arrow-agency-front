@@ -1,0 +1,9 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 7, "column": 0}, "map": {"version":3,"sources":["file:///Users/abdulrahimklis/AmygdalData/Projects/amygdal/thehepek/arrow-agency-front/app/for-talent/page.tsx"],"sourcesContent":["import Image from \"next/image\";\n\nexport default function Home() {\n  return (\n    <section className=\"relative h-[90vh] w-full\">\n      <Image\n        src={HeroBackground}\n        alt=\"Hero Background\"\n        className=\"w-full h-[90vh] object-fill absolute\"\n      />\n      <div className=\"container mx-auto h-full flex flex-col justify-evenly relative\">\n        <div className=\"flex-col space-y-8\">\n          <p className=\"text-white text-6xl font-bold max-w-lg\">\n            Turn AI research into real-world impact\n          </p>\n          <p className=\"text-white text-3xl font-medium\">\n            Looking to post a job or explore AI-powered CV generation?\n          </p>\n        </div>\n      </div>\n    </section>\n  );\n}\n"],"names":[],"mappings":";;;;AAAA;;;AAEe,SAAS;IACtB,qBACE,8OAAC;QAAQ,WAAU;;0BACjB,8OAAC,6HAAA,CAAA,UAAK;gBACJ,KAAK;gBACL,KAAI;gBACJ,WAAU;;;;;;0BAEZ,8OAAC;gBAAI,WAAU;0BACb,cAAA,8OAAC;oBAAI,WAAU;;sCACb,8OAAC;4BAAE,WAAU;sCAAyC;;;;;;sCAGtD,8OAAC;4BAAE,WAAU;sCAAkC;;;;;;;;;;;;;;;;;;;;;;;AAOzD"}},
+    {"offset": {"line": 66, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":"A"}},
+    {"offset": {"line": 77, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":""}},
+    {"offset": {"line": 77, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":"A"}}]
+}
