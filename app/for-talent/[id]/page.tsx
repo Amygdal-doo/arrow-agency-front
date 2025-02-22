@@ -1,19 +1,7 @@
 import { jobListings } from "@/app/conts/jobList";
 import { notFound } from "next/navigation";
 
-interface Props {
-  params: {
-    id: string;
-  };
-  searchParams?: { [key: string]: string | string[] | undefined };
-}
-
-type PageProps = {
-  params: Props['params'];
-  searchParams?: Props['searchParams'];
-}
-
-export default function JobDetails({ params }: PageProps) {
+export default function JobDetails({ params }: { params: { id: string }}) {
   const job = jobListings.find((job) => job.id === parseInt(params.id));
 
   if (!job) {
