@@ -5,10 +5,15 @@ interface Props {
   params: {
     id: string;
   };
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams?: { [key: string]: string | string[] | undefined };
 }
 
-export default function JobDetails({ params }: Props) {
+type PageProps = {
+  params: Props['params'];
+  searchParams?: Props['searchParams'];
+}
+
+export default function JobDetails({ params }: PageProps) {
   const job = jobListings.find((job) => job.id === parseInt(params.id));
 
   if (!job) {
@@ -22,7 +27,9 @@ export default function JobDetails({ params }: Props) {
         <div className="bg-gray-800 rounded-lg p-8 mb-8 border border-gray-700">
           <div className="flex justify-between items-start">
             <div>
-              <h1 className="text-4xl font-bold mb-4 text-white">{job.title}</h1>
+              <h1 className="text-4xl font-bold mb-4 text-white">
+                {job.title}
+              </h1>
               <div className="flex items-center space-x-4 text-gray-300">
                 <span>{job.companyName}</span>
                 <span>•</span>
@@ -33,7 +40,13 @@ export default function JobDetails({ params }: Props) {
             </div>
             <div className="flex flex-col items-end">
               <span
-                className={`px-4 py-2 rounded-full text-sm font-medium mb-2 ${job.seniority === "senior" ? "bg-purple-900 text-purple-200" : job.seniority === "mid" ? "bg-blue-900 text-blue-200" : "bg-green-900 text-green-200"}`}
+                className={`px-4 py-2 rounded-full text-sm font-medium mb-2 ${
+                  job.seniority === "senior"
+                    ? "bg-purple-900 text-purple-200"
+                    : job.seniority === "mid"
+                    ? "bg-blue-900 text-blue-200"
+                    : "bg-green-900 text-green-200"
+                }`}
               >
                 {job.seniority}
               </span>
@@ -52,14 +65,18 @@ export default function JobDetails({ params }: Props) {
           <div className="lg:col-span-2 space-y-8">
             {/* About Role */}
             <div className="bg-gray-800 rounded-lg p-8 border border-gray-700">
-              <h2 className="text-2xl font-bold mb-4 text-white">About the Role</h2>
+              <h2 className="text-2xl font-bold mb-4 text-white">
+                About the Role
+              </h2>
               <p className="text-gray-300 mb-6">{job.aboutRole}</p>
               <p className="text-gray-300">{job.description}</p>
             </div>
 
             {/* Key Responsibilities */}
             <div className="bg-gray-800 rounded-lg p-8 border border-gray-700">
-              <h2 className="text-2xl font-bold mb-4 text-white">Key Responsibilities</h2>
+              <h2 className="text-2xl font-bold mb-4 text-white">
+                Key Responsibilities
+              </h2>
               <ul className="list-disc list-inside space-y-2 text-gray-300">
                 {job.tasks.map((task, index) => (
                   <li key={index}>{task}</li>
@@ -69,7 +86,9 @@ export default function JobDetails({ params }: Props) {
 
             {/* Required Qualifications */}
             <div className="bg-gray-800 rounded-lg p-8 border border-gray-700">
-              <h2 className="text-2xl font-bold mb-4 text-white">Required Qualifications</h2>
+              <h2 className="text-2xl font-bold mb-4 text-white">
+                Required Qualifications
+              </h2>
               <ul className="list-disc list-inside space-y-2 text-gray-300">
                 {job.qualifications.map((qualification, index) => (
                   <li key={index}>{qualification}</li>
@@ -79,7 +98,9 @@ export default function JobDetails({ params }: Props) {
 
             {/* Bonus Qualifications */}
             <div className="bg-gray-800 rounded-lg p-8 border border-gray-700">
-              <h2 className="text-2xl font-bold mb-4 text-white">Bonus Qualifications</h2>
+              <h2 className="text-2xl font-bold mb-4 text-white">
+                Bonus Qualifications
+              </h2>
               <ul className="list-disc list-inside space-y-2 text-gray-300">
                 {job.bonus.map((bonus, index) => (
                   <li key={index}>{bonus}</li>
@@ -91,11 +112,15 @@ export default function JobDetails({ params }: Props) {
           {/* Right Column - Application Details */}
           <div className="lg:col-span-1">
             <div className="bg-gray-800 rounded-lg p-8 border border-gray-700 sticky top-4">
-              <h2 className="text-2xl font-bold mb-6 text-white">Application Details</h2>
-              
+              <h2 className="text-2xl font-bold mb-6 text-white">
+                Application Details
+              </h2>
+
               {/* Technologies */}
               <div className="mb-6">
-                <h3 className="text-lg font-semibold mb-3 text-white">Technologies</h3>
+                <h3 className="text-lg font-semibold mb-3 text-white">
+                  Technologies
+                </h3>
                 <div className="flex flex-wrap gap-2">
                   {job.technologies.map((tech, index) => (
                     <span
@@ -110,7 +135,9 @@ export default function JobDetails({ params }: Props) {
 
               {/* Application Deadline */}
               <div className="mb-6">
-                <h3 className="text-lg font-semibold mb-2 text-white">Application Deadline</h3>
+                <h3 className="text-lg font-semibold mb-2 text-white">
+                  Application Deadline
+                </h3>
                 <p className="text-gray-300">{job.sendCvTillDate}</p>
               </div>
 
