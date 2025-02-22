@@ -1,9 +1,9 @@
+import axios from "axios";
+import { jwtDecode } from "jwt-decode";
 import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import axios from "axios";
-import GoogleProvider from "next-auth/providers/google";
-import { jwtDecode } from "jwt-decode";
 import FacebookProvider from "next-auth/providers/facebook";
+import GoogleProvider from "next-auth/providers/google";
 import Instagram from "next-auth/providers/instagram";
 
 type Profile = {
@@ -44,6 +44,7 @@ declare module "next-auth" {
 type DecodedToken = {
   exp: number; // Expiry time in seconds since the Unix epoch
   iat: number; // Issued at time in seconds since the Unix epoch
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any; // Other properties
 };
 

@@ -1,9 +1,9 @@
 "use client";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { apiService } from "@/core/services/apiService";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
-import { apiService } from "@/core/services/apiService";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 
 const registrationSchema = z.object({
   firstName: z
@@ -41,10 +41,12 @@ const RegistrationForm = ({ toggleContent }: RegistrationFormProps) => {
     setLoading(true);
     setErrorMessage("");
     try {
-      const response = await apiService.post("auth/register", data);
+      await apiService.post("auth/register", data);
       toggleContent();
     } catch (error) {
-      setErrorMessage("Failed to register. Please try again.");
+      setErrorMessage(
+        `Failed to register. Please try again. Error: ${JSON.stringify(error)}`
+      );
     } finally {
       setLoading(false);
     }

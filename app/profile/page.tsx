@@ -8,9 +8,12 @@ import { useEffect, useState } from "react";
 export default function Profile() {
   const { data: session, status } = useSession();
   const router = useRouter();
-  const [profile, setProfile] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  // const [profile, setProfile] = useState<any>(null);
+  // const [loading, setLoading] = useState(true);
+  // const [error, setError] = useState<string | null>(null);
+  const [, setProfile] = useState(null);
+  const [, setLoading] = useState(true);
+  const [, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (status === "unauthenticated") {

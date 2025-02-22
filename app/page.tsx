@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 import HeroSection from "./components/HeroSection";
 
 export default function Home() {
@@ -277,7 +278,9 @@ export default function Home() {
               whileHover={{ scale: 1.05 }}
               className="bg-gray-800 p-8 rounded-lg text-center"
             >
-              <img
+              <Image
+                width={3000}
+                height={3000}
                 src={story.image}
                 alt={story.name}
                 className="w-24 h-24 rounded-full mx-auto mb-6 border-2 border-orange-500"

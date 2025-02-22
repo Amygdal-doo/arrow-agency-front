@@ -19,7 +19,7 @@ type LoginFormProps = {
 };
 
 const LoginForm = ({ toggleContent }: LoginFormProps) => {
-  const [loading, setLoading] = useState(false);
+  const [loading, ] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
   const {
