@@ -61,8 +61,14 @@ const CVForm = () => {
       }
 
       if (data.technologies && data.technologies.length > 0) {
-        formData.append("technologies", JSON.stringify(data.technologies));
+        data.technologies.forEach((tech) =>
+          formData.append("technologies[]", tech)
+        );
       }
+
+      // if (data.technologies && data.technologies.length > 0) {
+      //   formData.append("technologies", JSON.stringify(data.technologies));
+      // }
 
       const response: AxiosResponse = await apiService.post(
         "applicant/cv",

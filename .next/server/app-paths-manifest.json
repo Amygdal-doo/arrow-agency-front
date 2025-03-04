@@ -1,10 +1,9 @@
 {
-  "/_not-found/page": "app/_not-found/page.js",
-  "/favicon.ico/route": "app/favicon.ico/route.js",
-  "/for-talent/[id]/page": "app/for-talent/[id]/page.js",
-  "/for-talent/page": "app/for-talent/page.js",
   "/page": "app/page.js",
-  "/post-job/page": "app/post-job/page.js",
+  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
   "/profile/page": "app/profile/page.js",
-  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js"
+  "/for-talent/page": "app/for-talent/page.js",
+  "/for-talent/[id]/page": "app/for-talent/[id]/page.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/_not-found/page": "app/_not-found/page.js"
 }

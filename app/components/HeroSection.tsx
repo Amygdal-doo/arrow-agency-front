@@ -4,9 +4,21 @@ import React, { useState } from "react";
 import HeroBackground from "../../public/hero.jpg";
 import Modal from "./Modal";
 import CVForm from "./CVForm";
+import { useSession } from "next-auth/react";
+import LoginForm from "./LoginForm";
+import RegistrationForm from "./RegistrationForm";
 
 const HeroSection = () => {
+  const { data: session, status } = useSession();
+
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [showLoginForm, setShowLoginForm] = useState(false);
   const [showCVModal, setShowCVModal] = useState(false);
+
+  const toggleLoginForm = () => {
+    setShowLoginForm(!showLoginForm);
+  };
+
   return (
     <section className="relative h-[90vh] w-full">
       <Image
@@ -23,7 +35,13 @@ const HeroSection = () => {
             Looking to post a job or explore AI-powered CV generation?
           </p>
           <button
-            onClick={() => setShowCVModal(true)}
+            onClick={() => {
+              if (status === "authenticated" && session?.user?.accessToken) {
+                setShowCVModal(true);
+              } else {
+                setShowLoginModal(true);
+              }
+            }}
             className="bg-white px-10 py-3 rounded-md font-bold"
           >
             Get Started
@@ -32,6 +50,16 @@ const HeroSection = () => {
       </div>
       <Modal isOpen={showCVModal} onClose={() => setShowCVModal(false)}>
         <CVForm />
+      </Modal>
+      <Modal isOpen={showLoginModal} onClose={() => setShowLoginModal(false)}>
+        {showLoginForm ? (
+          <LoginForm
+            toggleContent={toggleLoginForm}
+            onClose={() => setShowLoginModal(false)}
+          />
+        ) : (
+          <RegistrationForm toggleContent={toggleLoginForm} />
+        )}
       </Modal>
     </section>
   );

@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
-import { getSession, signIn } from "next-auth/react";
+import { signIn } from "next-auth/react";
 
 const loginSchema = z.object({
   email: z.string().email({ message: "Invalid email address." }),
@@ -16,10 +16,11 @@ type LoginInputs = z.infer<typeof loginSchema>;
 
 type LoginFormProps = {
   toggleContent: () => void;
+  onClose: () => void;
 };
 
-const LoginForm = ({ toggleContent }: LoginFormProps) => {
-  const [loading, ] = useState(false);
+const LoginForm = ({ toggleContent, onClose }: LoginFormProps) => {
+  const [loading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
   const {
@@ -33,6 +34,7 @@ const LoginForm = ({ toggleContent }: LoginFormProps) => {
   const onSubmit = async (data: LoginInputs) => {
     // setLoading(true);
     setErrorMessage("");
+    console.log("login data", data);
 
     // Call the signIn method from next-auth
     const res = await signIn("credentials", {
@@ -40,32 +42,16 @@ const LoginForm = ({ toggleContent }: LoginFormProps) => {
       password: data.password,
       redirect: false,
     });
+    if (res) {
+      onClose();
+    }
 
     if (res?.error) {
       console.error("Sign-in error:", res.error);
       setErrorMessage(res.error);
       return;
     }
-
-    // Wait for session to be updated
-    const session = await getSession();
-
-    console.log("session", session);
   };
-
-  // const onSubmit = async (data: LoginInputs) => {
-  //   console.log("Login successful:", data);
-  //   setLoading(true);
-  //   setErrorMessage("");
-  //   try {
-  //     //   const response = await axios.post("/api/login", data);
-  //     console.log("Login successful:", response.data);
-  //   } catch (error) {
-  //     setErrorMessage("Invalid email or password. Please try again.");
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
 
   return (
     <form

@@ -5,14 +5,25 @@ import { useState } from "react";
 import LoginForm from "./LoginForm";
 import Modal from "./Modal";
 import RegistrationForm from "./RegistrationForm";
+import { signOut, useSession } from "next-auth/react";
+import { useProfile } from "@/providers/ProfileInfoProvider";
+import { useRouter } from "next/navigation";
 
 const Navbar = () => {
+  const router = useRouter();
+  const { data: session, status } = useSession();
+  const { profile } = useProfile();
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showLoginForm, setShowLoginForm] = useState(false);
 
   const toggleLoginForm = () => {
     setShowLoginForm(!showLoginForm);
   };
+
+  const getInitials = (firstName = "", lastName = "") => {
+    return `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
+  };
+
   return (
     <nav className="w-full bg-black p-1">
       <div className="container mx-auto flex items-center justify-between">
@@ -41,18 +52,35 @@ const Navbar = () => {
           </ul>
         </div>
 
-        <div className="space-x-2">
+        <div className="flex items-center space-x-4">
+          {status === "authenticated" &&
+            session?.user?.accessToken &&
+            profile?.firstName &&
+            profile?.lastName && (
+              <button
+                onClick={() => router.push("/profile")}
+                className="w-10 h-10 flex items-center justify-center bg-gray-700 text-white rounded-full text-sm font-bold"
+              >
+                {getInitials(profile.firstName, profile.lastName)}
+              </button>
+            )}
           <button
-            onClick={() => setShowLoginModal(true)}
+            onClick={() => {
+              if (status === "authenticated" && session?.user?.accessToken) {
+                signOut();
+              } else {
+                setShowLoginModal(true);
+              }
+            }}
             className="bg-white px-6 py-2 rounded-md text-[#0a0a23] font-bold"
           >
-            Login
+            {status === "authenticated" && session?.user?.accessToken
+              ? "Log out"
+              : "Login"}
           </button>
 
           <Link href="/post-job">
-            <button
-              className="bg-orange-600 hover:bg-orange-400 px-6 py-2 rounded-md text-white font-bold"
-            >
+            <button className="bg-orange-600 hover:bg-orange-400 px-6 py-2 rounded-md text-white font-bold">
               Post a Job
             </button>
           </Link>
@@ -61,7 +89,10 @@ const Navbar = () => {
 
       <Modal isOpen={showLoginModal} onClose={() => setShowLoginModal(false)}>
         {showLoginForm ? (
-          <LoginForm toggleContent={toggleLoginForm} />
+          <LoginForm
+            toggleContent={toggleLoginForm}
+            onClose={() => setShowLoginModal(false)}
+          />
         ) : (
           <RegistrationForm toggleContent={toggleLoginForm} />
         )}

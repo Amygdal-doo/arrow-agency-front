@@ -2,9 +2,6 @@ import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import FacebookProvider from "next-auth/providers/facebook";
-import GoogleProvider from "next-auth/providers/google";
-import Instagram from "next-auth/providers/instagram";
 
 type Profile = {
   createdAt: string;
@@ -72,6 +69,8 @@ const authOptions: NextAuthOptions = {
             }
           );
 
+          console.log("response", response);
+
           if (response.status === 200) {
             const user = response.data;
             console.log("111111", response);
@@ -101,18 +100,18 @@ const authOptions: NextAuthOptions = {
         }
       },
     }),
-    GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-    }),
-    FacebookProvider({
-      clientId: process.env.FACEBOOK_CLIENT_ID!,
-      clientSecret: process.env.FACEBOOK_CLIENT_SECRET!,
-    }),
-    Instagram({
-      clientId: process.env.INSTAGRAM_CLIENT_ID!,
-      clientSecret: process.env.INSTAGRAM_CLIENT_SECRET!,
-    }),
+    // GoogleProvider({
+    //   clientId: process.env.GOOGLE_CLIENT_ID!,
+    //   clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+    // }),
+    // FacebookProvider({
+    //   clientId: process.env.FACEBOOK_CLIENT_ID!,
+    //   clientSecret: process.env.FACEBOOK_CLIENT_SECRET!,
+    // }),
+    // Instagram({
+    //   clientId: process.env.INSTAGRAM_CLIENT_ID!,
+    //   clientSecret: process.env.INSTAGRAM_CLIENT_SECRET!,
+    // }),
   ],
   pages: {
     signIn: "/login",
