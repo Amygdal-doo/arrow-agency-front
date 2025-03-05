@@ -12,7 +12,7 @@ import { AxiosResponse } from "axios";
 import { apiService } from "@/core/services/apiService";
 import { useSession } from "next-auth/react";
 
-interface Applicant {
+export interface IApplicant {
   id: string;
   firstName: string;
   lastName: string;
@@ -46,12 +46,12 @@ interface Applicant {
 }
 
 interface ApplicantsResponse {
-  results: Applicant[];
+  results: IApplicant[];
   pages: number;
 }
 
 interface IApplicantsContextProps {
-  applicants: Applicant[];
+  applicants: IApplicant[];
   loading: boolean;
   error: string | null;
   page: number;
@@ -72,7 +72,7 @@ export const ApplicantsContext = createContext<IApplicantsContextProps>({
   error: null,
   page: 1,
   setPage: () => {},
-  limit: 3,
+  limit: 6,
   setLimit: () => {},
   type: "asc",
   setType: () => {},
@@ -83,11 +83,11 @@ export const ApplicantsContext = createContext<IApplicantsContextProps>({
 });
 
 export const ApplicantsProvider: FC<PropsWithChildren> = ({ children }) => {
-  const [applicants, setApplicants] = useState<Applicant[]>([]);
+  const [applicants, setApplicants] = useState<IApplicant[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(3);
+  const [limit, setLimit] = useState(6);
   const [type, setType] = useState("asc");
   const [technologies, setTechnologies] = useState<string[]>([]);
   const [pages, setPages] = useState(1);

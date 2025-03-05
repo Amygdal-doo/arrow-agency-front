@@ -28,10 +28,10 @@ export default function Profile() {
         <div className="bg-gray-800 flex justify-between items-start rounded-lg p-8 mb-8 border border-gray-700">
           <div>
             <h1 className="text-4xl font-bold mb-4 text-white">Profile</h1>
-            <p className="text-gray-300">{profile?.email}</p>
+            <p className="text-gray-300">{profile?.user?.email}</p>
           </div>
           <div className="bg-green-700 text-gray-300 px-3 py-1 rounded-full text-sm mt-2 inline-block">
-            {profile?.role}
+            {profile?.user?.role}
           </div>
         </div>
 
@@ -45,7 +45,6 @@ export default function Profile() {
             <div
               key={applicant.id}
               className="bg-gray-800 rounded-lg p-6 shadow-md hover:shadow-lg transition-shadow border border-gray-700 cursor-pointer"
-              onClick={() => router.push(`/applicant/${applicant.id}`)}
             >
               <div className="flex justify-between items-start mb-4">
                 <div>
@@ -54,19 +53,19 @@ export default function Profile() {
                   </h3>
                   <p className="text-gray-400">Position</p>
                 </div>
-                <span
+                {/* <span
                   className={`px-3 py-1 rounded-full text-sm font-medium bg-gray-600 text-gray-200
                     
                     `}
                 >
                   hired
-                </span>
+                </span> */}
               </div>
               <p className="text-gray-300 mb-4">{applicant.email}</p>
               <p className="text-gray-300 mb-4">{applicant.phone}</p>
 
               <a
-                href={`/for-talent/${applicant?.id}`}
+                href={`/applicant/${applicant?.id}`}
                 className="mt-4 block font-bold w-full text-center bg-orange-600 hover:bg-orange-400 text-white py-2 rounded-md transition-colors"
               >
                 View Details

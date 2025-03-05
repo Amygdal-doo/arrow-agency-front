@@ -12,7 +12,7 @@ import { useSession } from "next-auth/react";
 import { AxiosResponse } from "axios";
 import { apiService } from "@/core/services/apiService";
 
-export interface IUserProfile {
+interface IUser {
   id: string;
   email: string;
   firstName: string;
@@ -20,8 +20,16 @@ export interface IUserProfile {
   role: string;
   createdAt: string;
   updatedAt: string;
+  applicants: any[];
+  files: any[];
+}
+
+export interface IUserProfile {
+  id: string;
   address: string;
   phoneNumber: string;
+  userId: string;
+  user: IUser;
 }
 interface IProfileContextProps {
   profile: IUserProfile | null;
@@ -46,7 +54,7 @@ export const ProfileProvider: FC<PropsWithChildren> = ({ children }) => {
     try {
       if (session?.user?.accessToken) {
         const response: AxiosResponse<IUserProfile> = await apiService.get(
-          "/users/me"
+          "user/profile"
         );
         setProfile(response.data);
       }

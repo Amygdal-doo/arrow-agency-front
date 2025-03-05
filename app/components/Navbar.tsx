@@ -55,13 +55,13 @@ const Navbar = () => {
         <div className="flex items-center space-x-4">
           {status === "authenticated" &&
             session?.user?.accessToken &&
-            profile?.firstName &&
-            profile?.lastName && (
+            profile?.user?.firstName &&
+            profile?.user?.lastName && (
               <button
                 onClick={() => router.push("/profile")}
                 className="w-10 h-10 flex items-center justify-center bg-gray-700 text-white rounded-full text-sm font-bold"
               >
-                {getInitials(profile.firstName, profile.lastName)}
+                {getInitials(profile.user.firstName, profile.user.lastName)}
               </button>
             )}
           <button

@@ -23,23 +23,26 @@ const ProfileForm = () => {
     defaultValues: {
       phoneNumber: profile?.phoneNumber || "",
       address: profile?.address || "",
-      firstName: profile?.firstName || "",
-      lastName: profile?.lastName || "",
+      firstName: profile?.user?.firstName || "",
+      lastName: profile?.user?.lastName || "",
     },
   });
 
   useEffect(() => {
     setValue("phoneNumber", profile?.phoneNumber || "");
     setValue("address", profile?.address || "");
-    setValue("firstName", profile?.firstName || "");
-    setValue("lastName", profile?.lastName || "");
+    setValue("firstName", profile?.user?.firstName || "");
+    setValue("lastName", profile?.user?.lastName || "");
   }, [profile, setValue]);
 
   const onSubmit = async (data: ProfileFormData) => {
+    console.log("data");
     try {
       await apiService.put(`user/profile`, {
         phoneNumber: data.phoneNumber,
         address: data.address,
+        firstName: data.firstName,
+        lastName: data.lastName,
       });
 
       fetchProfile();
@@ -63,7 +66,7 @@ const ProfileForm = () => {
             {...register("firstName", {
               required: "First name is required",
             })}
-            placeholder={profile?.firstName || ""}
+            placeholder={profile?.user?.firstName || ""}
             className="w-full px-4 py-2 rounded-md bg-gray-900 text-white border border-gray-700"
           />
           {errors.firstName && (
@@ -74,7 +77,7 @@ const ProfileForm = () => {
         <div>
           <label className="block text-gray-300">Last Name</label>
           <input
-            placeholder={profile?.lastName || ""}
+            placeholder={profile?.user?.lastName || ""}
             {...register("lastName", { required: "Last name is required" })}
             className="w-full px-4 py-2 rounded-md bg-gray-900 text-white border border-gray-700"
           />
@@ -117,7 +120,7 @@ const ProfileForm = () => {
           <label className="block text-gray-300">Created At</label>
           {profile && (
             <input
-              value={new Date(profile.createdAt).toLocaleDateString()}
+              value={new Date(profile.user?.createdAt).toLocaleDateString()}
               disabled
               className="w-full px-4 py-2 rounded-md bg-gray-900 text-gray-400 border border-gray-700 cursor-not-allowed"
             />
@@ -128,7 +131,7 @@ const ProfileForm = () => {
           <label className="block text-gray-300">Updated At</label>
           {profile && (
             <input
-              value={new Date(profile.updatedAt).toLocaleDateString()}
+              value={new Date(profile.user?.updatedAt).toLocaleDateString()}
               disabled
               className="w-full px-4 py-2 rounded-md bg-gray-900 text-gray-400 border border-gray-700 cursor-not-allowed"
             />

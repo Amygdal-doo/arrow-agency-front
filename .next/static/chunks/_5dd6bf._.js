@@ -992,7 +992,7 @@ const ProfileProvider = ({ children })=>{
         setLoading(true);
         try {
             if (session?.user?.accessToken) {
-                const response = await __TURBOPACK__imported__module__$5b$project$5d2f$core$2f$services$2f$apiService$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["apiService"].get("/users/me");
+                const response = await __TURBOPACK__imported__module__$5b$project$5d2f$core$2f$services$2f$apiService$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["apiService"].get("user/profile");
                 setProfile(response.data);
             }
         } catch (error) {
@@ -1025,7 +1025,7 @@ const ProfileProvider = ({ children })=>{
         children: children
     }, void 0, false, {
         fileName: "[project]/providers/ProfileInfoProvider.tsx",
-        lineNumber: 71,
+        lineNumber: 79,
         columnNumber: 5
     }, this);
 };
@@ -1165,10 +1165,10 @@ const Navbar = ()=>{
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "flex items-center space-x-4",
                         children: [
-                            status === "authenticated" && session?.user?.accessToken && profile?.firstName && profile?.lastName && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                            status === "authenticated" && session?.user?.accessToken && profile?.user?.firstName && profile?.user?.lastName && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                                 onClick: ()=>router.push("/profile"),
                                 className: "w-10 h-10 flex items-center justify-center bg-gray-700 text-white rounded-full text-sm font-bold",
-                                children: getInitials(profile.firstName, profile.lastName)
+                                children: getInitials(profile.user.firstName, profile.user.lastName)
                             }, void 0, false, {
                                 fileName: "[project]/app/components/Navbar.tsx",
                                 lineNumber: 60,
@@ -1286,7 +1286,7 @@ const ApplicantsContext = /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$p
     error: null,
     page: 1,
     setPage: ()=>{},
-    limit: 3,
+    limit: 6,
     setLimit: ()=>{},
     type: "asc",
     setType: ()=>{},
@@ -1301,7 +1301,7 @@ const ApplicantsProvider = ({ children })=>{
     const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(true);
     const [error, setError] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
     const [page, setPage] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(1);
-    const [limit, setLimit] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(3);
+    const [limit, setLimit] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(6);
     const [type, setType] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])("asc");
     const [technologies, setTechnologies] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])([]);
     const [pages, setPages] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(1);
@@ -1365,7 +1365,7 @@ const ApplicantsProvider = ({ children })=>{
         columnNumber: 5
     }, this);
 };
-_s(ApplicantsProvider, "Jctrf092+6tkw9OO306LrAu+e08=", false, function() {
+_s(ApplicantsProvider, "2+jdLEb7JOGeQY/HkYe63z1/t0Y=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2d$auth$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useSession"]
     ];

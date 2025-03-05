@@ -1,9 +1,9 @@
 {
-  "/page": "app/page.js",
   "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
   "/profile/page": "app/profile/page.js",
-  "/for-talent/page": "app/for-talent/page.js",
-  "/for-talent/[id]/page": "app/for-talent/[id]/page.js",
   "/favicon.ico/route": "app/favicon.ico/route.js",
-  "/_not-found/page": "app/_not-found/page.js"
+  "/page": "app/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/applicant/[id]/page": "app/applicant/[id]/page.js",
+  "/for-talent/[id]/page": "app/for-talent/[id]/page.js"
 }
