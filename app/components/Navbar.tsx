@@ -26,6 +26,7 @@ const Navbar = () => {
 
   return (
     <nav className="w-full bg-black p-1">
+      <pre>{JSON.stringify(profile, null, 2)}</pre>
       <div className="container mx-auto flex items-center justify-between">
         <div className="flex items-center space-x-16">
           <Link href="/">
@@ -53,17 +54,19 @@ const Navbar = () => {
         </div>
 
         <div className="flex items-center space-x-4">
-          {status === "authenticated" &&
-            session?.user?.accessToken &&
-            profile?.user?.firstName &&
-            profile?.user?.lastName && (
-              <button
-                onClick={() => router.push("/profile")}
-                className="w-10 h-10 flex items-center justify-center bg-gray-700 text-white rounded-full text-sm font-bold"
-              >
-                {getInitials(profile.user.firstName, profile.user.lastName)}
-              </button>
-            )}
+          {status === "authenticated" && session?.user?.accessToken && (
+            <button
+              onClick={() => router.push("/profile")}
+              className="w-10 h-10 flex items-center justify-center bg-gray-700 text-white rounded-full text-sm font-bold"
+            >
+              {profile?.user
+                ? getInitials(profile.user.firstName, profile.user.lastName)
+                : getInitials(
+                    session.user.profile?.firstName,
+                    session.user.profile?.lastName
+                  )}
+            </button>
+          )}
           <button
             onClick={() => {
               if (status === "authenticated" && session?.user?.accessToken) {

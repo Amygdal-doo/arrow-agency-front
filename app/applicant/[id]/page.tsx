@@ -1,53 +1,44 @@
 "use client";
 
-import { apiService } from "@/core/services/apiService";
-import { IApplicant } from "@/providers/ApplicantsProvider";
-import { AxiosResponse } from "axios";
-import { useSession } from "next-auth/react";
-import Link from "next/link";
-import { useParams, useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import CertificateField from "@/app/components/CertificateField";
+import CourseField from "@/app/components/CourseField";
+import EducationField from "@/app/components/EducationField";
+import ExperienceField from "@/app/components/ExperienceField";
+import HobbyField from "@/app/components/HobbyField";
+import LanguageField from "@/app/components/LanguageField";
+import ProjectField from "@/app/components/ProjectField";
+import SkillField from "@/app/components/SkillField";
+import SocialField from "@/app/components/SocialField";
+import { IFile, useApplicant } from "@/providers/ApplicantDetailsProvider";
+
+import React from "react";
 
 const ApplicantDetails = () => {
-  const router = useRouter();
-  const params = useParams();
-  const id = params?.id as string;
-
-  const { data: session, status } = useSession();
-  const [applicant, setApplicant] = useState<IApplicant | null>(null);
-
-  const [editableApplicant, setEditableApplicant] = useState<IApplicant | null>(
-    null
-  );
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  const fetchApplicant = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      if (session?.user?.accessToken) {
-        const response: AxiosResponse<IApplicant> = await apiService.get(
-          `applicant/${id}`
-        );
-        setApplicant(response.data);
-        setEditableApplicant(response.data);
-      }
-    } catch (error) {
-      console.error("Error fetching applicant:", error);
-      setError("Failed to fetch applicant.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    if (status === "authenticated") {
-      fetchApplicant();
-    } else if (status === "unauthenticated") {
-      router.push("/");
-    }
-  }, [id, session, status]);
+  const {
+    loading,
+    error,
+    firstName,
+    setFirstName,
+    lastName,
+    setLastName,
+    email,
+    setEmail,
+    phone,
+    setPhone,
+    summary,
+    setSummary,
+    skills,
+    hobbies,
+    experience,
+    projects,
+    educations,
+    certificates,
+    courses,
+    socials,
+    languages,
+    updateApplicant,
+    applicant,
+  } = useApplicant();
 
   const handleDownload = (fileUrl: string, fileName: string) => {
     const link = document.createElement("a");
@@ -58,29 +49,10 @@ const ApplicantDetails = () => {
     document.body.removeChild(link);
   };
 
-  const handleChange = (field: string, value: string) => {
-    if (editableApplicant) {
-      // Clone the editableApplicant to avoid directly modifying state
-      const updatedApplicant = { ...editableApplicant };
-
-      // Handle nested fields like cv.summary
-      if (field.startsWith("cv.")) {
-        const nestedField = field.split(".")[1]; // This gets "summary" from "cv.summary"
-        updatedApplicant.cv = {
-          ...updatedApplicant.cv,
-          [nestedField]: value,
-        };
-      } else {
-        updatedApplicant[field] = value;
-      }
-
-      setEditableApplicant(updatedApplicant);
-    }
-  };
-
-  const handleSave = () => {
+  const handleSave = async () => {
+    await updateApplicant();
     // You can add save functionality here (API call to update applicant data)
-    console.log("Saved Applicant:", editableApplicant);
+    console.log("Saved Applicant:");
   };
 
   if (loading) {
@@ -105,42 +77,46 @@ const ApplicantDetails = () => {
           {/* Header Section */}
           <div className="bg-gray-800 rounded-lg p-8 mb-8 border border-gray-700">
             <h1 className="text-4xl font-bold mb-4 text-white">
-              <input
-                type="text"
-                value={editableApplicant?.firstName}
-                onChange={(e) => handleChange("firstName", e.target.value)}
-                className="bg-transparent text-white text-4xl font-bold border-b border-gray-600 outline-none"
-              />{" "}
-              <input
-                type="text"
-                value={editableApplicant?.lastName}
-                onChange={(e) => handleChange("lastName", e.target.value)}
-                className="bg-transparent text-white text-4xl font-bold border-b border-gray-600 outline-none"
-              />
-            </h1>
-            <div className="text-gray-300 space-y-2">
-              <div className="flex space-x-2">
-                <label>Email: </label>
-                <input
-                  type="email"
-                  value={editableApplicant?.email}
-                  onChange={(e) => handleChange("email", e.target.value)}
-                  className="bg-transparent w-full text-white border-b border-gray-600 outline-none"
-                />
-              </div>
-              <div className="flex space-x-2">
-                <label>Phone: </label>
+              <div className="flex space-x-4">
                 <input
                   type="text"
-                  value={editableApplicant?.phone}
-                  onChange={(e) => handleChange("phone", e.target.value)}
-                  className="bg-transparent w-full text-white border-b border-gray-600 outline-none"
+                  placeholder="First name"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  className="p-2 mb-2 w-full rounded bg-gray-700 text-gray-300 border border-gray-600"
+                />{" "}
+                <input
+                  type="text"
+                  placeholder="Last Name"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                  className="p-2 mb-2 w-full rounded bg-gray-700 text-gray-300 border border-gray-600"
+                />
+              </div>
+            </h1>
+            <div className="text-gray-300 space-y-2">
+              <div className="flex space-x-2 items-center mb-2">
+                <input
+                  type="email"
+                  placeholder="Email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="p-2 w-full rounded bg-gray-700 text-gray-300 border border-gray-600"
+                />
+              </div>
+              <div className="flex space-x-2 items-center mb-2">
+                <input
+                  type="text"
+                  placeholder="Phone Number"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  className="p-2  w-full rounded bg-gray-700 text-gray-300 border border-gray-600"
                 />
               </div>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="">
             {/* Left Column - CV Details */}
             <div className="lg:col-span-2 space-y-8">
               {/* CV Summary */}
@@ -149,61 +125,36 @@ const ApplicantDetails = () => {
                   CV Summary
                 </h2>
                 <textarea
-                  value={editableApplicant?.cv?.summary || ""}
-                  onChange={(e) => handleChange("cv.summary", e.target.value)}
-                  className="bg-transparent text-white w-full h-24 border-b border-gray-600 outline-none"
+                  rows={10}
+                  value={summary || ""}
+                  onChange={(e) => setSummary(e.target.value)}
+                  className="p-2 w-full rounded bg-gray-700 text-gray-300 border border-gray-600"
                 />
               </div>
 
-              <div className="bg-gray-800 rounded-lg p-8 border border-gray-700">
-                <h2 className="text-2xl font-bold mb-4 text-white">
-                  Educations
-                </h2>
-                {applicant.cv.educations?.length
-                  ? applicant.cv.educations.map((education, index) => (
-                      <div key={index}>
-                        <strong>{education.degree}</strong> in {education.field}{" "}
-                        at {education.institution}({education.startDate} -{" "}
-                        {education.endDate})
-                      </div>
-                    ))
-                  : ""}
-              </div>
+              <EducationField />
 
-              <div className="bg-gray-800 rounded-lg p-8 border border-gray-700">
-                <h2 className="text-2xl font-bold mb-4 text-white">Projects</h2>
-                {applicant.cv.projects?.length
-                  ? applicant.cv.projects.map((project, index) => (
-                      <div key={index}>
-                        <strong>{project.name}</strong>
-                      </div>
-                    ))
-                  : ""}
-              </div>
+              <ProjectField />
 
-              <div className="bg-gray-800 rounded-lg p-8 border border-gray-700">
-                <h2 className="text-2xl font-bold mb-4 text-white">
-                  Experiences
-                </h2>
-                {applicant.cv.experiences?.length
-                  ? applicant.cv.experiences.map((experience, index) => (
-                      <div key={index}>
-                        <strong>{experience.position}</strong>
-                        <span className="opacity-70">
-                          {" "}
-                          at {experience.company}
-                        </span>
-                        <p>{experience.description}</p>
-                      </div>
-                    ))
-                  : ""}
-              </div>
+              <ExperienceField />
+
+              <CertificateField />
+
+              <CourseField />
+
+              <SkillField cvId={applicant.id} />
+
+              <LanguageField />
+
+              <SocialField />
+
+              <HobbyField />
 
               <div className="bg-gray-800 rounded-lg p-8 border border-gray-700">
                 <h2 className="text-2xl font-bold mb-4 text-white">Files</h2>
                 <ul className="list-disc list-inside space-y-2 text-gray-300">
                   {applicant.file?.length
-                    ? applicant.file.map((item, index) => (
+                    ? applicant.file.map((item: IFile, index: number) => (
                         <li
                           key={index}
                           onClick={() => handleDownload(item.url, item.name)}
@@ -216,124 +167,6 @@ const ApplicantDetails = () => {
                 </ul>
               </div>
             </div>
-
-            {/* Right Column - Other Details */}
-            <div className="lg:col-span-1 space-y-8">
-              {/* Technologies */}
-              <div className="bg-gray-800 rounded-lg p-8 border border-gray-700">
-                <h2 className="text-2xl font-bold mb-4 text-white">
-                  Technologies
-                </h2>
-                <div className="flex flex-wrap gap-2">
-                  {applicant.technologies?.length
-                    ? applicant.technologies.map((tech, index) => (
-                        <span
-                          key={index}
-                          className="bg-gray-700 px-3 py-1 rounded-md text-sm text-gray-300 border border-gray-600"
-                        >
-                          {tech}
-                        </span>
-                      ))
-                    : ""}
-                </div>
-              </div>
-
-              <div className="bg-gray-800 rounded-lg p-8 border border-gray-700">
-                <h2 className="text-2xl font-bold mb-4 text-white">
-                  Certificates
-                </h2>
-                {applicant.cv.certificates?.length
-                  ? applicant.cv.certificates.map((certificate, index) => (
-                      <div
-                        key={index}
-                        className="bg-gray-800 rounded-lg p-8 border border-gray-700"
-                      >
-                        <h2 className="text-2xl font-bold mb-4 text-white">
-                          {certificate}
-                        </h2>
-                      </div>
-                    ))
-                  : ""}
-              </div>
-
-              <div className="bg-gray-800 rounded-lg p-8 border border-gray-700">
-                <h2 className="text-2xl font-bold mb-4 text-white">Courses</h2>
-                {applicant.cv.courses?.length
-                  ? applicant.cv.courses.map((course, index) => (
-                      <div key={index}>
-                        <strong>{course}</strong>
-                      </div>
-                    ))
-                  : ""}
-              </div>
-
-              <div className="bg-gray-800 rounded-lg p-8 border border-gray-700">
-                <h2 className="text-2xl font-bold mb-4 text-white">Skills</h2>
-                <ul className="list-disc list-inside space-y-2 text-gray-300">
-                  {applicant.cv?.skills?.length
-                    ? applicant.cv.skills.map((skill, index) => (
-                        <li key={index}>{skill}</li>
-                      ))
-                    : "N/A"}
-                </ul>
-              </div>
-
-              <div className="bg-gray-800 rounded-lg p-8 border border-gray-700">
-                <h2 className="text-2xl font-bold mb-4 text-white">
-                  Languages
-                </h2>
-                {applicant.cv.languages?.length
-                  ? applicant.cv.languages.map((language, index) => (
-                      <div key={index}>
-                        <strong>{language.name}</strong>
-                        <span className="opacity-70">
-                          {" "}
-                          - {language.efficiency}
-                        </span>
-                      </div>
-                    ))
-                  : ""}
-              </div>
-
-              {applicant.cv.socials?.length ? (
-                <div className="bg-gray-800 rounded-lg p-8 border border-gray-700">
-                  <h2 className="text-2xl font-bold mb-4 text-white">
-                    Socials
-                  </h2>
-                  {applicant.cv.socials.map((social, index) => (
-                    <div key={index}>
-                      <a
-                        key={social.id}
-                        href={
-                          social.url.startsWith("http")
-                            ? social.url
-                            : `https://${social.url}`
-                        }
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="block w-full text-white font-bold rounded-md mb-2"
-                      >
-                        {social.name}
-                      </a>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                ""
-              )}
-
-              {/* Hobbies */}
-              <div className="bg-gray-800 rounded-lg p-8 border border-gray-700">
-                <h2 className="text-2xl font-bold mb-4 text-white">Hobbies</h2>
-                <ul className="list-disc list-inside space-y-2 text-gray-300">
-                  {applicant.cv?.hobbies?.length
-                    ? applicant.cv.hobbies.map((hobby, index) => (
-                        <li key={index}>{hobby}</li>
-                      ))
-                    : ""}
-                </ul>
-              </div>
-            </div>
           </div>
         </div>
         <div className="w-1/2 bg-gray-800 rounded-lg p-8 border border-gray-700">
@@ -341,7 +174,7 @@ const ApplicantDetails = () => {
             <h1 className="text-4xl font-bold text-white">CV Preview</h1>
             <div>
               <button
-                onClick={() => {}}
+                onClick={() => handleSave()}
                 className="mt-4 font-bold w-full text-center bg-orange-600 hover:bg-orange-400 text-white py-2 px-8 rounded-md transition-colors"
               >
                 Save
@@ -352,11 +185,11 @@ const ApplicantDetails = () => {
           {/* Header Section */}
           <div className="py-8 mb-8">
             <h1 className="text-4xl font-bold mb-4 text-white">
-              {editableApplicant?.firstName} {editableApplicant?.lastName}
+              {firstName} {lastName}
             </h1>
             <div className="text-gray-300 space-y-2">
-              <p>Email: {editableApplicant?.email}</p>
-              <p>Phone: {editableApplicant?.phone}</p>
+              <p>Email: {email}</p>
+              <p>Phone: {phone}</p>
             </div>
           </div>
 
@@ -368,17 +201,15 @@ const ApplicantDetails = () => {
                 <h2 className="text-2xl font-bold mb-4 text-white">
                   CV Summary
                 </h2>
-                <p className="text-gray-300">
-                  {editableApplicant?.cv?.summary || "N/A"}
-                </p>
+                <p className="text-gray-300">{summary || "N/A"}</p>
               </div>
 
-              {applicant.cv.educations?.length ? (
+              {educations?.length ? (
                 <div className="py-8">
                   <h2 className="text-2xl font-bold mb-4 text-white">
                     Educations
                   </h2>
-                  {applicant.cv.educations.map((education, index) => (
+                  {educations.map((education, index) => (
                     <div key={index}>
                       <strong>{education.degree}</strong> in {education.field}{" "}
                       at {education.institution}({education.startDate} -{" "}
@@ -390,12 +221,12 @@ const ApplicantDetails = () => {
                 ""
               )}
 
-              {applicant.cv.projects?.length ? (
+              {projects?.length ? (
                 <div className="py-8">
                   <h2 className="text-2xl font-bold mb-4 text-white">
                     Projects
                   </h2>
-                  {applicant.cv.projects.map((project, index) => (
+                  {projects.map((project, index) => (
                     <div key={index}>
                       <strong>{project.name}</strong>
                     </div>
@@ -405,12 +236,12 @@ const ApplicantDetails = () => {
                 ""
               )}
 
-              {applicant.cv.experiences?.length ? (
+              {experience?.length ? (
                 <div className="py-8">
                   <h2 className="text-2xl font-bold mb-4 text-white">
                     Experiences
                   </h2>
-                  {applicant.cv.experiences.map((experience, index) => (
+                  {experience.map((experience, index) => (
                     <div key={index}>
                       <strong>{experience.position}</strong>
                       <span className="opacity-70">
@@ -430,41 +261,39 @@ const ApplicantDetails = () => {
             <div className="lg:col-span-1 space-y-8">
               {/* Technologies */}
               <div className="py-8">
-                <h2 className="text-2xl font-bold mb-4 text-white">
-                  Technologies
-                </h2>
+                <h2 className="text-2xl font-bold mb-4 text-white">Skills</h2>
                 <div className="flex flex-wrap gap-2">
-                  {applicant.technologies?.length
-                    ? applicant.technologies.map((tech, index) => (
-                        <span
-                          key={index}
-                          className="bg-gray-700 px-3 py-1 rounded-md text-sm text-gray-300 border border-gray-600"
-                        >
-                          {tech}
-                        </span>
+                  {skills?.length
+                    ? skills.map((skill, index) => (
+                        <div key={index}>
+                          <strong>{skill.name}</strong>
+                          <span className="opacity-70">
+                            - {skill.efficiency}
+                          </span>
+                        </div>
                       ))
                     : ""}
                 </div>
               </div>
 
-              {applicant.cv.certificates?.length
-                ? applicant.cv.certificates.map((certificate, index) => (
+              {certificates?.length
+                ? certificates.map((certificate, index) => (
                     <div key={index} className="py-8">
                       <h2 className="text-2xl font-bold mb-4 text-white">
-                        {certificate}
+                        {certificate.name}
                       </h2>
                     </div>
                   ))
                 : ""}
 
-              {applicant.cv.courses?.length ? (
+              {courses?.length ? (
                 <div className="py-8">
                   <h2 className="text-2xl font-bold mb-4 text-white">
                     Courses
                   </h2>
-                  {applicant.cv.courses.map((course, index) => (
+                  {courses.map((course, index) => (
                     <div key={index}>
-                      <strong>{course}</strong>
+                      <strong>{course.name}</strong>
                     </div>
                   ))}
                 </div>
@@ -472,24 +301,12 @@ const ApplicantDetails = () => {
                 ""
               )}
 
-              {/* Skills */}
-              <div className="py-8">
-                <h2 className="text-2xl font-bold mb-4 text-white">Skills</h2>
-                <ul className="list-disc list-inside space-y-2 text-gray-300">
-                  {applicant.cv?.skills?.length
-                    ? applicant.cv.skills.map((skill, index) => (
-                        <li key={index}>{skill}</li>
-                      ))
-                    : "N/A"}
-                </ul>
-              </div>
-
-              {applicant.cv.languages?.length ? (
+              {languages?.length ? (
                 <div className="py-8">
                   <h2 className="text-2xl font-bold mb-4 text-white">
                     Languages
                   </h2>
-                  {applicant.cv.languages.map((language, index) => (
+                  {languages.map((language, index) => (
                     <div key={index}>
                       <strong>{language.name}</strong>
                       <span className="opacity-70">
@@ -503,12 +320,12 @@ const ApplicantDetails = () => {
                 ""
               )}
 
-              {applicant.cv.socials?.length ? (
+              {socials?.length ? (
                 <div className="py-8">
                   <h2 className="text-2xl font-bold mb-4 text-white">
                     Socials
                   </h2>
-                  {applicant.cv.socials.map((social, index) => (
+                  {socials.map((social, index) => (
                     <div key={index}>
                       <a
                         key={social.id}
@@ -531,13 +348,13 @@ const ApplicantDetails = () => {
               )}
 
               {/* Hobbies */}
-              {applicant.cv?.hobbies?.length ? (
+              {hobbies?.length ? (
                 <div className="py-8">
                   <h2 className="text-2xl font-bold mb-4 text-white">
                     Hobbies
                   </h2>
                   <ul className="list-disc list-inside space-y-2 text-gray-300">
-                    {applicant.cv.hobbies.map((hobby, index) => (
+                    {hobbies.map((hobby, index) => (
                       <li key={index}>{hobby}</li>
                     ))}
                   </ul>

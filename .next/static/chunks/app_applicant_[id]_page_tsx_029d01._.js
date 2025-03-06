@@ -9,56 +9,14 @@ __turbopack_esm__({
     "default": (()=>__TURBOPACK__default__export__)
 });
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$core$2f$services$2f$apiService$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/core/services/apiService.ts [app-client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2d$auth$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/node_modules/next-auth/react/index.js [app-client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/node_modules/next/navigation.js [app-client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$providers$2f$ApplicantDetailsProvider$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/providers/ApplicantDetailsProvider.tsx [app-client] (ecmascript)");
 ;
 var _s = __turbopack_refresh__.signature();
 "use client";
 ;
-;
-;
-;
 const ApplicantDetails = ()=>{
     _s();
-    const router = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRouter"])();
-    const params = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useParams"])();
-    const id = params?.id;
-    const { data: session, status } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2d$auth$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useSession"])();
-    const [applicant, setApplicant] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
-    const [editableApplicant, setEditableApplicant] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
-    const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(true);
-    const [error, setError] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
-    const fetchApplicant = async ()=>{
-        setLoading(true);
-        setError(null);
-        try {
-            if (session?.user?.accessToken) {
-                const response = await __TURBOPACK__imported__module__$5b$project$5d2f$core$2f$services$2f$apiService$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["apiService"].get(`applicant/${id}`);
-                setApplicant(response.data);
-                setEditableApplicant(response.data);
-            }
-        } catch (error) {
-            console.error("Error fetching applicant:", error);
-            setError("Failed to fetch applicant.");
-        } finally{
-            setLoading(false);
-        }
-    };
-    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
-        "ApplicantDetails.useEffect": ()=>{
-            if (status === "authenticated") {
-                fetchApplicant();
-            } else if (status === "unauthenticated") {
-                router.push("/");
-            }
-        }
-    }["ApplicantDetails.useEffect"], [
-        id,
-        session,
-        status
-    ]);
+    const { loading, error, firstName, setFirstName, lastName, setLastName, email, setEmail, phone, setPhone, summary, setSummary, skills, setSkills, hobbies, setHobbies, experience, setExperience, projects, setProjects, educations, setEducations, certificates, setCertificates, courses, setCourses, socials, setSocials, languages, setLanguages, updateApplicant, applicant } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$providers$2f$ApplicantDetailsProvider$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useApplicant"])();
     const handleDownload = (fileUrl, fileName)=>{
         const link = document.createElement("a");
         link.href = fileUrl;
@@ -67,28 +25,9 @@ const ApplicantDetails = ()=>{
         link.click();
         document.body.removeChild(link);
     };
-    const handleChange = (field, value)=>{
-        if (editableApplicant) {
-            // Clone the editableApplicant to avoid directly modifying state
-            const updatedApplicant = {
-                ...editableApplicant
-            };
-            // Handle nested fields like cv.summary
-            if (field.startsWith("cv.")) {
-                const nestedField = field.split(".")[1]; // This gets "summary" from "cv.summary"
-                updatedApplicant.cv = {
-                    ...updatedApplicant.cv,
-                    [nestedField]: value
-                };
-            } else {
-                updatedApplicant[field] = value;
-            }
-            setEditableApplicant(updatedApplicant);
-        }
-    };
     const handleSave = ()=>{
         // You can add save functionality here (API call to update applicant data)
-        console.log("Saved Applicant:", editableApplicant);
+        console.log("Saved Applicant:");
     };
     if (loading) {
         return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -96,7 +35,7 @@ const ApplicantDetails = ()=>{
             children: "Loading..."
         }, void 0, false, {
             fileName: "[project]/app/applicant/[id]/page.tsx",
-            lineNumber: 87,
+            lineNumber: 67,
             columnNumber: 12
         }, this);
     }
@@ -106,7 +45,7 @@ const ApplicantDetails = ()=>{
             children: error
         }, void 0, false, {
             fileName: "[project]/app/applicant/[id]/page.tsx",
-            lineNumber: 91,
+            lineNumber: 71,
             columnNumber: 12
         }, this);
     }
@@ -116,7 +55,7 @@ const ApplicantDetails = ()=>{
             children: "No applicant found."
         }, void 0, false, {
             fileName: "[project]/app/applicant/[id]/page.tsx",
-            lineNumber: 96,
+            lineNumber: 76,
             columnNumber: 7
         }, this);
     }
@@ -136,29 +75,29 @@ const ApplicantDetails = ()=>{
                                     children: [
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
                                             type: "text",
-                                            value: editableApplicant?.firstName,
-                                            onChange: (e)=>handleChange("firstName", e.target.value),
+                                            value: firstName,
+                                            onChange: (e)=>setFirstName(e.target.value),
                                             className: "bg-transparent text-white text-4xl font-bold border-b border-gray-600 outline-none"
                                         }, void 0, false, {
                                             fileName: "[project]/app/applicant/[id]/page.tsx",
-                                            lineNumber: 108,
+                                            lineNumber: 88,
                                             columnNumber: 15
                                         }, this),
                                         " ",
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
                                             type: "text",
-                                            value: editableApplicant?.lastName,
-                                            onChange: (e)=>handleChange("lastName", e.target.value),
+                                            value: lastName,
+                                            onChange: (e)=>setLastName(e.target.value),
                                             className: "bg-transparent text-white text-4xl font-bold border-b border-gray-600 outline-none"
                                         }, void 0, false, {
                                             fileName: "[project]/app/applicant/[id]/page.tsx",
-                                            lineNumber: 114,
+                                            lineNumber: 94,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/applicant/[id]/page.tsx",
-                                    lineNumber: 107,
+                                    lineNumber: 87,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -171,23 +110,23 @@ const ApplicantDetails = ()=>{
                                                     children: "Email: "
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                    lineNumber: 123,
+                                                    lineNumber: 103,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
                                                     type: "email",
-                                                    value: editableApplicant?.email,
-                                                    onChange: (e)=>handleChange("email", e.target.value),
+                                                    value: email,
+                                                    onChange: (e)=>setEmail(e.target.value),
                                                     className: "bg-transparent w-full text-white border-b border-gray-600 outline-none"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                    lineNumber: 124,
+                                                    lineNumber: 104,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/applicant/[id]/page.tsx",
-                                            lineNumber: 122,
+                                            lineNumber: 102,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -197,35 +136,35 @@ const ApplicantDetails = ()=>{
                                                     children: "Phone: "
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                    lineNumber: 132,
+                                                    lineNumber: 112,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
                                                     type: "text",
-                                                    value: editableApplicant?.phone,
-                                                    onChange: (e)=>handleChange("phone", e.target.value),
+                                                    value: phone,
+                                                    onChange: (e)=>setPhone(e.target.value),
                                                     className: "bg-transparent w-full text-white border-b border-gray-600 outline-none"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                    lineNumber: 133,
+                                                    lineNumber: 113,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/applicant/[id]/page.tsx",
-                                            lineNumber: 131,
+                                            lineNumber: 111,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/applicant/[id]/page.tsx",
-                                    lineNumber: 121,
+                                    lineNumber: 101,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/applicant/[id]/page.tsx",
-                            lineNumber: 106,
+                            lineNumber: 86,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -242,22 +181,22 @@ const ApplicantDetails = ()=>{
                                                     children: "CV Summary"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                    lineNumber: 148,
+                                                    lineNumber: 128,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("textarea", {
-                                                    value: editableApplicant?.cv?.summary || "",
-                                                    onChange: (e)=>handleChange("cv.summary", e.target.value),
+                                                    value: summary || "",
+                                                    onChange: (e)=>setSummary(e.target.value),
                                                     className: "bg-transparent text-white w-full h-24 border-b border-gray-600 outline-none"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                    lineNumber: 151,
+                                                    lineNumber: 131,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/applicant/[id]/page.tsx",
-                                            lineNumber: 147,
+                                            lineNumber: 127,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -268,16 +207,23 @@ const ApplicantDetails = ()=>{
                                                     children: "Educations"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                    lineNumber: 159,
+                                                    lineNumber: 139,
                                                     columnNumber: 17
                                                 }, this),
-                                                applicant.cv.educations?.length ? applicant.cv.educations.map((education, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("pre", {
+                                                    children: JSON.stringify(educations, null, 2)
+                                                }, void 0, false, {
+                                                    fileName: "[project]/app/applicant/[id]/page.tsx",
+                                                    lineNumber: 142,
+                                                    columnNumber: 17
+                                                }, this),
+                                                educations?.length ? educations.map((education, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                         children: [
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
                                                                 children: education.degree
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                                lineNumber: 165,
+                                                                lineNumber: 146,
                                                                 columnNumber: 25
                                                             }, this),
                                                             " in ",
@@ -294,13 +240,13 @@ const ApplicantDetails = ()=>{
                                                         ]
                                                     }, index, true, {
                                                         fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                        lineNumber: 164,
+                                                        lineNumber: 145,
                                                         columnNumber: 23
                                                     }, this)) : ""
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/applicant/[id]/page.tsx",
-                                            lineNumber: 158,
+                                            lineNumber: 138,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -311,7 +257,7 @@ const ApplicantDetails = ()=>{
                                                     children: "Projects"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                    lineNumber: 174,
+                                                    lineNumber: 155,
                                                     columnNumber: 17
                                                 }, this),
                                                 applicant.cv.projects?.length ? applicant.cv.projects.map((project, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -319,18 +265,18 @@ const ApplicantDetails = ()=>{
                                                             children: project.name
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                            lineNumber: 178,
-                                                            columnNumber: 25
+                                                            lineNumber: 160,
+                                                            columnNumber: 27
                                                         }, this)
                                                     }, index, false, {
                                                         fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                        lineNumber: 177,
-                                                        columnNumber: 23
+                                                        lineNumber: 159,
+                                                        columnNumber: 25
                                                     }, this)) : ""
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/applicant/[id]/page.tsx",
-                                            lineNumber: 173,
+                                            lineNumber: 154,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -341,17 +287,17 @@ const ApplicantDetails = ()=>{
                                                     children: "Experiences"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                    lineNumber: 185,
+                                                    lineNumber: 168,
                                                     columnNumber: 17
                                                 }, this),
-                                                applicant.cv.experiences?.length ? applicant.cv.experiences.map((experience, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                applicant.cv.experience?.length ? applicant.cv.experience.map((experience, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                         children: [
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
                                                                 children: experience.position
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                                lineNumber: 191,
-                                                                columnNumber: 25
+                                                                lineNumber: 175,
+                                                                columnNumber: 27
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                                 className: "opacity-70",
@@ -362,26 +308,26 @@ const ApplicantDetails = ()=>{
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                                lineNumber: 192,
-                                                                columnNumber: 25
+                                                                lineNumber: 176,
+                                                                columnNumber: 27
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                                                 children: experience.description
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                                lineNumber: 196,
-                                                                columnNumber: 25
+                                                                lineNumber: 180,
+                                                                columnNumber: 27
                                                             }, this)
                                                         ]
                                                     }, index, true, {
                                                         fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                        lineNumber: 190,
-                                                        columnNumber: 23
+                                                        lineNumber: 174,
+                                                        columnNumber: 25
                                                     }, this)) : ""
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/applicant/[id]/page.tsx",
-                                            lineNumber: 184,
+                                            lineNumber: 167,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -392,7 +338,7 @@ const ApplicantDetails = ()=>{
                                                     children: "Files"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                    lineNumber: 203,
+                                                    lineNumber: 188,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("ul", {
@@ -405,24 +351,24 @@ const ApplicantDetails = ()=>{
                                                             ]
                                                         }, index, true, {
                                                             fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                            lineNumber: 207,
+                                                            lineNumber: 192,
                                                             columnNumber: 25
                                                         }, this)) : ""
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                    lineNumber: 204,
+                                                    lineNumber: 189,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/applicant/[id]/page.tsx",
-                                            lineNumber: 202,
+                                            lineNumber: 187,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/applicant/[id]/page.tsx",
-                                    lineNumber: 145,
+                                    lineNumber: 125,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -433,31 +379,31 @@ const ApplicantDetails = ()=>{
                                             children: [
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
                                                     className: "text-2xl font-bold mb-4 text-white",
-                                                    children: "Technologies"
+                                                    children: "Skills"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                    lineNumber: 224,
+                                                    lineNumber: 209,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                     className: "flex flex-wrap gap-2",
-                                                    children: applicant.technologies?.length ? applicant.technologies.map((tech, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                    children: applicant.cv.skills?.length ? applicant.cv.skills.map((skill, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                             className: "bg-gray-700 px-3 py-1 rounded-md text-sm text-gray-300 border border-gray-600",
-                                                            children: tech
+                                                            children: skill
                                                         }, index, false, {
                                                             fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                            lineNumber: 230,
-                                                            columnNumber: 25
+                                                            lineNumber: 214,
+                                                            columnNumber: 27
                                                         }, this)) : ""
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                    lineNumber: 227,
+                                                    lineNumber: 210,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/applicant/[id]/page.tsx",
-                                            lineNumber: 223,
+                                            lineNumber: 208,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -468,28 +414,28 @@ const ApplicantDetails = ()=>{
                                                     children: "Certificates"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                    lineNumber: 242,
+                                                    lineNumber: 227,
                                                     columnNumber: 17
                                                 }, this),
                                                 applicant.cv.certificates?.length ? applicant.cv.certificates.map((certificate, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                         className: "bg-gray-800 rounded-lg p-8 border border-gray-700",
                                                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
                                                             className: "text-2xl font-bold mb-4 text-white",
-                                                            children: certificate
+                                                            children: certificate.name
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                            lineNumber: 251,
-                                                            columnNumber: 25
+                                                            lineNumber: 237,
+                                                            columnNumber: 27
                                                         }, this)
                                                     }, index, false, {
                                                         fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                        lineNumber: 247,
-                                                        columnNumber: 23
+                                                        lineNumber: 233,
+                                                        columnNumber: 25
                                                     }, this)) : ""
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/applicant/[id]/page.tsx",
-                                            lineNumber: 241,
+                                            lineNumber: 226,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -500,57 +446,26 @@ const ApplicantDetails = ()=>{
                                                     children: "Courses"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                    lineNumber: 260,
+                                                    lineNumber: 247,
                                                     columnNumber: 17
                                                 }, this),
                                                 applicant.cv.courses?.length ? applicant.cv.courses.map((course, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
-                                                            children: course
+                                                            children: course.name
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                            lineNumber: 264,
-                                                            columnNumber: 25
+                                                            lineNumber: 252,
+                                                            columnNumber: 27
                                                         }, this)
                                                     }, index, false, {
                                                         fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                        lineNumber: 263,
-                                                        columnNumber: 23
+                                                        lineNumber: 251,
+                                                        columnNumber: 25
                                                     }, this)) : ""
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/applicant/[id]/page.tsx",
-                                            lineNumber: 259,
-                                            columnNumber: 15
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "bg-gray-800 rounded-lg p-8 border border-gray-700",
-                                            children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                                                    className: "text-2xl font-bold mb-4 text-white",
-                                                    children: "Skills"
-                                                }, void 0, false, {
-                                                    fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                    lineNumber: 271,
-                                                    columnNumber: 17
-                                                }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("ul", {
-                                                    className: "list-disc list-inside space-y-2 text-gray-300",
-                                                    children: applicant.cv?.skills?.length ? applicant.cv.skills.map((skill, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
-                                                            children: skill
-                                                        }, index, false, {
-                                                            fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                            lineNumber: 275,
-                                                            columnNumber: 25
-                                                        }, this)) : "N/A"
-                                                }, void 0, false, {
-                                                    fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                    lineNumber: 272,
-                                                    columnNumber: 17
-                                                }, this)
-                                            ]
-                                        }, void 0, true, {
-                                            fileName: "[project]/app/applicant/[id]/page.tsx",
-                                            lineNumber: 270,
+                                            lineNumber: 246,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -561,7 +476,7 @@ const ApplicantDetails = ()=>{
                                                     children: "Languages"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                    lineNumber: 282,
+                                                    lineNumber: 260,
                                                     columnNumber: 17
                                                 }, this),
                                                 applicant.cv.languages?.length ? applicant.cv.languages.map((language, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -570,8 +485,8 @@ const ApplicantDetails = ()=>{
                                                                 children: language.name
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                                lineNumber: 288,
-                                                                columnNumber: 25
+                                                                lineNumber: 267,
+                                                                columnNumber: 27
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                                 className: "opacity-70",
@@ -582,19 +497,19 @@ const ApplicantDetails = ()=>{
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                                lineNumber: 289,
-                                                                columnNumber: 25
+                                                                lineNumber: 268,
+                                                                columnNumber: 27
                                                             }, this)
                                                         ]
                                                     }, index, true, {
                                                         fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                        lineNumber: 287,
-                                                        columnNumber: 23
+                                                        lineNumber: 266,
+                                                        columnNumber: 25
                                                     }, this)) : ""
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/applicant/[id]/page.tsx",
-                                            lineNumber: 281,
+                                            lineNumber: 259,
                                             columnNumber: 15
                                         }, this),
                                         applicant.cv.socials?.length ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -605,7 +520,7 @@ const ApplicantDetails = ()=>{
                                                     children: "Socials"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                    lineNumber: 300,
+                                                    lineNumber: 280,
                                                     columnNumber: 19
                                                 }, this),
                                                 applicant.cv.socials.map((social, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -617,18 +532,18 @@ const ApplicantDetails = ()=>{
                                                             children: social.name
                                                         }, social.id, false, {
                                                             fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                            lineNumber: 305,
-                                                            columnNumber: 23
+                                                            lineNumber: 286,
+                                                            columnNumber: 25
                                                         }, this)
                                                     }, index, false, {
                                                         fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                        lineNumber: 304,
-                                                        columnNumber: 21
+                                                        lineNumber: 285,
+                                                        columnNumber: 23
                                                     }, this))
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/applicant/[id]/page.tsx",
-                                            lineNumber: 299,
+                                            lineNumber: 279,
                                             columnNumber: 17
                                         }, this) : "",
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -639,7 +554,7 @@ const ApplicantDetails = ()=>{
                                                     children: "Hobbies"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                    lineNumber: 327,
+                                                    lineNumber: 309,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("ul", {
@@ -648,36 +563,36 @@ const ApplicantDetails = ()=>{
                                                             children: hobby
                                                         }, index, false, {
                                                             fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                            lineNumber: 331,
-                                                            columnNumber: 25
+                                                            lineNumber: 314,
+                                                            columnNumber: 27
                                                         }, this)) : ""
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                    lineNumber: 328,
+                                                    lineNumber: 310,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/applicant/[id]/page.tsx",
-                                            lineNumber: 326,
+                                            lineNumber: 308,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/applicant/[id]/page.tsx",
-                                    lineNumber: 221,
+                                    lineNumber: 206,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/applicant/[id]/page.tsx",
-                            lineNumber: 143,
+                            lineNumber: 123,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/applicant/[id]/page.tsx",
-                    lineNumber: 104,
+                    lineNumber: 84,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -691,7 +606,7 @@ const ApplicantDetails = ()=>{
                                     children: "CV Preview"
                                 }, void 0, false, {
                                     fileName: "[project]/app/applicant/[id]/page.tsx",
-                                    lineNumber: 341,
+                                    lineNumber: 325,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -701,18 +616,18 @@ const ApplicantDetails = ()=>{
                                         children: "Save"
                                     }, void 0, false, {
                                         fileName: "[project]/app/applicant/[id]/page.tsx",
-                                        lineNumber: 343,
+                                        lineNumber: 327,
                                         columnNumber: 15
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/app/applicant/[id]/page.tsx",
-                                    lineNumber: 342,
+                                    lineNumber: 326,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/applicant/[id]/page.tsx",
-                            lineNumber: 340,
+                            lineNumber: 324,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -721,13 +636,13 @@ const ApplicantDetails = ()=>{
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
                                     className: "text-4xl font-bold mb-4 text-white",
                                     children: [
-                                        editableApplicant?.firstName,
+                                        firstName,
                                         " ",
-                                        editableApplicant?.lastName
+                                        lastName
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/applicant/[id]/page.tsx",
-                                    lineNumber: 354,
+                                    lineNumber: 338,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -736,33 +651,33 @@ const ApplicantDetails = ()=>{
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                             children: [
                                                 "Email: ",
-                                                editableApplicant?.email
+                                                email
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/applicant/[id]/page.tsx",
-                                            lineNumber: 358,
+                                            lineNumber: 342,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                             children: [
                                                 "Phone: ",
-                                                editableApplicant?.phone
+                                                phone
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/applicant/[id]/page.tsx",
-                                            lineNumber: 359,
+                                            lineNumber: 343,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/applicant/[id]/page.tsx",
-                                    lineNumber: 357,
+                                    lineNumber: 341,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/applicant/[id]/page.tsx",
-                            lineNumber: 353,
+                            lineNumber: 337,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -779,24 +694,24 @@ const ApplicantDetails = ()=>{
                                                     children: "CV Summary"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                    lineNumber: 368,
+                                                    lineNumber: 352,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                                     className: "text-gray-300",
-                                                    children: editableApplicant?.cv?.summary || "N/A"
+                                                    children: summary || "N/A"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                    lineNumber: 371,
+                                                    lineNumber: 355,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/applicant/[id]/page.tsx",
-                                            lineNumber: 367,
+                                            lineNumber: 351,
                                             columnNumber: 15
                                         }, this),
-                                        applicant.cv.educations?.length ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        educations?.length ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                             className: "py-8",
                                             children: [
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
@@ -804,16 +719,16 @@ const ApplicantDetails = ()=>{
                                                     children: "Educations"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                    lineNumber: 378,
+                                                    lineNumber: 360,
                                                     columnNumber: 19
                                                 }, this),
-                                                applicant.cv.educations.map((education, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                educations.map((education, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                         children: [
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
                                                                 children: education.degree
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                                lineNumber: 383,
+                                                                lineNumber: 365,
                                                                 columnNumber: 23
                                                             }, this),
                                                             " in ",
@@ -830,16 +745,16 @@ const ApplicantDetails = ()=>{
                                                         ]
                                                     }, index, true, {
                                                         fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                        lineNumber: 382,
+                                                        lineNumber: 364,
                                                         columnNumber: 21
                                                     }, this))
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/applicant/[id]/page.tsx",
-                                            lineNumber: 377,
+                                            lineNumber: 359,
                                             columnNumber: 17
                                         }, this) : "",
-                                        applicant.cv.projects?.length ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        projects?.length ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                             className: "py-8",
                                             children: [
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
@@ -847,29 +762,29 @@ const ApplicantDetails = ()=>{
                                                     children: "Projects"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                    lineNumber: 395,
+                                                    lineNumber: 377,
                                                     columnNumber: 19
                                                 }, this),
-                                                applicant.cv.projects.map((project, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                projects.map((project, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
                                                             children: project.name
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                            lineNumber: 400,
+                                                            lineNumber: 382,
                                                             columnNumber: 23
                                                         }, this)
                                                     }, index, false, {
                                                         fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                        lineNumber: 399,
+                                                        lineNumber: 381,
                                                         columnNumber: 21
                                                     }, this))
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/applicant/[id]/page.tsx",
-                                            lineNumber: 394,
+                                            lineNumber: 376,
                                             columnNumber: 17
                                         }, this) : "",
-                                        applicant.cv.experiences?.length ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        experience?.length ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                             className: "py-8",
                                             children: [
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
@@ -877,16 +792,16 @@ const ApplicantDetails = ()=>{
                                                     children: "Experiences"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                    lineNumber: 410,
+                                                    lineNumber: 392,
                                                     columnNumber: 19
                                                 }, this),
-                                                applicant.cv.experiences.map((experience, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                experience.map((experience, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                         children: [
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
                                                                 children: experience.position
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                                lineNumber: 415,
+                                                                lineNumber: 397,
                                                                 columnNumber: 23
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -898,32 +813,32 @@ const ApplicantDetails = ()=>{
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                                lineNumber: 416,
+                                                                lineNumber: 398,
                                                                 columnNumber: 23
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                                                 children: experience.description
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                                lineNumber: 420,
+                                                                lineNumber: 402,
                                                                 columnNumber: 23
                                                             }, this)
                                                         ]
                                                     }, index, true, {
                                                         fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                        lineNumber: 414,
+                                                        lineNumber: 396,
                                                         columnNumber: 21
                                                     }, this))
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/applicant/[id]/page.tsx",
-                                            lineNumber: 409,
+                                            lineNumber: 391,
                                             columnNumber: 17
                                         }, this) : ""
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/applicant/[id]/page.tsx",
-                                    lineNumber: 365,
+                                    lineNumber: 349,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -934,49 +849,49 @@ const ApplicantDetails = ()=>{
                                             children: [
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
                                                     className: "text-2xl font-bold mb-4 text-white",
-                                                    children: "Technologies"
+                                                    children: "Skills"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                    lineNumber: 433,
+                                                    lineNumber: 415,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                     className: "flex flex-wrap gap-2",
-                                                    children: applicant.technologies?.length ? applicant.technologies.map((tech, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                    children: skills?.length ? skills.map((skill, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                             className: "bg-gray-700 px-3 py-1 rounded-md text-sm text-gray-300 border border-gray-600",
-                                                            children: tech
+                                                            children: skill
                                                         }, index, false, {
                                                             fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                            lineNumber: 439,
+                                                            lineNumber: 419,
                                                             columnNumber: 25
                                                         }, this)) : ""
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                    lineNumber: 436,
+                                                    lineNumber: 416,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/applicant/[id]/page.tsx",
-                                            lineNumber: 432,
+                                            lineNumber: 414,
                                             columnNumber: 15
                                         }, this),
-                                        applicant.cv.certificates?.length ? applicant.cv.certificates.map((certificate, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        certificates?.length ? certificates.map((certificate, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                 className: "py-8",
                                                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
                                                     className: "text-2xl font-bold mb-4 text-white",
-                                                    children: certificate
+                                                    children: certificate.name
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                    lineNumber: 453,
+                                                    lineNumber: 433,
                                                     columnNumber: 23
                                                 }, this)
                                             }, index, false, {
                                                 fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                lineNumber: 452,
+                                                lineNumber: 432,
                                                 columnNumber: 21
                                             }, this)) : "",
-                                        applicant.cv.courses?.length ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        courses?.length ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                             className: "py-8",
                                             children: [
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
@@ -984,60 +899,29 @@ const ApplicantDetails = ()=>{
                                                     children: "Courses"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                    lineNumber: 462,
+                                                    lineNumber: 442,
                                                     columnNumber: 19
                                                 }, this),
-                                                applicant.cv.courses.map((course, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                courses.map((course, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
-                                                            children: course
+                                                            children: course.name
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                            lineNumber: 467,
+                                                            lineNumber: 447,
                                                             columnNumber: 23
                                                         }, this)
                                                     }, index, false, {
                                                         fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                        lineNumber: 466,
+                                                        lineNumber: 446,
                                                         columnNumber: 21
                                                     }, this))
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/applicant/[id]/page.tsx",
-                                            lineNumber: 461,
+                                            lineNumber: 441,
                                             columnNumber: 17
                                         }, this) : "",
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "py-8",
-                                            children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                                                    className: "text-2xl font-bold mb-4 text-white",
-                                                    children: "Skills"
-                                                }, void 0, false, {
-                                                    fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                    lineNumber: 477,
-                                                    columnNumber: 17
-                                                }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("ul", {
-                                                    className: "list-disc list-inside space-y-2 text-gray-300",
-                                                    children: applicant.cv?.skills?.length ? applicant.cv.skills.map((skill, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
-                                                            children: skill
-                                                        }, index, false, {
-                                                            fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                            lineNumber: 481,
-                                                            columnNumber: 25
-                                                        }, this)) : "N/A"
-                                                }, void 0, false, {
-                                                    fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                    lineNumber: 478,
-                                                    columnNumber: 17
-                                                }, this)
-                                            ]
-                                        }, void 0, true, {
-                                            fileName: "[project]/app/applicant/[id]/page.tsx",
-                                            lineNumber: 476,
-                                            columnNumber: 15
-                                        }, this),
-                                        applicant.cv.languages?.length ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        languages?.length ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                             className: "py-8",
                                             children: [
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
@@ -1045,16 +929,16 @@ const ApplicantDetails = ()=>{
                                                     children: "Languages"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                    lineNumber: 489,
+                                                    lineNumber: 457,
                                                     columnNumber: 19
                                                 }, this),
-                                                applicant.cv.languages.map((language, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                languages.map((language, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                         children: [
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
                                                                 children: language.name
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                                lineNumber: 494,
+                                                                lineNumber: 462,
                                                                 columnNumber: 23
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1066,22 +950,22 @@ const ApplicantDetails = ()=>{
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                                lineNumber: 495,
+                                                                lineNumber: 463,
                                                                 columnNumber: 23
                                                             }, this)
                                                         ]
                                                     }, index, true, {
                                                         fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                        lineNumber: 493,
+                                                        lineNumber: 461,
                                                         columnNumber: 21
                                                     }, this))
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/applicant/[id]/page.tsx",
-                                            lineNumber: 488,
+                                            lineNumber: 456,
                                             columnNumber: 17
                                         }, this) : "",
-                                        applicant.cv.socials?.length ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        socials?.length ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                             className: "py-8",
                                             children: [
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
@@ -1089,10 +973,10 @@ const ApplicantDetails = ()=>{
                                                     children: "Socials"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                    lineNumber: 508,
+                                                    lineNumber: 476,
                                                     columnNumber: 19
                                                 }, this),
-                                                applicant.cv.socials.map((social, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                socials.map((social, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
                                                             href: social.url.startsWith("http") ? social.url : `https://${social.url}`,
                                                             target: "_blank",
@@ -1101,21 +985,21 @@ const ApplicantDetails = ()=>{
                                                             children: social.name
                                                         }, social.id, false, {
                                                             fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                            lineNumber: 513,
+                                                            lineNumber: 481,
                                                             columnNumber: 23
                                                         }, this)
                                                     }, index, false, {
                                                         fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                        lineNumber: 512,
+                                                        lineNumber: 480,
                                                         columnNumber: 21
                                                     }, this))
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/applicant/[id]/page.tsx",
-                                            lineNumber: 507,
+                                            lineNumber: 475,
                                             columnNumber: 17
                                         }, this) : "",
-                                        applicant.cv?.hobbies?.length ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        hobbies?.length ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                             className: "py-8",
                                             children: [
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
@@ -1123,64 +1007,62 @@ const ApplicantDetails = ()=>{
                                                     children: "Hobbies"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                    lineNumber: 536,
+                                                    lineNumber: 504,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("ul", {
                                                     className: "list-disc list-inside space-y-2 text-gray-300",
-                                                    children: applicant.cv.hobbies.map((hobby, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
+                                                    children: hobbies.map((hobby, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
                                                             children: hobby
                                                         }, index, false, {
                                                             fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                            lineNumber: 541,
+                                                            lineNumber: 509,
                                                             columnNumber: 23
                                                         }, this))
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                    lineNumber: 539,
+                                                    lineNumber: 507,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/applicant/[id]/page.tsx",
-                                            lineNumber: 535,
+                                            lineNumber: 503,
                                             columnNumber: 17
                                         }, this) : ""
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/applicant/[id]/page.tsx",
-                                    lineNumber: 430,
+                                    lineNumber: 412,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/applicant/[id]/page.tsx",
-                            lineNumber: 363,
+                            lineNumber: 347,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/applicant/[id]/page.tsx",
-                    lineNumber: 339,
+                    lineNumber: 323,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/app/applicant/[id]/page.tsx",
-            lineNumber: 103,
+            lineNumber: 83,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/app/applicant/[id]/page.tsx",
-        lineNumber: 101,
+        lineNumber: 81,
         columnNumber: 5
     }, this);
 };
-_s(ApplicantDetails, "s9aP/EzP59pFfvVJwFutB5e6XpA=", false, function() {
+_s(ApplicantDetails, "IFmIWzERfgwXbjQtF3sJNou+YCI=", false, function() {
     return [
-        __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRouter"],
-        __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useParams"],
-        __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2d$auth$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useSession"]
+        __TURBOPACK__imported__module__$5b$project$5d2f$providers$2f$ApplicantDetailsProvider$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useApplicant"]
     ];
 });
 _c = ApplicantDetails;
