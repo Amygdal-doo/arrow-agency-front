@@ -42,11 +42,12 @@ export default function Profile() {
 
         {/* Applicants Section */}
         <h2 className="text-3xl font-bold mt-8 mb-4 text-white">Applicants</h2>
+
         {applicants?.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {applicants.map((applicant) => (
               <div
-                key={applicant.id}
+                key={applicant.cvId}
                 className="bg-gray-800 rounded-lg p-6 shadow-md hover:shadow-lg transition-shadow border border-gray-700 cursor-pointer"
               >
                 <div className="flex justify-between items-start mb-4">
@@ -68,7 +69,7 @@ export default function Profile() {
                 <p className="text-gray-300 mb-4">{applicant.phone}</p>
 
                 <a
-                  href={`/applicant/${applicant?.id}`}
+                  href={`/applicant/${applicant?.cvId}`}
                   className="mt-4 block font-bold w-full text-center bg-orange-600 hover:bg-orange-400 text-white py-2 rounded-md transition-colors"
                 >
                   View Details

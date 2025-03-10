@@ -1,5 +1,4 @@
 "use client";
-
 import {
   IDelete,
   ISkill,
@@ -8,19 +7,94 @@ import {
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
-type SkillFieldProps = {
-  cvId: string;
-};
+const SkillField = () => {
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-const SkillField = ({ cvId }: SkillFieldProps) => {
-  const { skills, setSkills, setDeleteItems } = useApplicant();
+  const efficiencyLevels = [
+    { value: "beginner", label: "Beginner" },
+    { value: "intermediate", label: "Intermediate" },
+    { value: "advanced", label: "Advanced" },
+    { value: "expert", label: "Expert" },
+  ];
 
-  const [newSkill, setNewSkill] = useState<ISkill>({
+  const handleEfficiencySelect = (value: string) => {
+    setNewSkill({
+      ...newSkill,
+      efficiency: value,
+    });
+    setIsDropdownOpen(false);
+  };
+  const {
+    skills,
+    setSkills,
+    setDeleteItems,
+    deleteItems,
+    currentSkills,
+    setCurrentSkills,
+  } = useApplicant();
+
+  const [newSkill, setNewSkill] = useState<ISkill & { isNew?: boolean }>({
     id: "",
     name: "",
     efficiency: "",
-    cvId,
+    isNew: false,
   });
+
+  const handleAddSkill = () => {
+    const newId = uuidv4();
+    const newSkillWithId = {
+      ...newSkill,
+      id: newId,
+      isNew: true,
+    };
+
+    setSkills([
+      ...skills,
+      {
+        name: newSkill.name,
+        efficiency: newSkill.efficiency,
+      },
+    ]);
+
+    setCurrentSkills([...currentSkills, newSkillWithId]);
+
+    setNewSkill({
+      id: "",
+      name: "",
+      efficiency: "",
+      isNew: false,
+    });
+  };
+
+  const handleUpdateSkill = () => {
+    const updatedSkill = { ...newSkill };
+
+    setCurrentSkills(
+      currentSkills.map((skill) =>
+        skill.id === newSkill.id ? updatedSkill : skill
+      )
+    );
+
+    setSkills(
+      skills.map((skill) =>
+        skill.id === newSkill.id
+          ? newSkill.isNew
+            ? {
+                name: newSkill.name,
+                efficiency: newSkill.efficiency,
+              }
+            : updatedSkill
+          : skill
+      )
+    );
+
+    setNewSkill({
+      id: "",
+      name: "",
+      efficiency: "",
+      isNew: false,
+    });
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewSkill({
@@ -29,111 +103,179 @@ const SkillField = ({ cvId }: SkillFieldProps) => {
     });
   };
 
-  const handleAddSkill = () => {
-    setSkills([...skills, { ...newSkill, id: uuidv4() }]);
-    setNewSkill({
-      id: "",
-      name: "",
-      efficiency: "",
-      cvId,
-    });
-  };
-
   const handleEditSkill = (id: string) => {
-    const skillToEdit = skills.find((skill) => skill.id === id);
+    const skillToEdit = currentSkills.find((skill) => skill.id === id);
     if (skillToEdit) {
-      setNewSkill(skillToEdit);
+      setNewSkill({ ...skillToEdit });
     }
   };
 
-  const handleUpdateSkill = () => {
-    setSkills(
-      skills.map((skill) => (skill.id === newSkill.id ? newSkill : skill))
-    );
-    setNewSkill({
-      id: "",
-      name: "",
-      efficiency: "",
-      cvId,
-    });
-  };
-
   const handleDeleteSkill = (id: string) => {
+    setCurrentSkills(currentSkills.filter((skill) => skill.id !== id));
     setSkills(skills.filter((skill) => skill.id !== id));
-    setDeleteItems((prevDeleteItems: IDelete) => {
-      return {
-        ...prevDeleteItems,
-        skills: [...prevDeleteItems.skills, id],
+
+    if (id) {
+      const updatedDeleteItems: IDelete = {
+        ...deleteItems,
+        skills: [...(deleteItems.skills || []), id],
+        education: deleteItems.education || [],
+        experience: deleteItems.experience || [],
+        projects: deleteItems.projects || [],
+        courses: deleteItems.courses || [],
+        languages: deleteItems.languages || [],
+        socials: deleteItems.socials || [],
+        certificates: deleteItems.certificates || [],
       };
-    });
+      setDeleteItems(updatedDeleteItems);
+    }
   };
 
   return (
-    <div className="bg-gray-800 rounded-lg p-8 border border-gray-700">
-      <h2 className="text-2xl font-bold mb-4 text-gray-300">Skills</h2>
+    <div className="space-y-6 ">
+      <div className="flex items-center justify-between">
+        <h2 className="text-2xl font-bold text-gray-300">Skills</h2>
+        <div className="h-px flex-1 bg-gray-700 mx-4" />
+      </div>
 
       {/* Add New Skill Form */}
-      <div className="mb-4">
-        <input
-          type="text"
-          name="name"
-          placeholder="Skill Name"
-          value={newSkill.name}
-          onChange={handleChange}
-          className="p-2 mb-2 w-full rounded bg-gray-700 text-gray-300 border border-gray-600"
-        />
-        <input
-          type="text"
-          name="efficiency"
-          placeholder="Efficiency (e.g., Expert, Intermediate)"
-          value={newSkill.efficiency}
-          onChange={handleChange}
-          className="p-2 mb-2 w-full rounded bg-gray-700 text-gray-300 border border-gray-600"
-        />
+      <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 shadow-lg relative z-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <input
+            type="text"
+            name="name"
+            placeholder="Skill Name"
+            value={newSkill.name}
+            onChange={handleChange}
+            className="bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 placeholder-gray-500 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+          />
+          <div className="relative">
+            <div
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              className="bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 cursor-pointer flex justify-between items-center"
+            >
+              <span
+                className={
+                  newSkill.efficiency ? "text-gray-300" : "text-gray-500"
+                }
+              >
+                {newSkill.efficiency || "Select Efficiency Level"}
+              </span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className={`h-5 w-5 transition-transform ${
+                  isDropdownOpen ? "rotate-180" : ""
+                }`}
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </div>
+            {isDropdownOpen && (
+              <div className="absolute z-50 w-full mt-2 bg-gray-800 backdrop-blur-sm border border-gray-700 rounded-lg shadow-xl">
+                {efficiencyLevels.map((level) => (
+                  <div
+                    key={level.value}
+                    onClick={() => handleEfficiencySelect(level.value)}
+                    className="px-4 z-50 py-3 cursor-pointer hover:bg-gray-700 first:rounded-t-lg last:rounded-b-lg text-gray-300"
+                  >
+                    {level.label}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
 
         {newSkill.id ? (
           <button
             onClick={handleUpdateSkill}
-            className="bg-orange-600 w-full text-white p-2 font-bold rounded mt-2 hover:bg-orange-700"
+            className="mt-4 w-full bg-gradient-to-r from-orange-600 to-orange-700 text-white p-3 rounded-lg font-medium hover:from-orange-700 hover:to-orange-800 transition-all duration-200 shadow-lg"
           >
             Update Skill
           </button>
         ) : (
           <button
             onClick={handleAddSkill}
-            className="bg-orange-600 w-full text-white p-2 font-bold rounded mt-2 hover:bg-orange-700"
+            className="mt-4 w-full bg-gradient-to-r from-orange-600 to-orange-700 text-white p-3 rounded-lg font-medium hover:from-orange-700 hover:to-orange-800 transition-all duration-200 shadow-lg"
           >
             Add Skill
           </button>
         )}
       </div>
 
-      {/* Display List of Skills */}
-      {skills?.length > 0 ? (
-        skills.map((skill) => (
-          <div key={skill.id} className="mb-4 text-gray-300">
-            <p className="block w-full text-white font-bold rounded-md mb-2">
-              {skill.name} ({skill.efficiency})
-            </p>
-            <div className="mt-2 flex">
-              <button
-                onClick={() => handleEditSkill(skill.id)}
-                className="bg-transparent border-gray-300 border font-bold text-white w-1/2 p-2 rounded mr-2 hover:bg-[#01070a] hover:border-[#01070a]"
-              >
-                Edit
-              </button>
-              <button
-                onClick={() => handleDeleteSkill(skill.id)}
-                className="bg-red-500 font-bold text-white w-1/2 p-2 rounded hover:bg-red-600"
-              >
-                Delete
-              </button>
+      {/* Skills List */}
+      <div className="space-y-4 relative z-0">
+        {currentSkills?.length > 0 ? (
+          currentSkills.map((skill) => (
+            <div
+              key={skill.id}
+              className="group relative z-10 bg-gray-800/30 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 shadow-lg hover:bg-gray-800/50 transition-all duration-200"
+            >
+              <div className="flex justify-between items-start">
+                <div>
+                  <h3 className="text-xl font-semibold text-gray-200">
+                    {skill.name}
+                  </h3>
+                  <p className="text-gray-400">{skill.efficiency}</p>
+                </div>
+                <div className="flex space-x-2">
+                  <button
+                    onClick={() => skill.id && handleEditSkill(skill.id)}
+                    className="p-2 rounded-lg bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 hover:text-blue-300 transition-all"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-5 w-5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                      />
+                    </svg>
+                  </button>
+                  {skill.id && (
+                    <button
+                      onClick={() => skill.id && handleDeleteSkill(skill.id)}
+                      className="p-2 rounded-lg bg-red-500/20 text-red-400 hover:bg-red-500/30 hover:text-red-300 transition-all"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-5 w-5"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                        />
+                      </svg>
+                    </button>
+                  )}
+                </div>
+              </div>
             </div>
+          ))
+        ) : (
+          <div className="text-center py-8">
+            <p className="text-gray-400">No skills added yet.</p>
           </div>
-        ))
-      ) : (
-        <p className="text-gray-400">No skills added.</p>
-      )}
+        )}
+      </div>
     </div>
   );
 };

@@ -31,14 +31,22 @@ const ApplicantProvider = ({ children, id })=>{
     const [phone, setPhone] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("");
     const [summary, setSummary] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("");
     const [skills, setSkills] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])([]);
+    const [currentSkills, setCurrentSkills] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])([]);
     const [hobbies, setHobbies] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])([]);
     const [experience, setExperience] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])([]);
+    const [currentExperience, setCurrentExperience] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])([]);
     const [projects, setProjects] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])([]);
+    const [currentProjects, setCurrentProjects] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])([]);
     const [educations, setEducations] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])([]);
+    const [currentEducations, setCurrentEducations] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])([]);
     const [certificates, setCertificates] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])([]);
+    const [currentCertificates, setCurrentCertificates] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])([]);
     const [courses, setCourses] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])([]);
+    const [currentCourses, setCurrentCourses] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])([]);
     const [socials, setSocials] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])([]);
+    const [currentSocials, setCurrentSocials] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])([]);
     const [languages, setLanguages] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])([]);
+    const [currentLanguages, setCurrentLanguages] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])([]);
     const [deleteItems, setDeleteItems] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])({
         experience: [],
         education: [],
@@ -53,23 +61,31 @@ const ApplicantProvider = ({ children, id })=>{
         setLoading(true);
         try {
             if (session?.user?.accessToken) {
-                const response = await __TURBOPACK__imported__module__$5b$project$5d2f$core$2f$services$2f$apiService$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["apiService"].get(`applicant/${id}`);
+                const response = await __TURBOPACK__imported__module__$5b$project$5d2f$core$2f$services$2f$apiService$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["apiService"].get(`cv/${id}`);
                 const data = response.data;
                 setApplicant(data);
-                setFirstName(data.cv.firstName);
-                setLastName(data.cv.lastName);
-                setEmail(data.cv.email);
-                setPhone(data.cv.phone);
-                setSummary(data.cv.summary);
-                setSkills(data.cv.skills);
-                setHobbies(data.cv.hobbies);
-                setExperience(data.cv.experience);
-                setProjects(data.cv.projects);
-                setEducations(data.cv.educations);
-                setCertificates(data.cv.certificates);
-                setCourses(data.cv.courses);
-                setSocials(data.cv.socials);
-                setLanguages(data.cv.languages);
+                setFirstName(data.firstName);
+                setLastName(data.lastName);
+                setEmail(data.email);
+                setPhone(data.phone);
+                setSummary(data.summary);
+                setSkills(data.skills);
+                setCurrentSkills(data.skills);
+                setHobbies(data.hobbies);
+                setExperience(data.experience);
+                setCurrentExperience(data.experience);
+                setProjects(data.projects);
+                setCurrentProjects(data.projects);
+                setEducations(data.educations);
+                setCurrentEducations(data.educations);
+                setCertificates(data.certificates);
+                setCurrentCertificates(data.certificates);
+                setCourses(data.courses);
+                setCurrentCourses(data.courses);
+                setSocials(data.socials);
+                setCurrentSocials(data.socials);
+                setLanguages(data.languages);
+                setCurrentLanguages(data.languages);
             }
         } catch (err) {
             setError(err.message);
@@ -80,7 +96,7 @@ const ApplicantProvider = ({ children, id })=>{
     const updateApplicant = async ()=>{
         try {
             setLoading(true);
-            await __TURBOPACK__imported__module__$5b$project$5d2f$core$2f$services$2f$apiService$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["apiService"].put(`/cv/${applicant?.cv.id}`, {
+            await __TURBOPACK__imported__module__$5b$project$5d2f$core$2f$services$2f$apiService$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["apiService"].put(`/cv/${applicant?.id}`, {
                 firstName,
                 lastName,
                 email,
@@ -139,22 +155,38 @@ const ApplicantProvider = ({ children, id })=>{
             setSummary,
             skills,
             setSkills,
+            currentSkills,
+            setCurrentSkills,
             hobbies,
             setHobbies,
             experience,
             setExperience,
+            currentExperience,
+            setCurrentExperience,
             projects,
             setProjects,
+            currentProjects,
+            setCurrentProjects,
             educations,
             setEducations,
+            currentEducations,
+            setCurrentEducations,
             certificates,
             setCertificates,
+            currentCertificates,
+            setCurrentCertificates,
             courses,
             setCourses,
+            currentCourses,
+            setCurrentCourses,
             socials,
             setSocials,
+            currentSocials,
+            setCurrentSocials,
             languages,
             setLanguages,
+            currentLanguages,
+            setCurrentLanguages,
             deleteItems,
             setDeleteItems,
             updateApplicant
@@ -162,7 +194,7 @@ const ApplicantProvider = ({ children, id })=>{
         children: children
     }, void 0, false, {
         fileName: "[project]/providers/ApplicantDetailsProvider.tsx",
-        lineNumber: 288,
+        lineNumber: 309,
         columnNumber: 5
     }, this);
 };

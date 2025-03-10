@@ -3,99 +3,139 @@ import { useApplicant } from "@/providers/ApplicantDetailsProvider";
 import { useState } from "react";
 
 const HobbyField = () => {
-  const { hobbies, setHobbies } = useApplicant(); // State to manage hobbies
-  const [newHobby, setNewHobby] = useState<string>(""); // State for new hobby input
-  const [editIndex, setEditIndex] = useState<number | null>(null); // Index of hobby being edited
+  const { hobbies, setHobbies } = useApplicant();
+  const [newHobby, setNewHobby] = useState<string>("");
+  const [editIndex, setEditIndex] = useState<number | null>(null);
 
-  // Handle changes in the hobby input field
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewHobby(e.target.value);
   };
 
-  // Handle adding a new hobby
   const handleAddHobby = () => {
     if (newHobby.trim() !== "") {
       setHobbies([...hobbies, newHobby]);
-      setNewHobby(""); // Clear input field after adding
+      setNewHobby("");
     }
   };
 
-  // Handle editing an existing hobby
   const handleEditHobby = (index: number) => {
     setEditIndex(index);
-    setNewHobby(hobbies[index]); // Pre-fill input with the hobby to edit
+    setNewHobby(hobbies[index]);
   };
 
-  // Handle updating the edited hobby
   const handleUpdateHobby = () => {
     if (newHobby.trim() !== "" && editIndex !== null) {
       const updatedHobbies = [...hobbies];
       updatedHobbies[editIndex] = newHobby;
       setHobbies(updatedHobbies);
-      setNewHobby(""); // Clear input field after update
-      setEditIndex(null); // Reset edit mode
+      setNewHobby("");
+      setEditIndex(null);
     }
   };
 
-  // Handle deleting a hobby
   const handleDeleteHobby = (index: number) => {
     setHobbies(hobbies.filter((_, i) => i !== index));
   };
 
   return (
-    <div className="bg-gray-800 rounded-lg p-8 border border-gray-700">
-      <h2 className="text-2xl font-bold mb-4 text-gray-300">Hobbies</h2>
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <h2 className="text-2xl font-bold text-gray-300">Hobbies</h2>
+        <div className="h-px flex-1 bg-gray-700 mx-4" />
+      </div>
 
-      {/* Add or Edit Hobby Form */}
-      <div className="mb-4">
-        <input
-          type="text"
-          value={newHobby}
-          onChange={handleChange}
-          placeholder="Enter hobby"
-          className="p-2 mb-2 w-full rounded bg-gray-700 text-gray-300 border border-gray-600"
-        />
+      {/* Add New Hobby Form */}
+      <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 shadow-lg">
+        <div className="grid grid-cols-1 gap-4">
+          <input
+            type="text"
+            value={newHobby}
+            onChange={handleChange}
+            placeholder="Enter hobby"
+            className="bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 placeholder-gray-500 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+          />
+        </div>
+
         {editIndex !== null ? (
           <button
             onClick={handleUpdateHobby}
-            className="bg-orange-600 w-full text-white p-2 font-bold rounded mt-2 hover:bg-orange-700"
+            className="mt-4 w-full bg-gradient-to-r from-orange-600 to-orange-700 text-white p-3 rounded-lg font-medium hover:from-orange-700 hover:to-orange-800 transition-all duration-200 shadow-lg"
           >
             Update Hobby
           </button>
         ) : (
           <button
             onClick={handleAddHobby}
-            className="bg-orange-600 w-full text-white p-2 font-bold rounded mt-2 hover:bg-orange-700"
+            className="mt-4 w-full bg-gradient-to-r from-orange-600 to-orange-700 text-white p-3 rounded-lg font-medium hover:from-orange-700 hover:to-orange-800 transition-all duration-200 shadow-lg"
           >
             Add Hobby
           </button>
         )}
       </div>
 
-      {/* Display List of Hobbies */}
-      {hobbies.length > 0 ? (
-        hobbies.map((hobby, index) => (
-          <div key={index} className="mb-4 text-gray-300">
-            <span>{hobby}</span>
-            <div className="mt-2 flex">
-              <button
-                onClick={() => handleEditHobby(index)}
-                className="bg-transparent border-gray-300 border font-bold text-white w-1/2 p-2 rounded mr-2 hover:bg-[#01070a] hover:border-[#01070a]"
-              >
-                Edit
-              </button>
-              <button
-                onClick={() => handleDeleteHobby(index)}
-                className="bg-transparent border border-gray-300 font-bold text-white w-1/2 p-2 rounded hover:bg-red-800 hover:border-red-800"
-              >
-                Delete
-              </button>
+      {/* Hobbies List */}
+      <div className="space-y-4">
+        {hobbies.length > 0 ? (
+          hobbies.map((hobby, index) => (
+            <div
+              key={index}
+              className="group bg-gray-800/30 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 shadow-lg hover:bg-gray-800/50 transition-all duration-200"
+            >
+              <div className="flex justify-between items-start">
+                <div>
+                  <h3 className="text-xl font-semibold text-gray-200">
+                    {hobby}
+                  </h3>
+                </div>
+                <div className="flex space-x-2">
+                  <button
+                    onClick={() => handleEditHobby(index)}
+                    className="p-2 rounded-lg bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 hover:text-blue-300 transition-all"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-5 w-5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                      />
+                    </svg>
+                  </button>
+                  <button
+                    onClick={() => handleDeleteHobby(index)}
+                    className="p-2 rounded-lg bg-red-500/20 text-red-400 hover:bg-red-500/30 hover:text-red-300 transition-all"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-5 w-5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                      />
+                    </svg>
+                  </button>
+                </div>
+              </div>
             </div>
+          ))
+        ) : (
+          <div className="text-center py-8">
+            <p className="text-gray-400">No hobbies added yet.</p>
           </div>
-        ))
-      ) : (
-        <p className="text-gray-400">No hobbies added.</p>
-      )}
+        )}
+      </div>
     </div>
   );
 };

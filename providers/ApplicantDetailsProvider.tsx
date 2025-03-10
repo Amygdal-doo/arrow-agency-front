@@ -12,7 +12,7 @@ import { apiService } from "@/core/services/apiService";
 import { useSession } from "next-auth/react";
 
 export interface IExperience {
-  id: string;
+  id?: string;
   position: string;
   company: string;
   startDate: string;
@@ -21,7 +21,7 @@ export interface IExperience {
 }
 
 export interface IProject {
-  id: string;
+  id?: string;
   name: string;
   description: string;
   startDate: string;
@@ -30,7 +30,7 @@ export interface IProject {
 }
 
 export interface IEducation {
-  id: string;
+  id?: string;
   institution: string;
   degree: string;
   field: string;
@@ -39,7 +39,7 @@ export interface IEducation {
 }
 
 export interface ICertificate {
-  id: string;
+  id?: string;
   name: string;
   issuer: string;
   issueDate: string;
@@ -48,7 +48,7 @@ export interface ICertificate {
 }
 
 export interface ICourse {
-  id: string;
+  id?: string;
   name: string;
   url: string;
   startDate: string;
@@ -56,22 +56,22 @@ export interface ICourse {
 }
 
 export interface ISocial {
-  id: string;
+  id?: string;
   name: string;
   url: string;
 }
 
 export interface ILanguage {
-  id: string;
+  id?: string;
   name: string;
   efficiency: string;
 }
 
 export interface ISkill {
-  id: string;
+  id?: string;
   name: string;
   efficiency: string;
-  cvId: string;
+  // cvId: string;
 }
 
 export interface IFile {
@@ -103,29 +103,16 @@ interface IApplicantDetails {
   lastName: string;
   email: string;
   phone: string;
-  technologies: string[];
-  cv: {
-    id: string;
-    firstName: string;
-    lastName: string;
-    email: string;
-    phone: string;
-    summary: string;
-    skills: ISkill[];
-    hobbies: string[];
-    experience: IExperience[];
-    projects: IProject[];
-    educations: IEducation[];
-    certificates: ICertificate[];
-    courses: ICourse[];
-    languages: ILanguage[];
-    socials: ISocial[];
-    createdAt: string;
-    updatedAt: string;
-  };
-  userId: string;
-  cvId: string;
-  file: IFile[];
+  summary: string;
+  skills: ISkill[];
+  hobbies: string[];
+  experience: IExperience[];
+  projects: IProject[];
+  educations: IEducation[];
+  certificates: ICertificate[];
+  courses: ICourse[];
+  languages: ILanguage[];
+  socials: ISocial[];
   createdAt: string;
   updatedAt: string;
 }
@@ -146,22 +133,38 @@ interface ApplicantContextType {
   setSummary: (value: string) => void;
   skills: ISkill[];
   setSkills: (value: ISkill[]) => void;
+  currentSkills: ISkill[];
+  setCurrentSkills: (value: ISkill[]) => void;
   hobbies: string[];
   setHobbies: (value: string[]) => void;
   experience: IExperience[];
   setExperience: (value: IExperience[]) => void;
+  currentExperience: IExperience[];
+  setCurrentExperience: (value: IExperience[]) => void;
   projects: IProject[];
   setProjects: (value: IProject[]) => void;
+  currentProjects: IProject[];
+  setCurrentProjects: (value: IProject[]) => void;
   educations: IEducation[];
   setEducations: (value: IEducation[]) => void;
+  currentEducations: IEducation[];
+  setCurrentEducations: (value: IEducation[]) => void;
   certificates: ICertificate[];
   setCertificates: (value: ICertificate[]) => void;
+  currentCertificates: ICertificate[];
+  setCurrentCertificates: (value: ICertificate[]) => void;
   courses: ICourse[];
   setCourses: (value: ICourse[]) => void;
+  currentCourses: ICourse[];
+  setCurrentCourses: (value: ICourse[]) => void;
   socials: ISocial[];
   setSocials: (value: ISocial[]) => void;
+  currentSocials: ISocial[];
+  setCurrentSocials: (value: ISocial[]) => void;
   languages: ILanguage[];
   setLanguages: (value: ILanguage[]) => void;
+  currentLanguages: ILanguage[];
+  setCurrentLanguages: (value: ILanguage[]) => void;
   deleteItems: IDelete;
   setDeleteItems: (value: IDelete) => void;
   updateApplicant: () => Promise<void>;
@@ -190,14 +193,24 @@ export const ApplicantProvider = ({
   const [phone, setPhone] = useState<string>("");
   const [summary, setSummary] = useState<string>("");
   const [skills, setSkills] = useState<ISkill[]>([]);
+  const [currentSkills, setCurrentSkills] = useState<ISkill[]>([]);
   const [hobbies, setHobbies] = useState<string[]>([]);
   const [experience, setExperience] = useState<IExperience[]>([]);
+  const [currentExperience, setCurrentExperience] = useState<IExperience[]>([]);
   const [projects, setProjects] = useState<IProject[]>([]);
+  const [currentProjects, setCurrentProjects] = useState<IProject[]>([]);
   const [educations, setEducations] = useState<IEducation[]>([]);
+  const [currentEducations, setCurrentEducations] = useState<IEducation[]>([]);
   const [certificates, setCertificates] = useState<ICertificate[]>([]);
+  const [currentCertificates, setCurrentCertificates] = useState<
+    ICertificate[]
+  >([]);
   const [courses, setCourses] = useState<ICourse[]>([]);
+  const [currentCourses, setCurrentCourses] = useState<ICourse[]>([]);
   const [socials, setSocials] = useState<ISocial[]>([]);
+  const [currentSocials, setCurrentSocials] = useState<ISocial[]>([]);
   const [languages, setLanguages] = useState<ILanguage[]>([]);
+  const [currentLanguages, setCurrentLanguages] = useState<ILanguage[]>([]);
   const [deleteItems, setDeleteItems] = useState<IDelete>({
     experience: [],
     education: [],
@@ -214,25 +227,33 @@ export const ApplicantProvider = ({
     try {
       if (session?.user?.accessToken) {
         const response: AxiosResponse<IApplicantDetails> = await apiService.get(
-          `applicant/${id}`
+          `cv/${id}`
         );
         const data = response.data;
         setApplicant(data);
 
-        setFirstName(data.cv.firstName);
-        setLastName(data.cv.lastName);
-        setEmail(data.cv.email);
-        setPhone(data.cv.phone);
-        setSummary(data.cv.summary);
-        setSkills(data.cv.skills);
-        setHobbies(data.cv.hobbies);
-        setExperience(data.cv.experience);
-        setProjects(data.cv.projects);
-        setEducations(data.cv.educations);
-        setCertificates(data.cv.certificates);
-        setCourses(data.cv.courses);
-        setSocials(data.cv.socials);
-        setLanguages(data.cv.languages);
+        setFirstName(data.firstName);
+        setLastName(data.lastName);
+        setEmail(data.email);
+        setPhone(data.phone);
+        setSummary(data.summary);
+        setSkills(data.skills);
+        setCurrentSkills(data.skills);
+        setHobbies(data.hobbies);
+        setExperience(data.experience);
+        setCurrentExperience(data.experience);
+        setProjects(data.projects);
+        setCurrentProjects(data.projects);
+        setEducations(data.educations);
+        setCurrentEducations(data.educations);
+        setCertificates(data.certificates);
+        setCurrentCertificates(data.certificates);
+        setCourses(data.courses);
+        setCurrentCourses(data.courses);
+        setSocials(data.socials);
+        setCurrentSocials(data.socials);
+        setLanguages(data.languages);
+        setCurrentLanguages(data.languages);
       }
     } catch (err) {
       setError((err as Error).message);
@@ -244,7 +265,7 @@ export const ApplicantProvider = ({
   const updateApplicant = async () => {
     try {
       setLoading(true);
-      await apiService.put(`/cv/${applicant?.cv.id}`, {
+      await apiService.put(`/cv/${applicant?.id}`, {
         firstName,
         lastName,
         email,
@@ -302,22 +323,38 @@ export const ApplicantProvider = ({
         setSummary,
         skills,
         setSkills,
+        currentSkills,
+        setCurrentSkills,
         hobbies,
         setHobbies,
         experience,
         setExperience,
+        currentExperience,
+        setCurrentExperience,
         projects,
         setProjects,
+        currentProjects,
+        setCurrentProjects,
         educations,
         setEducations,
+        currentEducations,
+        setCurrentEducations,
         certificates,
         setCertificates,
+        currentCertificates,
+        setCurrentCertificates,
         courses,
         setCourses,
+        currentCourses,
+        setCurrentCourses,
         socials,
         setSocials,
+        currentSocials,
+        setCurrentSocials,
         languages,
         setLanguages,
+        currentLanguages,
+        setCurrentLanguages,
         deleteItems,
         setDeleteItems,
         updateApplicant,

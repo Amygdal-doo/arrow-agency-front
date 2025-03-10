@@ -20,28 +20,37 @@ var _s = __turbopack_refresh__.signature();
 ;
 const CertificateField = ()=>{
     _s();
-    const { certificates, setCertificates, setDeleteItems } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$providers$2f$ApplicantDetailsProvider$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useApplicant"])();
+    const { certificates, setCertificates, setDeleteItems, deleteItems, currentCertificates, setCurrentCertificates } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$providers$2f$ApplicantDetailsProvider$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useApplicant"])();
     const [newCertificate, setNewCertificate] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])({
         id: "",
         name: "",
         issuer: "",
         issueDate: "",
         expirationDate: "",
-        url: ""
+        url: "",
+        isNew: false
     });
-    const handleChange = (e)=>{
-        setNewCertificate({
-            ...newCertificate,
-            [e.target.name]: e.target.value
-        });
-    };
     const handleAddCertificate = ()=>{
+        const newId = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$uuid$2f$dist$2f$esm$2d$browser$2f$v4$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__v4$3e$__["v4"])();
+        const newCertificateWithId = {
+            ...newCertificate,
+            id: newId,
+            isNew: true
+        };
+        // For BE, exclude id if it's a new certificate
         setCertificates([
             ...certificates,
             {
-                ...newCertificate,
-                id: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$uuid$2f$dist$2f$esm$2d$browser$2f$v4$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__v4$3e$__["v4"])()
+                name: newCertificate.name,
+                issuer: newCertificate.issuer,
+                issueDate: newCertificate.issueDate,
+                expirationDate: newCertificate.expirationDate,
+                url: newCertificate.url
             }
+        ]);
+        setCurrentCertificates([
+            ...currentCertificates,
+            newCertificateWithId
         ]);
         setNewCertificate({
             id: "",
@@ -49,98 +58,161 @@ const CertificateField = ()=>{
             issuer: "",
             issueDate: "",
             expirationDate: "",
-            url: ""
+            url: "",
+            isNew: false
         });
     };
-    const handleEditCertificate = (id)=>{
-        const certificateToEdit = certificates.find((cert)=>cert.id === id);
-        if (certificateToEdit) {
-            setNewCertificate(certificateToEdit);
-        }
-    };
     const handleUpdateCertificate = ()=>{
-        setCertificates(certificates.map((cert)=>cert.id === newCertificate.id ? newCertificate : cert));
+        const updatedCertificate = {
+            ...newCertificate
+        };
+        setCurrentCertificates(currentCertificates.map((cert)=>cert.id === newCertificate.id ? updatedCertificate : cert));
+        // For BE, only include id if it's not a new certificate
+        setCertificates(certificates.map((cert)=>cert.id === newCertificate.id ? newCertificate.isNew ? {
+                name: newCertificate.name,
+                issuer: newCertificate.issuer,
+                issueDate: newCertificate.issueDate,
+                expirationDate: newCertificate.expirationDate,
+                url: newCertificate.url
+            } : updatedCertificate : cert));
         setNewCertificate({
             id: "",
             name: "",
             issuer: "",
             issueDate: "",
             expirationDate: "",
-            url: ""
+            url: "",
+            isNew: false
         });
+    };
+    const handleChange = (e)=>{
+        setNewCertificate({
+            ...newCertificate,
+            [e.target.name]: e.target.value
+        });
+    };
+    const handleEditCertificate = (id)=>{
+        const certificateToEdit = currentCertificates.find((certificate)=>certificate.id === id);
+        if (certificateToEdit) {
+            // @ts-expect-error Expected type error due to potential undefined id
+            setNewCertificate({
+                ...certificateToEdit
+            });
+        }
     };
     const handleDeleteCertificate = (id)=>{
+        setCurrentCertificates(currentCertificates.filter((cert)=>cert.id !== id));
         setCertificates(certificates.filter((cert)=>cert.id !== id));
-        setDeleteItems((prevDeleteItems)=>{
-            return {
-                ...prevDeleteItems,
+        if (id) {
+            const updatedDeleteItems = {
+                ...deleteItems,
                 certificates: [
-                    ...prevDeleteItems.certificates,
+                    ...deleteItems.certificates || [],
                     id
-                ]
+                ],
+                education: deleteItems.education || [],
+                experience: deleteItems.experience || [],
+                projects: deleteItems.projects || [],
+                courses: deleteItems.courses || [],
+                languages: deleteItems.languages || [],
+                socials: deleteItems.socials || [],
+                skills: deleteItems.skills || []
             };
-        });
+            setDeleteItems(updatedDeleteItems);
+        }
     };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-        className: "bg-gray-800 rounded-lg p-8 border border-gray-700",
+        className: "space-y-6",
         children: [
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                className: "text-2xl font-bold mb-4 text-white",
-                children: "Certificates"
-            }, void 0, false, {
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "flex items-center justify-between",
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
+                        className: "text-2xl font-bold text-gray-300",
+                        children: "Certificates"
+                    }, void 0, false, {
+                        fileName: "[project]/app/components/CertificateField.tsx",
+                        lineNumber: 148,
+                        columnNumber: 9
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "h-px flex-1 bg-gray-700 mx-4"
+                    }, void 0, false, {
+                        fileName: "[project]/app/components/CertificateField.tsx",
+                        lineNumber: 149,
+                        columnNumber: 9
+                    }, this)
+                ]
+            }, void 0, true, {
                 fileName: "[project]/app/components/CertificateField.tsx",
-                lineNumber: 83,
+                lineNumber: 147,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "mb-4",
+                className: "bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 shadow-lg",
                 children: [
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
-                        type: "text",
-                        name: "name",
-                        placeholder: "Certificate Name",
-                        value: newCertificate.name,
-                        onChange: handleChange,
-                        className: "p-2 mb-2 w-full rounded bg-gray-700 text-gray-300 border border-gray-600"
-                    }, void 0, false, {
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "grid grid-cols-1 md:grid-cols-2 gap-4",
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                type: "text",
+                                name: "name",
+                                placeholder: "Certificate Name",
+                                value: newCertificate.name,
+                                onChange: handleChange,
+                                className: "bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 placeholder-gray-500 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+                            }, void 0, false, {
+                                fileName: "[project]/app/components/CertificateField.tsx",
+                                lineNumber: 155,
+                                columnNumber: 11
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                type: "text",
+                                name: "issuer",
+                                placeholder: "Issuer",
+                                value: newCertificate.issuer,
+                                onChange: handleChange,
+                                className: "bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 placeholder-gray-500 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+                            }, void 0, false, {
+                                fileName: "[project]/app/components/CertificateField.tsx",
+                                lineNumber: 163,
+                                columnNumber: 11
+                            }, this)
+                        ]
+                    }, void 0, true, {
                         fileName: "[project]/app/components/CertificateField.tsx",
-                        lineNumber: 86,
+                        lineNumber: 154,
                         columnNumber: 9
                     }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
-                        type: "text",
-                        name: "issuer",
-                        placeholder: "Issuer",
-                        value: newCertificate.issuer,
-                        onChange: handleChange,
-                        className: "p-2 mb-2 w-full rounded bg-gray-700 text-gray-300 border border-gray-600"
-                    }, void 0, false, {
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "grid grid-cols-2 gap-4 my-4",
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                type: "month",
+                                name: "issueDate",
+                                value: newCertificate.issueDate,
+                                onChange: handleChange,
+                                className: "bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+                            }, void 0, false, {
+                                fileName: "[project]/app/components/CertificateField.tsx",
+                                lineNumber: 174,
+                                columnNumber: 11
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                type: "month",
+                                name: "expirationDate",
+                                value: newCertificate.expirationDate,
+                                onChange: handleChange,
+                                className: "bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+                            }, void 0, false, {
+                                fileName: "[project]/app/components/CertificateField.tsx",
+                                lineNumber: 181,
+                                columnNumber: 11
+                            }, this)
+                        ]
+                    }, void 0, true, {
                         fileName: "[project]/app/components/CertificateField.tsx",
-                        lineNumber: 94,
-                        columnNumber: 9
-                    }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
-                        type: "month" // Changed to month input for issue date
-                        ,
-                        name: "issueDate",
-                        value: newCertificate.issueDate,
-                        onChange: handleChange,
-                        className: "p-2 mb-2 w-full rounded bg-gray-700 text-gray-300 border border-gray-600"
-                    }, void 0, false, {
-                        fileName: "[project]/app/components/CertificateField.tsx",
-                        lineNumber: 102,
-                        columnNumber: 9
-                    }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
-                        type: "month" // Changed to month input for expiration date
-                        ,
-                        name: "expirationDate",
-                        value: newCertificate.expirationDate,
-                        onChange: handleChange,
-                        className: "p-2 mb-2 w-full rounded bg-gray-700 text-gray-300 border border-gray-600"
-                    }, void 0, false, {
-                        fileName: "[project]/app/components/CertificateField.tsx",
-                        lineNumber: 109,
+                        lineNumber: 173,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -149,117 +221,208 @@ const CertificateField = ()=>{
                         placeholder: "Certificate URL",
                         value: newCertificate.url,
                         onChange: handleChange,
-                        className: "p-2 mb-2 w-full rounded bg-gray-700 text-gray-300 border border-gray-600"
+                        className: "w-full bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 placeholder-gray-500 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
                     }, void 0, false, {
                         fileName: "[project]/app/components/CertificateField.tsx",
-                        lineNumber: 116,
+                        lineNumber: 190,
                         columnNumber: 9
                     }, this),
                     newCertificate.id ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                         onClick: handleUpdateCertificate,
-                        className: "bg-orange-600 w-full text-white p-2 font-bold rounded mt-2 hover:bg-orange-700",
+                        className: "mt-4 w-full bg-gradient-to-r from-orange-600 to-orange-700 text-white p-3 rounded-lg font-medium hover:from-orange-700 hover:to-orange-800 transition-all duration-200 shadow-lg",
                         children: "Update Certificate"
                     }, void 0, false, {
                         fileName: "[project]/app/components/CertificateField.tsx",
-                        lineNumber: 126,
+                        lineNumber: 200,
                         columnNumber: 11
                     }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                         onClick: handleAddCertificate,
-                        className: "bg-orange-600 w-full text-white p-2 font-bold rounded mt-2 hover:bg-orange-700",
+                        className: "mt-4 w-full bg-gradient-to-r from-orange-600 to-orange-700 text-white p-3 rounded-lg font-medium hover:from-orange-700 hover:to-orange-800 transition-all duration-200 shadow-lg",
                         children: "Add Certificate"
                     }, void 0, false, {
                         fileName: "[project]/app/components/CertificateField.tsx",
-                        lineNumber: 133,
+                        lineNumber: 207,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/CertificateField.tsx",
-                lineNumber: 85,
+                lineNumber: 153,
                 columnNumber: 7
             }, this),
-            certificates.length > 0 ? certificates.map((cert)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                    className: "mb-4 text-gray-300",
-                    children: [
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
-                            children: cert.name
-                        }, void 0, false, {
-                            fileName: "[project]/app/components/CertificateField.tsx",
-                            lineNumber: 146,
-                            columnNumber: 13
-                        }, this),
-                        " issued by",
-                        " ",
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                            className: "opacity-70",
-                            children: cert.issuer
-                        }, void 0, false, {
-                            fileName: "[project]/app/components/CertificateField.tsx",
-                            lineNumber: 147,
-                            columnNumber: 13
-                        }, this),
-                        " (",
-                        cert.issueDate,
-                        " ",
-                        "- ",
-                        cert.expirationDate,
-                        ")",
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                            className: "mt-2",
-                            children: cert.url
-                        }, void 0, false, {
-                            fileName: "[project]/app/components/CertificateField.tsx",
-                            lineNumber: 148,
-                            columnNumber: 37
-                        }, this),
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "mt-2 flex",
-                            children: [
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                    onClick: ()=>handleEditCertificate(cert.id),
-                                    className: "bg-transparent border-gray-300 border font-bold text-white w-1/2 p-2 rounded mr-2 hover:bg-[#01070a] hover:border-[#01070a]",
-                                    children: "Edit"
-                                }, void 0, false, {
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "space-y-4",
+                children: currentCertificates.length > 0 ? currentCertificates.map((cert, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "group bg-gray-800/30 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 shadow-lg hover:bg-gray-800/50 transition-all duration-200",
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "flex justify-between items-start mb-4",
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
+                                                className: "text-xl font-semibold text-gray-200",
+                                                children: cert.name
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/components/CertificateField.tsx",
+                                                lineNumber: 226,
+                                                columnNumber: 19
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                className: "text-gray-400",
+                                                children: cert.issuer
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/components/CertificateField.tsx",
+                                                lineNumber: 229,
+                                                columnNumber: 19
+                                            }, this),
+                                            cert.url && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
+                                                href: cert.url,
+                                                target: "_blank",
+                                                rel: "noopener noreferrer",
+                                                className: "text-blue-400 hover:text-blue-300 text-sm mt-2 inline-block",
+                                                children: "View Certificate →"
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/components/CertificateField.tsx",
+                                                lineNumber: 231,
+                                                columnNumber: 21
+                                            }, this)
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/app/components/CertificateField.tsx",
+                                        lineNumber: 225,
+                                        columnNumber: 17
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "flex space-x-2",
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                                onClick: ()=>cert.id && handleEditCertificate(cert.id),
+                                                className: "p-2 rounded-lg bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 hover:text-blue-300 transition-all",
+                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
+                                                    xmlns: "http://www.w3.org/2000/svg",
+                                                    className: "h-5 w-5",
+                                                    fill: "none",
+                                                    viewBox: "0 0 24 24",
+                                                    stroke: "currentColor",
+                                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
+                                                        strokeLinecap: "round",
+                                                        strokeLinejoin: "round",
+                                                        strokeWidth: 2,
+                                                        d: "M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/app/components/CertificateField.tsx",
+                                                        lineNumber: 253,
+                                                        columnNumber: 23
+                                                    }, this)
+                                                }, void 0, false, {
+                                                    fileName: "[project]/app/components/CertificateField.tsx",
+                                                    lineNumber: 246,
+                                                    columnNumber: 21
+                                                }, this)
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/components/CertificateField.tsx",
+                                                lineNumber: 242,
+                                                columnNumber: 19
+                                            }, this),
+                                            cert.id && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                                onClick: ()=>cert.id && handleDeleteCertificate(cert.id),
+                                                className: "p-2 rounded-lg bg-red-500/20 text-red-400 hover:bg-red-500/30 hover:text-red-300 transition-all",
+                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
+                                                    xmlns: "http://www.w3.org/2000/svg",
+                                                    className: "h-5 w-5",
+                                                    fill: "none",
+                                                    viewBox: "0 0 24 24",
+                                                    stroke: "currentColor",
+                                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
+                                                        strokeLinecap: "round",
+                                                        strokeLinejoin: "round",
+                                                        strokeWidth: 2,
+                                                        d: "M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/app/components/CertificateField.tsx",
+                                                        lineNumber: 275,
+                                                        columnNumber: 25
+                                                    }, this)
+                                                }, void 0, false, {
+                                                    fileName: "[project]/app/components/CertificateField.tsx",
+                                                    lineNumber: 268,
+                                                    columnNumber: 23
+                                                }, this)
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/components/CertificateField.tsx",
+                                                lineNumber: 262,
+                                                columnNumber: 21
+                                            }, this)
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/app/components/CertificateField.tsx",
+                                        lineNumber: 241,
+                                        columnNumber: 17
+                                    }, this)
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/app/components/CertificateField.tsx",
+                                lineNumber: 224,
+                                columnNumber: 15
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "flex justify-end text-sm text-gray-400",
+                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                    children: [
+                                        new Date(cert.issueDate).toLocaleDateString("en-US", {
+                                            month: "short",
+                                            year: "numeric"
+                                        }),
+                                        " - ",
+                                        cert.expirationDate ? new Date(cert.expirationDate).toLocaleDateString("en-US", {
+                                            month: "short",
+                                            year: "numeric"
+                                        }) : "No Expiration"
+                                    ]
+                                }, void 0, true, {
                                     fileName: "[project]/app/components/CertificateField.tsx",
-                                    lineNumber: 150,
-                                    columnNumber: 15
-                                }, this),
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                    onClick: ()=>handleDeleteCertificate(cert.id),
-                                    className: "bg-transparent border border-gray-300 font-bold text-white w-1/2 p-2 rounded hover:bg-red-800 hover:border-red-800",
-                                    children: "Delete"
-                                }, void 0, false, {
-                                    fileName: "[project]/app/components/CertificateField.tsx",
-                                    lineNumber: 156,
-                                    columnNumber: 15
+                                    lineNumber: 287,
+                                    columnNumber: 17
                                 }, this)
-                            ]
-                        }, void 0, true, {
-                            fileName: "[project]/app/components/CertificateField.tsx",
-                            lineNumber: 149,
-                            columnNumber: 13
-                        }, this)
-                    ]
-                }, cert.id, true, {
+                            }, void 0, false, {
+                                fileName: "[project]/app/components/CertificateField.tsx",
+                                lineNumber: 286,
+                                columnNumber: 15
+                            }, this)
+                        ]
+                    }, index, true, {
+                        fileName: "[project]/app/components/CertificateField.tsx",
+                        lineNumber: 220,
+                        columnNumber: 13
+                    }, this)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    className: "text-center py-8",
+                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                        className: "text-gray-400",
+                        children: "No certificates added yet."
+                    }, void 0, false, {
+                        fileName: "[project]/app/components/CertificateField.tsx",
+                        lineNumber: 308,
+                        columnNumber: 13
+                    }, this)
+                }, void 0, false, {
                     fileName: "[project]/app/components/CertificateField.tsx",
-                    lineNumber: 145,
+                    lineNumber: 307,
                     columnNumber: 11
-                }, this)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                className: "text-gray-400",
-                children: "No certificates added."
+                }, this)
             }, void 0, false, {
                 fileName: "[project]/app/components/CertificateField.tsx",
-                lineNumber: 166,
-                columnNumber: 9
+                lineNumber: 217,
+                columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/CertificateField.tsx",
-        lineNumber: 82,
+        lineNumber: 146,
         columnNumber: 5
     }, this);
 };
-_s(CertificateField, "3zTa7YS7MMbau/9KIupVS0YcBOQ=", false, function() {
+_s(CertificateField, "ziny+wnnjSTl6k+e7KfyHt1e2TM=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$providers$2f$ApplicantDetailsProvider$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useApplicant"]
     ];
@@ -292,231 +455,381 @@ var _s = __turbopack_refresh__.signature();
 ;
 const CourseField = ()=>{
     _s();
-    const { courses, setCourses, setDeleteItems } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$providers$2f$ApplicantDetailsProvider$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useApplicant"])();
+    const { courses, setCourses, setDeleteItems, deleteItems, currentCourses, setCurrentCourses } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$providers$2f$ApplicantDetailsProvider$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useApplicant"])();
     const [newCourse, setNewCourse] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])({
         id: "",
         name: "",
         url: "",
         startDate: "",
-        endDate: ""
+        endDate: "",
+        isNew: false
     });
-    const handleChange = (e)=>{
-        setNewCourse({
-            ...newCourse,
-            [e.target.name]: e.target.value
-        });
-    };
     const handleAddCourse = ()=>{
+        const newId = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$uuid$2f$dist$2f$esm$2d$browser$2f$v4$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__v4$3e$__["v4"])();
+        const newCourseWithId = {
+            ...newCourse,
+            id: newId,
+            isNew: true
+        };
         setCourses([
             ...courses,
             {
-                ...newCourse,
-                id: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$uuid$2f$dist$2f$esm$2d$browser$2f$v4$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__v4$3e$__["v4"])()
+                name: newCourse.name,
+                url: newCourse.url,
+                startDate: newCourse.startDate,
+                endDate: newCourse.endDate
             }
+        ]);
+        setCurrentCourses([
+            ...currentCourses,
+            newCourseWithId
         ]);
         setNewCourse({
             id: "",
             name: "",
             url: "",
             startDate: "",
-            endDate: ""
+            endDate: "",
+            isNew: false
         });
     };
-    const handleEditCourse = (id)=>{
-        const courseToEdit = courses.find((course)=>course.id === id);
-        if (courseToEdit) {
-            setNewCourse(courseToEdit);
-        }
-    };
     const handleUpdateCourse = ()=>{
-        setCourses(courses.map((course)=>course.id === newCourse.id ? newCourse : course));
+        const updatedCourse = {
+            ...newCourse
+        };
+        setCurrentCourses(currentCourses.map((course)=>course.id === newCourse.id ? updatedCourse : course));
+        setCourses(courses.map((course)=>course.id === newCourse.id ? newCourse.isNew ? {
+                name: newCourse.name,
+                url: newCourse.url,
+                startDate: newCourse.startDate,
+                endDate: newCourse.endDate
+            } : updatedCourse : course));
         setNewCourse({
             id: "",
             name: "",
             url: "",
             startDate: "",
-            endDate: ""
+            endDate: "",
+            isNew: false
         });
+    };
+    const handleChange = (e)=>{
+        setNewCourse({
+            ...newCourse,
+            [e.target.name]: e.target.value
+        });
+    };
+    const handleEditCourse = (id)=>{
+        const courseToEdit = currentCourses.find((course)=>course.id === id);
+        if (courseToEdit) {
+            setNewCourse({
+                ...courseToEdit
+            });
+        }
     };
     const handleDeleteCourse = (id)=>{
+        setCurrentCourses(currentCourses.filter((course)=>course.id !== id));
         setCourses(courses.filter((course)=>course.id !== id));
-        setDeleteItems((prevDeleteItems)=>{
-            return {
-                ...prevDeleteItems,
+        if (id) {
+            const updatedDeleteItems = {
+                ...deleteItems,
                 courses: [
-                    ...prevDeleteItems.courses,
+                    ...deleteItems.courses || [],
                     id
-                ]
+                ],
+                education: deleteItems.education || [],
+                experience: deleteItems.experience || [],
+                projects: deleteItems.projects || [],
+                certificates: deleteItems.certificates || [],
+                languages: deleteItems.languages || [],
+                socials: deleteItems.socials || [],
+                skills: deleteItems.skills || []
             };
-        });
+            setDeleteItems(updatedDeleteItems);
+        }
     };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-        className: "bg-gray-800 rounded-lg p-8 border border-gray-700",
+        className: "space-y-6",
         children: [
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                className: "text-2xl font-bold mb-4 text-white",
-                children: "Courses"
-            }, void 0, false, {
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "flex items-center justify-between",
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
+                        className: "text-2xl font-bold text-gray-300",
+                        children: "Courses"
+                    }, void 0, false, {
+                        fileName: "[project]/app/components/CourseField.tsx",
+                        lineNumber: 130,
+                        columnNumber: 9
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "h-px flex-1 bg-gray-700 mx-4"
+                    }, void 0, false, {
+                        fileName: "[project]/app/components/CourseField.tsx",
+                        lineNumber: 131,
+                        columnNumber: 9
+                    }, this)
+                ]
+            }, void 0, true, {
                 fileName: "[project]/app/components/CourseField.tsx",
-                lineNumber: 77,
+                lineNumber: 129,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "mb-4",
+                className: "bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 shadow-lg",
                 children: [
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
-                        type: "text",
-                        name: "name",
-                        placeholder: "Course Name",
-                        value: newCourse.name,
-                        onChange: handleChange,
-                        className: "p-2 mb-2 w-full rounded bg-gray-700 text-gray-300 border border-gray-600"
-                    }, void 0, false, {
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "grid grid-cols-1 gap-4",
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                type: "text",
+                                name: "name",
+                                placeholder: "Course Name",
+                                value: newCourse.name,
+                                onChange: handleChange,
+                                className: "bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 placeholder-gray-500 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+                            }, void 0, false, {
+                                fileName: "[project]/app/components/CourseField.tsx",
+                                lineNumber: 137,
+                                columnNumber: 11
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                type: "url",
+                                name: "url",
+                                placeholder: "Course URL",
+                                value: newCourse.url,
+                                onChange: handleChange,
+                                className: "bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 placeholder-gray-500 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+                            }, void 0, false, {
+                                fileName: "[project]/app/components/CourseField.tsx",
+                                lineNumber: 145,
+                                columnNumber: 11
+                            }, this)
+                        ]
+                    }, void 0, true, {
                         fileName: "[project]/app/components/CourseField.tsx",
-                        lineNumber: 81,
+                        lineNumber: 136,
                         columnNumber: 9
                     }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
-                        type: "url",
-                        name: "url",
-                        placeholder: "Course URL",
-                        value: newCourse.url,
-                        onChange: handleChange,
-                        className: "p-2 mb-2 w-full rounded bg-gray-700 text-gray-300 border border-gray-600"
-                    }, void 0, false, {
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "grid grid-cols-2 gap-4 mt-4",
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                type: "month",
+                                name: "startDate",
+                                value: newCourse.startDate,
+                                onChange: handleChange,
+                                className: "bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+                            }, void 0, false, {
+                                fileName: "[project]/app/components/CourseField.tsx",
+                                lineNumber: 156,
+                                columnNumber: 11
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                type: "month",
+                                name: "endDate",
+                                value: newCourse.endDate,
+                                onChange: handleChange,
+                                className: "bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+                            }, void 0, false, {
+                                fileName: "[project]/app/components/CourseField.tsx",
+                                lineNumber: 163,
+                                columnNumber: 11
+                            }, this)
+                        ]
+                    }, void 0, true, {
                         fileName: "[project]/app/components/CourseField.tsx",
-                        lineNumber: 89,
-                        columnNumber: 9
-                    }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
-                        type: "month" // For start date
-                        ,
-                        name: "startDate",
-                        value: newCourse.startDate,
-                        onChange: handleChange,
-                        className: "p-2 mb-2 w-full rounded bg-gray-700 text-gray-300 border border-gray-600"
-                    }, void 0, false, {
-                        fileName: "[project]/app/components/CourseField.tsx",
-                        lineNumber: 97,
-                        columnNumber: 9
-                    }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
-                        type: "month" // For end date
-                        ,
-                        name: "endDate",
-                        value: newCourse.endDate,
-                        onChange: handleChange,
-                        className: "p-2 mb-2 w-full rounded bg-gray-700 text-gray-300 border border-gray-600"
-                    }, void 0, false, {
-                        fileName: "[project]/app/components/CourseField.tsx",
-                        lineNumber: 104,
+                        lineNumber: 155,
                         columnNumber: 9
                     }, this),
                     newCourse.id ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                         onClick: handleUpdateCourse,
-                        className: "bg-orange-600 w-full text-white p-2 font-bold rounded mt-2 hover:bg-orange-700",
+                        className: "mt-4 w-full bg-gradient-to-r from-orange-600 to-orange-700 text-white p-3 rounded-lg font-medium hover:from-orange-700 hover:to-orange-800 transition-all duration-200 shadow-lg",
                         children: "Update Course"
                     }, void 0, false, {
                         fileName: "[project]/app/components/CourseField.tsx",
-                        lineNumber: 113,
+                        lineNumber: 173,
                         columnNumber: 11
                     }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                         onClick: handleAddCourse,
-                        className: "bg-orange-600 w-full text-white p-2 font-bold rounded mt-2 hover:bg-orange-700",
+                        className: "mt-4 w-full bg-gradient-to-r from-orange-600 to-orange-700 text-white p-3 rounded-lg font-medium hover:from-orange-700 hover:to-orange-800 transition-all duration-200 shadow-lg",
                         children: "Add Course"
                     }, void 0, false, {
                         fileName: "[project]/app/components/CourseField.tsx",
-                        lineNumber: 120,
+                        lineNumber: 180,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/CourseField.tsx",
-                lineNumber: 80,
+                lineNumber: 135,
                 columnNumber: 7
             }, this),
-            courses.length > 0 ? courses.map((course)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                    className: "mb-4 text-gray-300",
-                    children: [
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
-                            children: course.name
-                        }, void 0, false, {
-                            fileName: "[project]/app/components/CourseField.tsx",
-                            lineNumber: 133,
-                            columnNumber: 13
-                        }, this),
-                        " (",
-                        course.startDate,
-                        " -",
-                        " ",
-                        course.endDate,
-                        ")",
-                        " ",
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                            className: "opacity-70",
-                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
-                                href: course.url,
-                                target: "_blank",
-                                rel: "noopener noreferrer",
-                                children: course.url
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "space-y-4",
+                children: currentCourses?.length > 0 ? currentCourses.map((course)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "group bg-gray-800/30 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 shadow-lg hover:bg-gray-800/50 transition-all duration-200",
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "flex justify-between items-start mb-4",
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
+                                                className: "text-xl font-semibold text-gray-200",
+                                                children: course.name
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/components/CourseField.tsx",
+                                                lineNumber: 199,
+                                                columnNumber: 19
+                                            }, this),
+                                            course.url && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
+                                                href: course.url,
+                                                target: "_blank",
+                                                rel: "noopener noreferrer",
+                                                className: "text-blue-400 hover:text-blue-300 text-sm mt-2 inline-block",
+                                                children: "View Course →"
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/components/CourseField.tsx",
+                                                lineNumber: 203,
+                                                columnNumber: 21
+                                            }, this)
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/app/components/CourseField.tsx",
+                                        lineNumber: 198,
+                                        columnNumber: 17
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "flex space-x-2",
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                                onClick: ()=>course.id && handleEditCourse(course.id),
+                                                className: "p-2 rounded-lg bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 hover:text-blue-300 transition-all",
+                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
+                                                    xmlns: "http://www.w3.org/2000/svg",
+                                                    className: "h-5 w-5",
+                                                    fill: "none",
+                                                    viewBox: "0 0 24 24",
+                                                    stroke: "currentColor",
+                                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
+                                                        strokeLinecap: "round",
+                                                        strokeLinejoin: "round",
+                                                        strokeWidth: 2,
+                                                        d: "M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/app/components/CourseField.tsx",
+                                                        lineNumber: 225,
+                                                        columnNumber: 23
+                                                    }, this)
+                                                }, void 0, false, {
+                                                    fileName: "[project]/app/components/CourseField.tsx",
+                                                    lineNumber: 218,
+                                                    columnNumber: 21
+                                                }, this)
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/components/CourseField.tsx",
+                                                lineNumber: 214,
+                                                columnNumber: 19
+                                            }, this),
+                                            course.id && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                                onClick: ()=>course.id && handleDeleteCourse(course.id),
+                                                className: "p-2 rounded-lg bg-red-500/20 text-red-400 hover:bg-red-500/30 hover:text-red-300 transition-all",
+                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
+                                                    xmlns: "http://www.w3.org/2000/svg",
+                                                    className: "h-5 w-5",
+                                                    fill: "none",
+                                                    viewBox: "0 0 24 24",
+                                                    stroke: "currentColor",
+                                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
+                                                        strokeLinecap: "round",
+                                                        strokeLinejoin: "round",
+                                                        strokeWidth: 2,
+                                                        d: "M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/app/components/CourseField.tsx",
+                                                        lineNumber: 245,
+                                                        columnNumber: 25
+                                                    }, this)
+                                                }, void 0, false, {
+                                                    fileName: "[project]/app/components/CourseField.tsx",
+                                                    lineNumber: 238,
+                                                    columnNumber: 23
+                                                }, this)
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/components/CourseField.tsx",
+                                                lineNumber: 234,
+                                                columnNumber: 21
+                                            }, this)
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/app/components/CourseField.tsx",
+                                        lineNumber: 213,
+                                        columnNumber: 17
+                                    }, this)
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/app/components/CourseField.tsx",
+                                lineNumber: 197,
+                                columnNumber: 15
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "flex justify-end text-sm text-gray-400",
+                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                    children: [
+                                        new Date(course.startDate).toLocaleDateString("en-US", {
+                                            month: "short",
+                                            year: "numeric"
+                                        }),
+                                        " - ",
+                                        course.endDate ? new Date(course.endDate).toLocaleDateString("en-US", {
+                                            month: "short",
+                                            year: "numeric"
+                                        }) : "Present"
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/app/components/CourseField.tsx",
+                                    lineNumber: 257,
+                                    columnNumber: 17
+                                }, this)
                             }, void 0, false, {
                                 fileName: "[project]/app/components/CourseField.tsx",
-                                lineNumber: 136,
+                                lineNumber: 256,
                                 columnNumber: 15
                             }, this)
-                        }, void 0, false, {
-                            fileName: "[project]/app/components/CourseField.tsx",
-                            lineNumber: 135,
-                            columnNumber: 13
-                        }, this),
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "mt-2 flex",
-                            children: [
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                    onClick: ()=>handleEditCourse(course.id),
-                                    className: "bg-transparent border-gray-300 border font-bold text-white w-1/2 p-2 rounded mr-2 hover:bg-[#01070a] hover:border-[#01070a]",
-                                    children: "Edit"
-                                }, void 0, false, {
-                                    fileName: "[project]/app/components/CourseField.tsx",
-                                    lineNumber: 141,
-                                    columnNumber: 15
-                                }, this),
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                    onClick: ()=>handleDeleteCourse(course.id),
-                                    className: "bg-transparent border border-gray-300 font-bold text-white w-1/2 p-2 rounded hover:bg-red-800 hover:border-red-800",
-                                    children: "Delete"
-                                }, void 0, false, {
-                                    fileName: "[project]/app/components/CourseField.tsx",
-                                    lineNumber: 147,
-                                    columnNumber: 15
-                                }, this)
-                            ]
-                        }, void 0, true, {
-                            fileName: "[project]/app/components/CourseField.tsx",
-                            lineNumber: 140,
-                            columnNumber: 13
-                        }, this)
-                    ]
-                }, course.id, true, {
+                        ]
+                    }, course.id, true, {
+                        fileName: "[project]/app/components/CourseField.tsx",
+                        lineNumber: 193,
+                        columnNumber: 13
+                    }, this)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    className: "text-center py-8",
+                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                        className: "text-gray-400",
+                        children: "No courses added yet."
+                    }, void 0, false, {
+                        fileName: "[project]/app/components/CourseField.tsx",
+                        lineNumber: 275,
+                        columnNumber: 13
+                    }, this)
+                }, void 0, false, {
                     fileName: "[project]/app/components/CourseField.tsx",
-                    lineNumber: 132,
+                    lineNumber: 274,
                     columnNumber: 11
-                }, this)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                className: "text-gray-400",
-                children: "No courses added."
+                }, this)
             }, void 0, false, {
                 fileName: "[project]/app/components/CourseField.tsx",
-                lineNumber: 157,
-                columnNumber: 9
+                lineNumber: 190,
+                columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/CourseField.tsx",
-        lineNumber: 76,
+        lineNumber: 128,
         columnNumber: 5
     }, this);
 };
-_s(CourseField, "X8wAbxWmajCLxgUTfQRMXzINRVo=", false, function() {
+_s(CourseField, "x3hCMuN9R6W1jJof6bLFGok6IK0=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$providers$2f$ApplicantDetailsProvider$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useApplicant"]
     ];
@@ -549,28 +862,37 @@ var _s = __turbopack_refresh__.signature();
 ;
 const EducationField = ()=>{
     _s();
-    const { educations, setEducations, setDeleteItems } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$providers$2f$ApplicantDetailsProvider$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useApplicant"])();
+    const { educations, setEducations, setDeleteItems, currentEducations, setCurrentEducations, deleteItems } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$providers$2f$ApplicantDetailsProvider$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useApplicant"])();
     const [newEducation, setNewEducation] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])({
         id: "",
         institution: "",
         degree: "",
         field: "",
         startDate: "",
-        endDate: ""
+        endDate: "",
+        isNew: false
     });
-    const handleChange = (e)=>{
-        setNewEducation({
-            ...newEducation,
-            [e.target.name]: e.target.value
-        });
-    };
     const handleAddEducation = ()=>{
+        const newId = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$uuid$2f$dist$2f$esm$2d$browser$2f$v4$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__v4$3e$__["v4"])();
+        const newEducationWithId = {
+            ...newEducation,
+            id: newId,
+            isNew: true
+        };
+        // For BE, exclude id if it's a new education
         setEducations([
             ...educations,
             {
-                ...newEducation,
-                id: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$uuid$2f$dist$2f$esm$2d$browser$2f$v4$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__v4$3e$__["v4"])()
+                institution: newEducation.institution,
+                degree: newEducation.degree,
+                field: newEducation.field,
+                startDate: newEducation.startDate,
+                endDate: newEducation.endDate
             }
+        ]);
+        setCurrentEducations([
+            ...currentEducations,
+            newEducationWithId
         ]);
         setNewEducation({
             id: "",
@@ -578,201 +900,375 @@ const EducationField = ()=>{
             degree: "",
             field: "",
             startDate: "",
-            endDate: ""
+            endDate: "",
+            isNew: false
         });
     };
-    const handleEditEducation = (id)=>{
-        const educationToEdit = educations.find((education)=>education.id === id);
-        if (educationToEdit) {
-            setNewEducation(educationToEdit);
-        }
-    };
     const handleUpdateEducation = ()=>{
-        setEducations(educations.map((education)=>education.id === newEducation.id ? newEducation : education));
+        const updatedEducation = {
+            ...newEducation
+        };
+        setCurrentEducations(currentEducations.map((education)=>education.id === newEducation.id ? updatedEducation : education));
+        // For BE, only include id if it's not a new education
+        setEducations(educations.map((education)=>education.id === newEducation.id ? newEducation.isNew ? {
+                institution: newEducation.institution,
+                degree: newEducation.degree,
+                field: newEducation.field,
+                startDate: newEducation.startDate,
+                endDate: newEducation.endDate
+            } : updatedEducation : education));
         setNewEducation({
             id: "",
             institution: "",
             degree: "",
             field: "",
             startDate: "",
-            endDate: ""
+            endDate: "",
+            isNew: false
         });
+    };
+    const handleChange = (e)=>{
+        setNewEducation({
+            ...newEducation,
+            [e.target.name]: e.target.value
+        });
+    };
+    const handleEditEducation = (id)=>{
+        const educationToEdit = currentEducations.find((education)=>education.id === id);
+        if (educationToEdit) {
+            setNewEducation({
+                ...educationToEdit
+            });
+        }
     };
     const handleDeleteEducation = (id)=>{
+        setCurrentEducations(currentEducations.filter((education)=>education.id !== id));
         setEducations(educations.filter((education)=>education.id !== id));
-        setDeleteItems((prevDeleteItems)=>{
-            return {
-                ...prevDeleteItems,
+        if (id) {
+            const updatedDeleteItems = {
+                ...deleteItems,
                 education: [
-                    ...prevDeleteItems.education,
+                    ...deleteItems.education || [],
                     id
-                ]
+                ],
+                experience: deleteItems.experience || [],
+                projects: deleteItems.projects || [],
+                courses: deleteItems.courses || [],
+                certificates: deleteItems.certificates || [],
+                languages: deleteItems.languages || [],
+                socials: deleteItems.socials || [],
+                skills: deleteItems.skills || []
             };
-        });
+            setDeleteItems(updatedDeleteItems);
+        }
     };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-        className: "bg-gray-800 rounded-lg p-8 border border-gray-700",
+        className: "space-y-6",
         children: [
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                className: "text-2xl font-bold mb-4 text-gray-300",
-                children: "Educations"
-            }, void 0, false, {
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "flex items-center justify-between",
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
+                        className: "text-2xl font-bold text-gray-300",
+                        children: "Education History"
+                    }, void 0, false, {
+                        fileName: "[project]/app/components/EducationField.tsx",
+                        lineNumber: 144,
+                        columnNumber: 9
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "h-px flex-1 bg-gray-700 mx-4"
+                    }, void 0, false, {
+                        fileName: "[project]/app/components/EducationField.tsx",
+                        lineNumber: 145,
+                        columnNumber: 9
+                    }, this)
+                ]
+            }, void 0, true, {
                 fileName: "[project]/app/components/EducationField.tsx",
-                lineNumber: 81,
+                lineNumber: 143,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "mb-4",
+                className: "bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 shadow-lg",
                 children: [
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
-                        type: "text",
-                        name: "institution",
-                        placeholder: "Institution",
-                        value: newEducation.institution,
-                        onChange: handleChange,
-                        className: "p-2 mb-2 w-full rounded bg-gray-700 text-gray-300 border border-gray-600"
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "grid grid-cols-1 gap-4",
+                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                            type: "text",
+                            name: "institution",
+                            placeholder: "Institution",
+                            value: newEducation.institution,
+                            onChange: handleChange,
+                            className: "bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 placeholder-gray-500 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+                        }, void 0, false, {
+                            fileName: "[project]/app/components/EducationField.tsx",
+                            lineNumber: 151,
+                            columnNumber: 11
+                        }, this)
                     }, void 0, false, {
                         fileName: "[project]/app/components/EducationField.tsx",
-                        lineNumber: 84,
+                        lineNumber: 150,
                         columnNumber: 9
                     }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
-                        type: "text",
-                        name: "degree",
-                        placeholder: "Degree",
-                        value: newEducation.degree,
-                        onChange: handleChange,
-                        className: "p-2 mb-2 w-full rounded bg-gray-700 text-gray-300 border border-gray-600"
-                    }, void 0, false, {
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "grid grid-cols-1 md:grid-cols-2 gap-4 my-4",
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                type: "text",
+                                name: "field",
+                                placeholder: "Field of Study",
+                                value: newEducation.field,
+                                onChange: handleChange,
+                                className: "bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 placeholder-gray-500 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+                            }, void 0, false, {
+                                fileName: "[project]/app/components/EducationField.tsx",
+                                lineNumber: 161,
+                                columnNumber: 11
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                type: "text",
+                                name: "degree",
+                                placeholder: "Degree",
+                                value: newEducation.degree,
+                                onChange: handleChange,
+                                className: "bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 placeholder-gray-500 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+                            }, void 0, false, {
+                                fileName: "[project]/app/components/EducationField.tsx",
+                                lineNumber: 170,
+                                columnNumber: 11
+                            }, this)
+                        ]
+                    }, void 0, true, {
                         fileName: "[project]/app/components/EducationField.tsx",
-                        lineNumber: 92,
+                        lineNumber: 160,
                         columnNumber: 9
                     }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
-                        type: "text",
-                        name: "field",
-                        placeholder: "Field of Study",
-                        value: newEducation.field,
-                        onChange: handleChange,
-                        className: "p-2 mb-2 w-full rounded bg-gray-700 text-gray-300 border border-gray-600"
-                    }, void 0, false, {
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "grid grid-cols-2 gap-4",
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                type: "month",
+                                name: "startDate",
+                                value: newEducation.startDate,
+                                onChange: handleChange,
+                                className: "bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+                            }, void 0, false, {
+                                fileName: "[project]/app/components/EducationField.tsx",
+                                lineNumber: 181,
+                                columnNumber: 11
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                type: "month",
+                                name: "endDate",
+                                value: newEducation.endDate,
+                                onChange: handleChange,
+                                className: "bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+                            }, void 0, false, {
+                                fileName: "[project]/app/components/EducationField.tsx",
+                                lineNumber: 188,
+                                columnNumber: 11
+                            }, this)
+                        ]
+                    }, void 0, true, {
                         fileName: "[project]/app/components/EducationField.tsx",
-                        lineNumber: 100,
-                        columnNumber: 9
-                    }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
-                        type: "date",
-                        name: "startDate",
-                        value: newEducation.startDate,
-                        onChange: handleChange,
-                        className: "p-2 mb-2 w-full rounded bg-gray-700 text-gray-300 border border-gray-600"
-                    }, void 0, false, {
-                        fileName: "[project]/app/components/EducationField.tsx",
-                        lineNumber: 108,
-                        columnNumber: 9
-                    }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
-                        type: "date",
-                        name: "endDate",
-                        value: newEducation.endDate,
-                        onChange: handleChange,
-                        className: "p-2 mb-2 w-full rounded bg-gray-700 text-gray-300 border border-gray-600"
-                    }, void 0, false, {
-                        fileName: "[project]/app/components/EducationField.tsx",
-                        lineNumber: 115,
+                        lineNumber: 180,
                         columnNumber: 9
                     }, this),
                     newEducation.id ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                         onClick: handleUpdateEducation,
-                        className: "bg-orange-600 w-full text-white p-2 font-bold rounded mt-2 hover:bg-orange-700",
+                        className: "mt-4 w-full bg-gradient-to-r from-orange-600 to-orange-700 text-white p-3 rounded-lg font-medium hover:from-orange-700 hover:to-orange-800 transition-all duration-200 shadow-lg",
                         children: "Update Education"
                     }, void 0, false, {
                         fileName: "[project]/app/components/EducationField.tsx",
-                        lineNumber: 124,
+                        lineNumber: 197,
                         columnNumber: 11
                     }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                         onClick: handleAddEducation,
-                        className: "bg-orange-600 w-full text-white p-2 font-bold rounded mt-2 hover:bg-orange-700",
+                        className: "mt-4 w-full bg-gradient-to-r from-orange-600 to-orange-700 text-white p-3 rounded-lg font-medium hover:from-orange-700 hover:to-orange-800 transition-all duration-200 shadow-lg",
                         children: "Add Education"
                     }, void 0, false, {
                         fileName: "[project]/app/components/EducationField.tsx",
-                        lineNumber: 131,
+                        lineNumber: 204,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/EducationField.tsx",
-                lineNumber: 83,
+                lineNumber: 149,
                 columnNumber: 7
             }, this),
-            educations.length > 0 ? educations.map((education)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                    className: "mb-4 text-gray-300",
-                    children: [
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
-                            children: education.degree
-                        }, void 0, false, {
-                            fileName: "[project]/app/components/EducationField.tsx",
-                            lineNumber: 143,
-                            columnNumber: 13
-                        }, this),
-                        " in ",
-                        education.field,
-                        " at",
-                        " ",
-                        education.institution,
-                        " (",
-                        education.startDate,
-                        " - ",
-                        education.endDate,
-                        ")",
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "mt-2 flex",
-                            children: [
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                    onClick: ()=>handleEditEducation(education.id),
-                                    className: "bg-transparent border-gray-300 border font-bold text-white w-1/2 p-2 rounded mr-2 hover:bg-[#01070a] hover:border-[#01070a]",
-                                    children: "Edit"
-                                }, void 0, false, {
-                                    fileName: "[project]/app/components/EducationField.tsx",
-                                    lineNumber: 147,
-                                    columnNumber: 15
-                                }, this),
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                    onClick: ()=>handleDeleteEducation(education.id),
-                                    className: "bg-transparent border border-gray-300 font-bold text-white w-1/2 p-2 rounded hover:bg-red-800 hover:border-red-800",
-                                    children: "Delete"
-                                }, void 0, false, {
-                                    fileName: "[project]/app/components/EducationField.tsx",
-                                    lineNumber: 153,
-                                    columnNumber: 15
-                                }, this)
-                            ]
-                        }, void 0, true, {
-                            fileName: "[project]/app/components/EducationField.tsx",
-                            lineNumber: 146,
-                            columnNumber: 13
-                        }, this)
-                    ]
-                }, education.id, true, {
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "space-y-4",
+                children: currentEducations.length > 0 ? currentEducations.map((education, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "group bg-gray-800/30 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 shadow-lg hover:bg-gray-800/50 transition-all duration-200",
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "flex justify-between items-start mb-4",
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
+                                                className: "text-xl font-semibold text-gray-200",
+                                                children: education.degree
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/components/EducationField.tsx",
+                                                lineNumber: 223,
+                                                columnNumber: 19
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                className: "text-gray-400",
+                                                children: education.institution
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/components/EducationField.tsx",
+                                                lineNumber: 226,
+                                                columnNumber: 19
+                                            }, this)
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/app/components/EducationField.tsx",
+                                        lineNumber: 222,
+                                        columnNumber: 17
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "flex space-x-2",
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                                onClick: ()=>education.id && handleEditEducation(education.id),
+                                                className: "p-2 rounded-lg bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 hover:text-blue-300 transition-all",
+                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
+                                                    xmlns: "http://www.w3.org/2000/svg",
+                                                    className: "h-5 w-5",
+                                                    fill: "none",
+                                                    viewBox: "0 0 24 24",
+                                                    stroke: "currentColor",
+                                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
+                                                        strokeLinecap: "round",
+                                                        strokeLinejoin: "round",
+                                                        strokeWidth: 2,
+                                                        d: "M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/app/components/EducationField.tsx",
+                                                        lineNumber: 242,
+                                                        columnNumber: 23
+                                                    }, this)
+                                                }, void 0, false, {
+                                                    fileName: "[project]/app/components/EducationField.tsx",
+                                                    lineNumber: 235,
+                                                    columnNumber: 21
+                                                }, this)
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/components/EducationField.tsx",
+                                                lineNumber: 229,
+                                                columnNumber: 19
+                                            }, this),
+                                            education.id && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                                onClick: ()=>education.id && handleDeleteEducation(education.id),
+                                                className: "p-2 rounded-lg bg-red-500/20 text-red-400 hover:bg-red-500/30 hover:text-red-300 transition-all",
+                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
+                                                    xmlns: "http://www.w3.org/2000/svg",
+                                                    className: "h-5 w-5",
+                                                    fill: "none",
+                                                    viewBox: "0 0 24 24",
+                                                    stroke: "currentColor",
+                                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
+                                                        strokeLinecap: "round",
+                                                        strokeLinejoin: "round",
+                                                        strokeWidth: 2,
+                                                        d: "M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/app/components/EducationField.tsx",
+                                                        lineNumber: 264,
+                                                        columnNumber: 25
+                                                    }, this)
+                                                }, void 0, false, {
+                                                    fileName: "[project]/app/components/EducationField.tsx",
+                                                    lineNumber: 257,
+                                                    columnNumber: 23
+                                                }, this)
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/components/EducationField.tsx",
+                                                lineNumber: 251,
+                                                columnNumber: 21
+                                            }, this)
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/app/components/EducationField.tsx",
+                                        lineNumber: 228,
+                                        columnNumber: 17
+                                    }, this)
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/app/components/EducationField.tsx",
+                                lineNumber: 221,
+                                columnNumber: 15
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "flex justify-between text-sm text-gray-400",
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                        children: education.field
+                                    }, void 0, false, {
+                                        fileName: "[project]/app/components/EducationField.tsx",
+                                        lineNumber: 276,
+                                        columnNumber: 17
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                        children: [
+                                            new Date(education.startDate).toLocaleDateString("en-US", {
+                                                month: "short",
+                                                year: "numeric"
+                                            }),
+                                            " - ",
+                                            education.endDate ? new Date(education.endDate).toLocaleDateString("en-US", {
+                                                month: "short",
+                                                year: "numeric"
+                                            }) : "Present"
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/app/components/EducationField.tsx",
+                                        lineNumber: 277,
+                                        columnNumber: 17
+                                    }, this)
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/app/components/EducationField.tsx",
+                                lineNumber: 275,
+                                columnNumber: 15
+                            }, this)
+                        ]
+                    }, index, true, {
+                        fileName: "[project]/app/components/EducationField.tsx",
+                        lineNumber: 217,
+                        columnNumber: 13
+                    }, this)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    className: "text-center py-8",
+                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                        className: "text-gray-400",
+                        children: "No education history added yet."
+                    }, void 0, false, {
+                        fileName: "[project]/app/components/EducationField.tsx",
+                        lineNumber: 295,
+                        columnNumber: 13
+                    }, this)
+                }, void 0, false, {
                     fileName: "[project]/app/components/EducationField.tsx",
-                    lineNumber: 142,
+                    lineNumber: 294,
                     columnNumber: 11
-                }, this)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                className: "text-gray-400",
-                children: "No educations added."
+                }, this)
             }, void 0, false, {
                 fileName: "[project]/app/components/EducationField.tsx",
-                lineNumber: 163,
-                columnNumber: 9
+                lineNumber: 214,
+                columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/EducationField.tsx",
-        lineNumber: 80,
+        lineNumber: 142,
         columnNumber: 5
     }, this);
 };
-_s(EducationField, "bMufsGnwRfcMg5oaDwQXcr0Mc1g=", false, function() {
+_s(EducationField, "3+XyLLmZTiaXLfbSk7Fj7natGK0=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$providers$2f$ApplicantDetailsProvider$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useApplicant"]
     ];
@@ -805,28 +1301,37 @@ var _s = __turbopack_refresh__.signature();
 ;
 const ExperienceField = ()=>{
     _s();
-    const { experience, setExperience, setDeleteItems } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$providers$2f$ApplicantDetailsProvider$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useApplicant"])();
+    const { experience, setExperience, setDeleteItems, deleteItems, currentExperience, setCurrentExperience } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$providers$2f$ApplicantDetailsProvider$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useApplicant"])();
     const [newExperience, setNewExperience] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])({
         id: "",
         position: "",
         company: "",
         startDate: "",
         endDate: "",
-        description: ""
+        description: "",
+        isNew: false
     });
-    const handleChange = (e)=>{
-        setNewExperience({
-            ...newExperience,
-            [e.target.name]: e.target.value
-        });
-    };
     const handleAddExperience = ()=>{
+        const newId = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$uuid$2f$dist$2f$esm$2d$browser$2f$v4$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__v4$3e$__["v4"])();
+        const newExperienceWithId = {
+            ...newExperience,
+            id: newId,
+            isNew: true
+        };
+        // For BE, exclude id if it's a new experience
         setExperience([
             ...experience,
             {
-                ...newExperience,
-                id: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$uuid$2f$dist$2f$esm$2d$browser$2f$v4$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__v4$3e$__["v4"])()
+                position: newExperience.position,
+                company: newExperience.company,
+                startDate: newExperience.startDate,
+                endDate: newExperience.endDate,
+                description: newExperience.description
             }
+        ]);
+        setCurrentExperience([
+            ...currentExperience,
+            newExperienceWithId
         ]);
         setNewExperience({
             id: "",
@@ -834,98 +1339,160 @@ const ExperienceField = ()=>{
             company: "",
             startDate: "",
             endDate: "",
-            description: ""
+            description: "",
+            isNew: false
         });
     };
-    const handleEditExperience = (id)=>{
-        const experienceToEdit = experience.find((exp)=>exp.id === id);
-        if (experienceToEdit) {
-            setNewExperience(experienceToEdit);
-        }
-    };
     const handleUpdateExperience = ()=>{
-        setExperience(experience.map((exp)=>exp.id === newExperience.id ? newExperience : exp));
+        const updatedExperience = {
+            ...newExperience
+        };
+        setCurrentExperience(currentExperience.map((exp)=>exp.id === newExperience.id ? updatedExperience : exp));
+        // For BE, only include id if it's not a new experience
+        setExperience(experience.map((exp)=>exp.id === newExperience.id ? newExperience.isNew ? {
+                position: newExperience.position,
+                company: newExperience.company,
+                startDate: newExperience.startDate,
+                endDate: newExperience.endDate,
+                description: newExperience.description
+            } : updatedExperience : exp));
         setNewExperience({
             id: "",
             position: "",
             company: "",
             startDate: "",
             endDate: "",
-            description: ""
+            description: "",
+            isNew: false
         });
+    };
+    const handleChange = (e)=>{
+        setNewExperience({
+            ...newExperience,
+            [e.target.name]: e.target.value
+        });
+    };
+    const handleEditExperience = (id)=>{
+        const experienceToEdit = currentExperience.find((exp)=>exp.id === id);
+        if (experienceToEdit) {
+            setNewExperience({
+                ...experienceToEdit
+            });
+        }
     };
     const handleDeleteExperience = (id)=>{
+        setCurrentExperience(currentExperience.filter((exp)=>exp.id !== id));
         setExperience(experience.filter((exp)=>exp.id !== id));
-        setDeleteItems((prevDeleteItems)=>{
-            return {
-                ...prevDeleteItems,
+        if (id) {
+            const updatedDeleteItems = {
+                ...deleteItems,
                 experience: [
-                    ...prevDeleteItems.experience,
+                    ...deleteItems.experience || [],
                     id
-                ]
+                ],
+                education: deleteItems.education || [],
+                projects: deleteItems.projects || [],
+                courses: deleteItems.courses || [],
+                certificates: deleteItems.certificates || [],
+                languages: deleteItems.languages || [],
+                socials: deleteItems.socials || [],
+                skills: deleteItems.skills || []
             };
-        });
+            setDeleteItems(updatedDeleteItems);
+        }
     };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-        className: "bg-gray-800 rounded-lg p-8 border border-gray-700",
+        className: "space-y-6",
         children: [
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                className: "text-2xl font-bold mb-4 text-white",
-                children: "Experiences"
-            }, void 0, false, {
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "flex items-center justify-between",
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
+                        className: "text-2xl font-bold text-gray-300",
+                        children: "Experience History"
+                    }, void 0, false, {
+                        fileName: "[project]/app/components/ExperienceField.tsx",
+                        lineNumber: 141,
+                        columnNumber: 9
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "h-px flex-1 bg-gray-700 mx-4"
+                    }, void 0, false, {
+                        fileName: "[project]/app/components/ExperienceField.tsx",
+                        lineNumber: 142,
+                        columnNumber: 9
+                    }, this)
+                ]
+            }, void 0, true, {
                 fileName: "[project]/app/components/ExperienceField.tsx",
-                lineNumber: 83,
+                lineNumber: 140,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "mb-4",
+                className: "bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 shadow-lg",
                 children: [
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
-                        type: "text",
-                        name: "position",
-                        placeholder: "Position",
-                        value: newExperience.position,
-                        onChange: handleChange,
-                        className: "p-2 mb-2 w-full rounded bg-gray-700 text-gray-300 border border-gray-600"
-                    }, void 0, false, {
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "grid grid-cols-1 md:grid-cols-2 gap-4",
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                type: "text",
+                                name: "position",
+                                placeholder: "Position",
+                                value: newExperience.position,
+                                onChange: handleChange,
+                                className: "bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 placeholder-gray-500 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+                            }, void 0, false, {
+                                fileName: "[project]/app/components/ExperienceField.tsx",
+                                lineNumber: 148,
+                                columnNumber: 11
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                type: "text",
+                                name: "company",
+                                placeholder: "Company",
+                                value: newExperience.company,
+                                onChange: handleChange,
+                                className: "bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 placeholder-gray-500 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+                            }, void 0, false, {
+                                fileName: "[project]/app/components/ExperienceField.tsx",
+                                lineNumber: 156,
+                                columnNumber: 11
+                            }, this)
+                        ]
+                    }, void 0, true, {
                         fileName: "[project]/app/components/ExperienceField.tsx",
-                        lineNumber: 86,
+                        lineNumber: 147,
                         columnNumber: 9
                     }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
-                        type: "text",
-                        name: "company",
-                        placeholder: "Company",
-                        value: newExperience.company,
-                        onChange: handleChange,
-                        className: "p-2 mb-2 w-full rounded bg-gray-700 text-gray-300 border border-gray-600"
-                    }, void 0, false, {
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "grid grid-cols-2 gap-4 my-4",
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                type: "month",
+                                name: "startDate",
+                                value: newExperience.startDate,
+                                onChange: handleChange,
+                                className: "bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+                            }, void 0, false, {
+                                fileName: "[project]/app/components/ExperienceField.tsx",
+                                lineNumber: 167,
+                                columnNumber: 11
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                type: "month",
+                                name: "endDate",
+                                value: newExperience.endDate,
+                                onChange: handleChange,
+                                className: "bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+                            }, void 0, false, {
+                                fileName: "[project]/app/components/ExperienceField.tsx",
+                                lineNumber: 174,
+                                columnNumber: 11
+                            }, this)
+                        ]
+                    }, void 0, true, {
                         fileName: "[project]/app/components/ExperienceField.tsx",
-                        lineNumber: 94,
-                        columnNumber: 9
-                    }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
-                        type: "month" // Changed to month input for start date
-                        ,
-                        name: "startDate",
-                        value: newExperience.startDate,
-                        onChange: handleChange,
-                        className: "p-2 mb-2 w-full rounded bg-gray-700 text-gray-300 border border-gray-600"
-                    }, void 0, false, {
-                        fileName: "[project]/app/components/ExperienceField.tsx",
-                        lineNumber: 102,
-                        columnNumber: 9
-                    }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
-                        type: "month" // Changed to month input for end date
-                        ,
-                        name: "endDate",
-                        value: newExperience.endDate,
-                        onChange: handleChange,
-                        className: "p-2 mb-2 w-full rounded bg-gray-700 text-gray-300 border border-gray-600"
-                    }, void 0, false, {
-                        fileName: "[project]/app/components/ExperienceField.tsx",
-                        lineNumber: 109,
+                        lineNumber: 166,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("textarea", {
@@ -933,117 +1500,206 @@ const ExperienceField = ()=>{
                         placeholder: "Experience Description",
                         value: newExperience.description,
                         onChange: handleChange,
-                        className: "p-2 mb-2 w-full rounded bg-gray-700 text-gray-300 border border-gray-600"
+                        rows: 4,
+                        className: "w-full bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 placeholder-gray-500 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
                     }, void 0, false, {
                         fileName: "[project]/app/components/ExperienceField.tsx",
-                        lineNumber: 116,
+                        lineNumber: 183,
                         columnNumber: 9
                     }, this),
                     newExperience.id ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                         onClick: handleUpdateExperience,
-                        className: "bg-orange-600 w-full text-white p-2 font-bold rounded mt-2 hover:bg-orange-700",
+                        className: "mt-4 w-full bg-gradient-to-r from-orange-600 to-orange-700 text-white p-3 rounded-lg font-medium hover:from-orange-700 hover:to-orange-800 transition-all duration-200 shadow-lg",
                         children: "Update Experience"
                     }, void 0, false, {
                         fileName: "[project]/app/components/ExperienceField.tsx",
-                        lineNumber: 125,
+                        lineNumber: 193,
                         columnNumber: 11
                     }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                         onClick: handleAddExperience,
-                        className: "bg-orange-600 w-full text-white p-2 font-bold rounded mt-2 hover:bg-orange-700",
+                        className: "mt-4 w-full bg-gradient-to-r from-orange-600 to-orange-700 text-white p-3 rounded-lg font-medium hover:from-orange-700 hover:to-orange-800 transition-all duration-200 shadow-lg",
                         children: "Add Experience"
                     }, void 0, false, {
                         fileName: "[project]/app/components/ExperienceField.tsx",
-                        lineNumber: 132,
+                        lineNumber: 200,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/ExperienceField.tsx",
-                lineNumber: 85,
+                lineNumber: 146,
                 columnNumber: 7
             }, this),
-            experience.length > 0 ? experience.map((exp)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                    className: "mb-4 text-gray-300",
-                    children: [
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
-                            children: exp.position
-                        }, void 0, false, {
-                            fileName: "[project]/app/components/ExperienceField.tsx",
-                            lineNumber: 145,
-                            columnNumber: 13
-                        }, this),
-                        " at",
-                        " ",
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                            className: "opacity-70",
-                            children: exp.company
-                        }, void 0, false, {
-                            fileName: "[project]/app/components/ExperienceField.tsx",
-                            lineNumber: 146,
-                            columnNumber: 13
-                        }, this),
-                        " (",
-                        exp.startDate,
-                        " -",
-                        " ",
-                        exp.endDate,
-                        ")",
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                            className: "mt-2",
-                            children: exp.description
-                        }, void 0, false, {
-                            fileName: "[project]/app/components/ExperienceField.tsx",
-                            lineNumber: 147,
-                            columnNumber: 27
-                        }, this),
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "mt-2 flex",
-                            children: [
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                    onClick: ()=>handleEditExperience(exp.id),
-                                    className: "bg-transparent border-gray-300 border font-bold text-white w-1/2 p-2 rounded mr-2 hover:bg-[#01070a] hover:border-[#01070a]",
-                                    children: "Edit"
-                                }, void 0, false, {
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "space-y-4",
+                children: currentExperience.length > 0 ? currentExperience.map((exp, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "group bg-gray-800/30 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 shadow-lg hover:bg-gray-800/50 transition-all duration-200",
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "flex justify-between items-start mb-4",
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
+                                                className: "text-xl font-semibold text-gray-200",
+                                                children: exp.position
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/components/ExperienceField.tsx",
+                                                lineNumber: 219,
+                                                columnNumber: 19
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                className: "text-gray-400",
+                                                children: exp.company
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/components/ExperienceField.tsx",
+                                                lineNumber: 222,
+                                                columnNumber: 19
+                                            }, this)
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/app/components/ExperienceField.tsx",
+                                        lineNumber: 218,
+                                        columnNumber: 17
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "flex space-x-2",
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                                onClick: ()=>exp.id && handleEditExperience(exp.id),
+                                                className: "p-2 rounded-lg bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 hover:text-blue-300 transition-all",
+                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
+                                                    xmlns: "http://www.w3.org/2000/svg",
+                                                    className: "h-5 w-5",
+                                                    fill: "none",
+                                                    viewBox: "0 0 24 24",
+                                                    stroke: "currentColor",
+                                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
+                                                        strokeLinecap: "round",
+                                                        strokeLinejoin: "round",
+                                                        strokeWidth: 2,
+                                                        d: "M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/app/components/ExperienceField.tsx",
+                                                        lineNumber: 236,
+                                                        columnNumber: 23
+                                                    }, this)
+                                                }, void 0, false, {
+                                                    fileName: "[project]/app/components/ExperienceField.tsx",
+                                                    lineNumber: 229,
+                                                    columnNumber: 21
+                                                }, this)
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/components/ExperienceField.tsx",
+                                                lineNumber: 225,
+                                                columnNumber: 19
+                                            }, this),
+                                            exp.id && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                                onClick: ()=>exp.id && handleDeleteExperience(exp.id),
+                                                className: "p-2 rounded-lg bg-red-500/20 text-red-400 hover:bg-red-500/30 hover:text-red-300 transition-all",
+                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
+                                                    xmlns: "http://www.w3.org/2000/svg",
+                                                    className: "h-5 w-5",
+                                                    fill: "none",
+                                                    viewBox: "0 0 24 24",
+                                                    stroke: "currentColor",
+                                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
+                                                        strokeLinecap: "round",
+                                                        strokeLinejoin: "round",
+                                                        strokeWidth: 2,
+                                                        d: "M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/app/components/ExperienceField.tsx",
+                                                        lineNumber: 256,
+                                                        columnNumber: 25
+                                                    }, this)
+                                                }, void 0, false, {
+                                                    fileName: "[project]/app/components/ExperienceField.tsx",
+                                                    lineNumber: 249,
+                                                    columnNumber: 23
+                                                }, this)
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/components/ExperienceField.tsx",
+                                                lineNumber: 245,
+                                                columnNumber: 21
+                                            }, this)
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/app/components/ExperienceField.tsx",
+                                        lineNumber: 224,
+                                        columnNumber: 17
+                                    }, this)
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/app/components/ExperienceField.tsx",
+                                lineNumber: 217,
+                                columnNumber: 15
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                className: "text-gray-400 mb-3",
+                                children: exp.description
+                            }, void 0, false, {
+                                fileName: "[project]/app/components/ExperienceField.tsx",
+                                lineNumber: 267,
+                                columnNumber: 15
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "flex justify-end text-sm text-gray-400",
+                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                    children: [
+                                        new Date(exp.startDate).toLocaleDateString("en-US", {
+                                            month: "short",
+                                            year: "numeric"
+                                        }),
+                                        " - ",
+                                        exp.endDate ? new Date(exp.endDate).toLocaleDateString("en-US", {
+                                            month: "short",
+                                            year: "numeric"
+                                        }) : "Present"
+                                    ]
+                                }, void 0, true, {
                                     fileName: "[project]/app/components/ExperienceField.tsx",
-                                    lineNumber: 149,
-                                    columnNumber: 15
-                                }, this),
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                    onClick: ()=>handleDeleteExperience(exp.id),
-                                    className: "bg-transparent border border-gray-300 font-bold text-white w-1/2 p-2 rounded hover:bg-red-800 hover:border-red-800",
-                                    children: "Delete"
-                                }, void 0, false, {
-                                    fileName: "[project]/app/components/ExperienceField.tsx",
-                                    lineNumber: 155,
-                                    columnNumber: 15
+                                    lineNumber: 269,
+                                    columnNumber: 17
                                 }, this)
-                            ]
-                        }, void 0, true, {
-                            fileName: "[project]/app/components/ExperienceField.tsx",
-                            lineNumber: 148,
-                            columnNumber: 13
-                        }, this)
-                    ]
-                }, exp.id, true, {
+                            }, void 0, false, {
+                                fileName: "[project]/app/components/ExperienceField.tsx",
+                                lineNumber: 268,
+                                columnNumber: 15
+                            }, this)
+                        ]
+                    }, index, true, {
+                        fileName: "[project]/app/components/ExperienceField.tsx",
+                        lineNumber: 213,
+                        columnNumber: 13
+                    }, this)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    className: "text-center py-8",
+                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                        className: "text-gray-400",
+                        children: "No experience history added yet."
+                    }, void 0, false, {
+                        fileName: "[project]/app/components/ExperienceField.tsx",
+                        lineNumber: 287,
+                        columnNumber: 13
+                    }, this)
+                }, void 0, false, {
                     fileName: "[project]/app/components/ExperienceField.tsx",
-                    lineNumber: 144,
+                    lineNumber: 286,
                     columnNumber: 11
-                }, this)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                className: "text-gray-400",
-                children: "No experiences added."
+                }, this)
             }, void 0, false, {
                 fileName: "[project]/app/components/ExperienceField.tsx",
-                lineNumber: 165,
-                columnNumber: 9
+                lineNumber: 210,
+                columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/ExperienceField.tsx",
-        lineNumber: 82,
+        lineNumber: 139,
         columnNumber: 5
     }, this);
 };
-_s(ExperienceField, "8pje4LKQR8Rr+QZgCrWcb02q/9Q=", false, function() {
+_s(ExperienceField, "LywXdg51Dp8I4w9xbP0eJHC956g=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$providers$2f$ApplicantDetailsProvider$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useApplicant"]
     ];
@@ -1074,29 +1730,25 @@ var _s = __turbopack_refresh__.signature();
 ;
 const HobbyField = ()=>{
     _s();
-    const { hobbies, setHobbies } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$providers$2f$ApplicantDetailsProvider$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useApplicant"])(); // State to manage hobbies
-    const [newHobby, setNewHobby] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(""); // State for new hobby input
-    const [editIndex, setEditIndex] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null); // Index of hobby being edited
-    // Handle changes in the hobby input field
+    const { hobbies, setHobbies } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$providers$2f$ApplicantDetailsProvider$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useApplicant"])();
+    const [newHobby, setNewHobby] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])("");
+    const [editIndex, setEditIndex] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
     const handleChange = (e)=>{
         setNewHobby(e.target.value);
     };
-    // Handle adding a new hobby
     const handleAddHobby = ()=>{
         if (newHobby.trim() !== "") {
             setHobbies([
                 ...hobbies,
                 newHobby
             ]);
-            setNewHobby(""); // Clear input field after adding
+            setNewHobby("");
         }
     };
-    // Handle editing an existing hobby
     const handleEditHobby = (index)=>{
         setEditIndex(index);
-        setNewHobby(hobbies[index]); // Pre-fill input with the hobby to edit
+        setNewHobby(hobbies[index]);
     };
-    // Handle updating the edited hobby
     const handleUpdateHobby = ()=>{
         if (newHobby.trim() !== "" && editIndex !== null) {
             const updatedHobbies = [
@@ -1104,116 +1756,206 @@ const HobbyField = ()=>{
             ];
             updatedHobbies[editIndex] = newHobby;
             setHobbies(updatedHobbies);
-            setNewHobby(""); // Clear input field after update
-            setEditIndex(null); // Reset edit mode
+            setNewHobby("");
+            setEditIndex(null);
         }
     };
-    // Handle deleting a hobby
     const handleDeleteHobby = (index)=>{
         setHobbies(hobbies.filter((_, i)=>i !== index));
     };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-        className: "bg-gray-800 rounded-lg p-8 border border-gray-700",
+        className: "space-y-6",
         children: [
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                className: "text-2xl font-bold mb-4 text-gray-300",
-                children: "Hobbies"
-            }, void 0, false, {
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "flex items-center justify-between",
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
+                        className: "text-2xl font-bold text-gray-300",
+                        children: "Hobbies"
+                    }, void 0, false, {
+                        fileName: "[project]/app/components/HobbyField.tsx",
+                        lineNumber: 43,
+                        columnNumber: 9
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "h-px flex-1 bg-gray-700 mx-4"
+                    }, void 0, false, {
+                        fileName: "[project]/app/components/HobbyField.tsx",
+                        lineNumber: 44,
+                        columnNumber: 9
+                    }, this)
+                ]
+            }, void 0, true, {
                 fileName: "[project]/app/components/HobbyField.tsx",
-                lineNumber: 47,
+                lineNumber: 42,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "mb-4",
+                className: "bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 shadow-lg",
                 children: [
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
-                        type: "text",
-                        value: newHobby,
-                        onChange: handleChange,
-                        placeholder: "Enter hobby",
-                        className: "p-2 mb-2 w-full rounded bg-gray-700 text-gray-300 border border-gray-600"
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "grid grid-cols-1 gap-4",
+                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                            type: "text",
+                            value: newHobby,
+                            onChange: handleChange,
+                            placeholder: "Enter hobby",
+                            className: "bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 placeholder-gray-500 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+                        }, void 0, false, {
+                            fileName: "[project]/app/components/HobbyField.tsx",
+                            lineNumber: 50,
+                            columnNumber: 11
+                        }, this)
                     }, void 0, false, {
                         fileName: "[project]/app/components/HobbyField.tsx",
-                        lineNumber: 51,
+                        lineNumber: 49,
                         columnNumber: 9
                     }, this),
                     editIndex !== null ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                         onClick: handleUpdateHobby,
-                        className: "bg-orange-600 w-full text-white p-2 font-bold rounded mt-2 hover:bg-orange-700",
+                        className: "mt-4 w-full bg-gradient-to-r from-orange-600 to-orange-700 text-white p-3 rounded-lg font-medium hover:from-orange-700 hover:to-orange-800 transition-all duration-200 shadow-lg",
                         children: "Update Hobby"
                     }, void 0, false, {
                         fileName: "[project]/app/components/HobbyField.tsx",
-                        lineNumber: 59,
+                        lineNumber: 60,
                         columnNumber: 11
                     }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                         onClick: handleAddHobby,
-                        className: "bg-orange-600 w-full text-white p-2 font-bold rounded mt-2 hover:bg-orange-700",
+                        className: "mt-4 w-full bg-gradient-to-r from-orange-600 to-orange-700 text-white p-3 rounded-lg font-medium hover:from-orange-700 hover:to-orange-800 transition-all duration-200 shadow-lg",
                         children: "Add Hobby"
                     }, void 0, false, {
                         fileName: "[project]/app/components/HobbyField.tsx",
-                        lineNumber: 66,
+                        lineNumber: 67,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/HobbyField.tsx",
-                lineNumber: 50,
+                lineNumber: 48,
                 columnNumber: 7
             }, this),
-            hobbies.length > 0 ? hobbies.map((hobby, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                    className: "mb-4 text-gray-300",
-                    children: [
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                            children: hobby
-                        }, void 0, false, {
-                            fileName: "[project]/app/components/HobbyField.tsx",
-                            lineNumber: 79,
-                            columnNumber: 13
-                        }, this),
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "mt-2 flex",
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "space-y-4",
+                children: hobbies.length > 0 ? hobbies.map((hobby, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "group bg-gray-800/30 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 shadow-lg hover:bg-gray-800/50 transition-all duration-200",
+                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            className: "flex justify-between items-start",
                             children: [
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                    onClick: ()=>handleEditHobby(index),
-                                    className: "bg-transparent border-gray-300 border font-bold text-white w-1/2 p-2 rounded mr-2 hover:bg-[#01070a] hover:border-[#01070a]",
-                                    children: "Edit"
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
+                                        className: "text-xl font-semibold text-gray-200",
+                                        children: hobby
+                                    }, void 0, false, {
+                                        fileName: "[project]/app/components/HobbyField.tsx",
+                                        lineNumber: 86,
+                                        columnNumber: 19
+                                    }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/HobbyField.tsx",
-                                    lineNumber: 81,
-                                    columnNumber: 15
+                                    lineNumber: 85,
+                                    columnNumber: 17
                                 }, this),
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                    onClick: ()=>handleDeleteHobby(index),
-                                    className: "bg-transparent border border-gray-300 font-bold text-white w-1/2 p-2 rounded hover:bg-red-800 hover:border-red-800",
-                                    children: "Delete"
-                                }, void 0, false, {
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "flex space-x-2",
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                            onClick: ()=>handleEditHobby(index),
+                                            className: "p-2 rounded-lg bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 hover:text-blue-300 transition-all",
+                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
+                                                xmlns: "http://www.w3.org/2000/svg",
+                                                className: "h-5 w-5",
+                                                fill: "none",
+                                                viewBox: "0 0 24 24",
+                                                stroke: "currentColor",
+                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
+                                                    strokeLinecap: "round",
+                                                    strokeLinejoin: "round",
+                                                    strokeWidth: 2,
+                                                    d: "M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/app/components/HobbyField.tsx",
+                                                    lineNumber: 102,
+                                                    columnNumber: 23
+                                                }, this)
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/components/HobbyField.tsx",
+                                                lineNumber: 95,
+                                                columnNumber: 21
+                                            }, this)
+                                        }, void 0, false, {
+                                            fileName: "[project]/app/components/HobbyField.tsx",
+                                            lineNumber: 91,
+                                            columnNumber: 19
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                            onClick: ()=>handleDeleteHobby(index),
+                                            className: "p-2 rounded-lg bg-red-500/20 text-red-400 hover:bg-red-500/30 hover:text-red-300 transition-all",
+                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
+                                                xmlns: "http://www.w3.org/2000/svg",
+                                                className: "h-5 w-5",
+                                                fill: "none",
+                                                viewBox: "0 0 24 24",
+                                                stroke: "currentColor",
+                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
+                                                    strokeLinecap: "round",
+                                                    strokeLinejoin: "round",
+                                                    strokeWidth: 2,
+                                                    d: "M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/app/components/HobbyField.tsx",
+                                                    lineNumber: 121,
+                                                    columnNumber: 23
+                                                }, this)
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/components/HobbyField.tsx",
+                                                lineNumber: 114,
+                                                columnNumber: 21
+                                            }, this)
+                                        }, void 0, false, {
+                                            fileName: "[project]/app/components/HobbyField.tsx",
+                                            lineNumber: 110,
+                                            columnNumber: 19
+                                        }, this)
+                                    ]
+                                }, void 0, true, {
                                     fileName: "[project]/app/components/HobbyField.tsx",
-                                    lineNumber: 87,
-                                    columnNumber: 15
+                                    lineNumber: 90,
+                                    columnNumber: 17
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/components/HobbyField.tsx",
-                            lineNumber: 80,
-                            columnNumber: 13
+                            lineNumber: 84,
+                            columnNumber: 15
                         }, this)
-                    ]
-                }, index, true, {
+                    }, index, false, {
+                        fileName: "[project]/app/components/HobbyField.tsx",
+                        lineNumber: 80,
+                        columnNumber: 13
+                    }, this)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    className: "text-center py-8",
+                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                        className: "text-gray-400",
+                        children: "No hobbies added yet."
+                    }, void 0, false, {
+                        fileName: "[project]/app/components/HobbyField.tsx",
+                        lineNumber: 135,
+                        columnNumber: 13
+                    }, this)
+                }, void 0, false, {
                     fileName: "[project]/app/components/HobbyField.tsx",
-                    lineNumber: 78,
+                    lineNumber: 134,
                     columnNumber: 11
-                }, this)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                className: "text-gray-400",
-                children: "No hobbies added."
+                }, this)
             }, void 0, false, {
                 fileName: "[project]/app/components/HobbyField.tsx",
-                lineNumber: 97,
-                columnNumber: 9
+                lineNumber: 77,
+                columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/HobbyField.tsx",
-        lineNumber: 46,
+        lineNumber: 41,
         columnNumber: 5
     }, this);
 };
@@ -1250,180 +1992,314 @@ var _s = __turbopack_refresh__.signature();
 ;
 const LanguageField = ()=>{
     _s();
-    const { languages, setLanguages, setDeleteItems } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$providers$2f$ApplicantDetailsProvider$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useApplicant"])();
+    const { languages, setLanguages, setDeleteItems, deleteItems, currentLanguages, setCurrentLanguages } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$providers$2f$ApplicantDetailsProvider$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useApplicant"])();
     const [newLanguage, setNewLanguage] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])({
         id: "",
         name: "",
-        efficiency: ""
+        efficiency: "",
+        isNew: false
     });
+    const handleAddLanguage = ()=>{
+        const newId = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$uuid$2f$dist$2f$esm$2d$browser$2f$v4$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__v4$3e$__["v4"])();
+        const newLanguageWithId = {
+            ...newLanguage,
+            id: newId,
+            isNew: true
+        };
+        // For BE, exclude id if it's a new language
+        setLanguages([
+            ...languages,
+            {
+                name: newLanguage.name,
+                efficiency: newLanguage.efficiency
+            }
+        ]);
+        setCurrentLanguages([
+            ...currentLanguages,
+            newLanguageWithId
+        ]);
+        setNewLanguage({
+            id: "",
+            name: "",
+            efficiency: "",
+            isNew: false
+        });
+    };
+    const handleUpdateLanguage = ()=>{
+        const updatedLanguage = {
+            ...newLanguage
+        };
+        setCurrentLanguages(currentLanguages.map((lang)=>lang.id === newLanguage.id ? updatedLanguage : lang));
+        // For BE, only include id if it's not a new language
+        setLanguages(languages.map((lang)=>lang.id === newLanguage.id ? newLanguage.isNew ? {
+                name: newLanguage.name,
+                efficiency: newLanguage.efficiency
+            } : updatedLanguage : lang));
+        setNewLanguage({
+            id: "",
+            name: "",
+            efficiency: "",
+            isNew: false
+        });
+    };
     const handleChange = (e)=>{
         setNewLanguage({
             ...newLanguage,
             [e.target.name]: e.target.value
         });
     };
-    const handleAddLanguage = ()=>{
-        setLanguages([
-            ...languages,
-            {
-                ...newLanguage,
-                id: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$uuid$2f$dist$2f$esm$2d$browser$2f$v4$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__v4$3e$__["v4"])()
-            }
-        ]);
-        setNewLanguage({
-            id: "",
-            name: "",
-            efficiency: ""
-        });
-    };
     const handleEditLanguage = (id)=>{
-        const languageToEdit = languages.find((lang)=>lang.id === id);
+        const languageToEdit = currentLanguages.find((lang)=>lang.id === id);
         if (languageToEdit) {
-            setNewLanguage(languageToEdit);
+            // @ts-expect-error Expected type error due to potential undefined id
+            setNewLanguage({
+                ...languageToEdit
+            });
         }
     };
-    const handleUpdateLanguage = ()=>{
-        setLanguages(languages.map((lang)=>lang.id === newLanguage.id ? newLanguage : lang));
-        setNewLanguage({
-            id: "",
-            name: "",
-            efficiency: ""
-        });
-    };
     const handleDeleteLanguage = (id)=>{
+        setCurrentLanguages(currentLanguages.filter((lang)=>lang.id !== id));
         setLanguages(languages.filter((lang)=>lang.id !== id));
-        setDeleteItems((prevDeleteItems)=>{
-            return {
-                ...prevDeleteItems,
+        if (id) {
+            const updatedDeleteItems = {
+                ...deleteItems,
                 languages: [
-                    ...prevDeleteItems.languages,
+                    ...deleteItems.languages || [],
                     id
-                ]
+                ],
+                education: deleteItems.education || [],
+                experience: deleteItems.experience || [],
+                projects: deleteItems.projects || [],
+                courses: deleteItems.courses || [],
+                certificates: deleteItems.certificates || [],
+                socials: deleteItems.socials || [],
+                skills: deleteItems.skills || []
             };
-        });
+            setDeleteItems(updatedDeleteItems);
+        }
     };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-        className: "bg-gray-800 rounded-lg p-8 border border-gray-700",
+        className: "space-y-6",
         children: [
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                className: "text-2xl font-bold mb-4 text-gray-300",
-                children: "Languages"
-            }, void 0, false, {
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "flex items-center justify-between",
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
+                        className: "text-2xl font-bold text-gray-300",
+                        children: "Languages"
+                    }, void 0, false, {
+                        fileName: "[project]/app/components/LanguageField.tsx",
+                        lineNumber: 126,
+                        columnNumber: 9
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "h-px flex-1 bg-gray-700 mx-4"
+                    }, void 0, false, {
+                        fileName: "[project]/app/components/LanguageField.tsx",
+                        lineNumber: 127,
+                        columnNumber: 9
+                    }, this)
+                ]
+            }, void 0, true, {
                 fileName: "[project]/app/components/LanguageField.tsx",
-                lineNumber: 67,
+                lineNumber: 125,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "mb-4",
+                className: "bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 shadow-lg",
                 children: [
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
-                        type: "text",
-                        name: "name",
-                        placeholder: "Language Name",
-                        value: newLanguage.name,
-                        onChange: handleChange,
-                        className: "p-2 mb-2 w-full rounded bg-gray-700 text-gray-300 border border-gray-600"
-                    }, void 0, false, {
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "grid grid-cols-1 md:grid-cols-2 gap-4",
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                type: "text",
+                                name: "name",
+                                placeholder: "Language Name",
+                                value: newLanguage.name,
+                                onChange: handleChange,
+                                className: "bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 placeholder-gray-500 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+                            }, void 0, false, {
+                                fileName: "[project]/app/components/LanguageField.tsx",
+                                lineNumber: 133,
+                                columnNumber: 11
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                type: "text",
+                                name: "efficiency",
+                                placeholder: "Efficiency Level",
+                                value: newLanguage.efficiency,
+                                onChange: handleChange,
+                                className: "bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 placeholder-gray-500 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+                            }, void 0, false, {
+                                fileName: "[project]/app/components/LanguageField.tsx",
+                                lineNumber: 141,
+                                columnNumber: 11
+                            }, this)
+                        ]
+                    }, void 0, true, {
                         fileName: "[project]/app/components/LanguageField.tsx",
-                        lineNumber: 71,
-                        columnNumber: 9
-                    }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
-                        type: "text",
-                        name: "efficiency",
-                        placeholder: "Efficiency (e.g., Beginner, Intermediate, Fluent)",
-                        value: newLanguage.efficiency,
-                        onChange: handleChange,
-                        className: "p-2 mb-2 w-full rounded bg-gray-700 text-gray-300 border border-gray-600"
-                    }, void 0, false, {
-                        fileName: "[project]/app/components/LanguageField.tsx",
-                        lineNumber: 79,
+                        lineNumber: 132,
                         columnNumber: 9
                     }, this),
                     newLanguage.id ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                         onClick: handleUpdateLanguage,
-                        className: "bg-orange-600 w-full text-white p-2 font-bold rounded mt-2 hover:bg-orange-700",
+                        className: "mt-4 w-full bg-gradient-to-r from-orange-600 to-orange-700 text-white p-3 rounded-lg font-medium hover:from-orange-700 hover:to-orange-800 transition-all duration-200 shadow-lg",
                         children: "Update Language"
                     }, void 0, false, {
                         fileName: "[project]/app/components/LanguageField.tsx",
-                        lineNumber: 89,
+                        lineNumber: 152,
                         columnNumber: 11
                     }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                         onClick: handleAddLanguage,
-                        className: "bg-orange-600 w-full text-white p-2 font-bold rounded mt-2 hover:bg-orange-700",
+                        className: "mt-4 w-full bg-gradient-to-r from-orange-600 to-orange-700 text-white p-3 rounded-lg font-medium hover:from-orange-700 hover:to-orange-800 transition-all duration-200 shadow-lg",
                         children: "Add Language"
                     }, void 0, false, {
                         fileName: "[project]/app/components/LanguageField.tsx",
-                        lineNumber: 96,
+                        lineNumber: 159,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/LanguageField.tsx",
-                lineNumber: 70,
+                lineNumber: 131,
                 columnNumber: 7
             }, this),
-            languages.length > 0 ? languages.map((lang)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                    className: "mb-4 text-gray-300",
-                    children: [
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
-                            children: lang.name
-                        }, void 0, false, {
-                            fileName: "[project]/app/components/LanguageField.tsx",
-                            lineNumber: 109,
-                            columnNumber: 13
-                        }, this),
-                        " (",
-                        lang.efficiency,
-                        ")",
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "mt-2 flex",
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "space-y-4",
+                children: currentLanguages?.length > 0 ? currentLanguages.map((lang)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "group bg-gray-800/30 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 shadow-lg hover:bg-gray-800/50 transition-all duration-200",
+                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            className: "flex justify-between items-start mb-4",
                             children: [
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                    onClick: ()=>handleEditLanguage(lang.id),
-                                    className: "bg-transparent border-gray-300 border font-bold text-white w-1/2 p-2 rounded mr-2 hover:bg-[#01070a] hover:border-[#01070a]",
-                                    children: "Edit"
-                                }, void 0, false, {
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
+                                            className: "text-xl font-semibold text-gray-200",
+                                            children: lang.name
+                                        }, void 0, false, {
+                                            fileName: "[project]/app/components/LanguageField.tsx",
+                                            lineNumber: 178,
+                                            columnNumber: 19
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                            className: "text-gray-400",
+                                            children: lang.efficiency
+                                        }, void 0, false, {
+                                            fileName: "[project]/app/components/LanguageField.tsx",
+                                            lineNumber: 181,
+                                            columnNumber: 19
+                                        }, this)
+                                    ]
+                                }, void 0, true, {
                                     fileName: "[project]/app/components/LanguageField.tsx",
-                                    lineNumber: 111,
-                                    columnNumber: 15
+                                    lineNumber: 177,
+                                    columnNumber: 17
                                 }, this),
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                    onClick: ()=>handleDeleteLanguage(lang.id),
-                                    className: "bg-transparent border border-gray-300 font-bold text-white w-1/2 p-2 rounded hover:bg-red-800 hover:border-red-800",
-                                    children: "Delete"
-                                }, void 0, false, {
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "flex space-x-2",
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                            onClick: ()=>lang.id && handleEditLanguage(lang.id),
+                                            className: "p-2 rounded-lg bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 hover:text-blue-300 transition-all",
+                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
+                                                xmlns: "http://www.w3.org/2000/svg",
+                                                className: "h-5 w-5",
+                                                fill: "none",
+                                                viewBox: "0 0 24 24",
+                                                stroke: "currentColor",
+                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
+                                                    strokeLinecap: "round",
+                                                    strokeLinejoin: "round",
+                                                    strokeWidth: 2,
+                                                    d: "M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/app/components/LanguageField.tsx",
+                                                    lineNumber: 195,
+                                                    columnNumber: 23
+                                                }, this)
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/components/LanguageField.tsx",
+                                                lineNumber: 188,
+                                                columnNumber: 21
+                                            }, this)
+                                        }, void 0, false, {
+                                            fileName: "[project]/app/components/LanguageField.tsx",
+                                            lineNumber: 184,
+                                            columnNumber: 19
+                                        }, this),
+                                        lang.id && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                            onClick: ()=>lang.id && handleDeleteLanguage(lang.id),
+                                            className: "p-2 rounded-lg bg-red-500/20 text-red-400 hover:bg-red-500/30 hover:text-red-300 transition-all",
+                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
+                                                xmlns: "http://www.w3.org/2000/svg",
+                                                className: "h-5 w-5",
+                                                fill: "none",
+                                                viewBox: "0 0 24 24",
+                                                stroke: "currentColor",
+                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
+                                                    strokeLinecap: "round",
+                                                    strokeLinejoin: "round",
+                                                    strokeWidth: 2,
+                                                    d: "M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/app/components/LanguageField.tsx",
+                                                    lineNumber: 215,
+                                                    columnNumber: 25
+                                                }, this)
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/components/LanguageField.tsx",
+                                                lineNumber: 208,
+                                                columnNumber: 23
+                                            }, this)
+                                        }, void 0, false, {
+                                            fileName: "[project]/app/components/LanguageField.tsx",
+                                            lineNumber: 204,
+                                            columnNumber: 21
+                                        }, this)
+                                    ]
+                                }, void 0, true, {
                                     fileName: "[project]/app/components/LanguageField.tsx",
-                                    lineNumber: 117,
-                                    columnNumber: 15
+                                    lineNumber: 183,
+                                    columnNumber: 17
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/components/LanguageField.tsx",
-                            lineNumber: 110,
-                            columnNumber: 13
+                            lineNumber: 176,
+                            columnNumber: 15
                         }, this)
-                    ]
-                }, lang.id, true, {
+                    }, lang.id, false, {
+                        fileName: "[project]/app/components/LanguageField.tsx",
+                        lineNumber: 172,
+                        columnNumber: 13
+                    }, this)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    className: "text-center py-8",
+                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                        className: "text-gray-400",
+                        children: "No languages added yet."
+                    }, void 0, false, {
+                        fileName: "[project]/app/components/LanguageField.tsx",
+                        lineNumber: 230,
+                        columnNumber: 13
+                    }, this)
+                }, void 0, false, {
                     fileName: "[project]/app/components/LanguageField.tsx",
-                    lineNumber: 108,
+                    lineNumber: 229,
                     columnNumber: 11
-                }, this)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                className: "text-gray-400",
-                children: "No languages added."
+                }, this)
             }, void 0, false, {
                 fileName: "[project]/app/components/LanguageField.tsx",
-                lineNumber: 127,
-                columnNumber: 9
+                lineNumber: 169,
+                columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/LanguageField.tsx",
-        lineNumber: 66,
+        lineNumber: 124,
         columnNumber: 5
     }, this);
 };
-_s(LanguageField, "29kpkhfg3cmWUQK+/2bsco9r7xI=", false, function() {
+_s(LanguageField, "YIR1oWCO+5dyu/cq84C6dWkrqSs=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$providers$2f$ApplicantDetailsProvider$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useApplicant"]
     ];
@@ -1456,28 +2332,37 @@ var _s = __turbopack_refresh__.signature();
 ;
 const ProjectField = ()=>{
     _s();
-    const { projects, setProjects, setDeleteItems } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$providers$2f$ApplicantDetailsProvider$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useApplicant"])();
+    const { projects, setProjects, currentProjects, setCurrentProjects, setDeleteItems, deleteItems } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$providers$2f$ApplicantDetailsProvider$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useApplicant"])();
     const [newProject, setNewProject] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])({
         id: "",
         name: "",
         description: "",
         startDate: "",
         endDate: "",
-        url: ""
+        url: "",
+        isNew: false
     });
-    const handleChange = (e)=>{
-        setNewProject({
-            ...newProject,
-            [e.target.name]: e.target.value
-        });
-    };
     const handleAddProject = ()=>{
+        const newId = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$uuid$2f$dist$2f$esm$2d$browser$2f$v4$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__v4$3e$__["v4"])();
+        const newProjectWithId = {
+            ...newProject,
+            id: newId,
+            isNew: true
+        };
+        // For BE, exclude id if it's a new project
         setProjects([
             ...projects,
             {
-                ...newProject,
-                id: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$uuid$2f$dist$2f$esm$2d$browser$2f$v4$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__v4$3e$__["v4"])()
+                name: newProject.name,
+                description: newProject.description,
+                startDate: newProject.startDate,
+                endDate: newProject.endDate,
+                url: newProject.url
             }
+        ]);
+        setCurrentProjects([
+            ...currentProjects,
+            newProjectWithId
         ]);
         setNewProject({
             id: "",
@@ -1485,199 +2370,369 @@ const ProjectField = ()=>{
             description: "",
             startDate: "",
             endDate: "",
-            url: ""
+            url: "",
+            isNew: false
         });
     };
-    const handleEditProject = (id)=>{
-        const projectToEdit = projects.find((project)=>project.id === id);
-        if (projectToEdit) {
-            setNewProject(projectToEdit);
-        }
-    };
     const handleUpdateProject = ()=>{
-        setProjects(projects.map((project)=>project.id === newProject.id ? newProject : project));
+        const updatedProject = {
+            ...newProject
+        };
+        setCurrentProjects(currentProjects.map((project)=>project.id === newProject.id ? updatedProject : project));
+        setProjects(projects.map((project)=>project.id === newProject.id ? newProject.isNew ? {
+                name: newProject.name,
+                description: newProject.description,
+                startDate: newProject.startDate,
+                endDate: newProject.endDate,
+                url: newProject.url
+            } : updatedProject : project));
         setNewProject({
             id: "",
             name: "",
             description: "",
             startDate: "",
             endDate: "",
-            url: ""
+            url: "",
+            isNew: false
         });
+    };
+    const handleChange = (e)=>{
+        setNewProject({
+            ...newProject,
+            [e.target.name]: e.target.value
+        });
+    };
+    const handleEditProject = (id)=>{
+        const projectToEdit = currentProjects.find((project)=>project.id === id);
+        if (projectToEdit) {
+            setNewProject({
+                ...projectToEdit
+            });
+        }
     };
     const handleDeleteProject = (id)=>{
+        setCurrentProjects(currentProjects.filter((project)=>project.id !== id));
         setProjects(projects.filter((project)=>project.id !== id));
-        setDeleteItems((prevDeleteItems)=>{
-            return {
-                ...prevDeleteItems,
+        if (id) {
+            const updatedDeleteItems = {
+                ...deleteItems,
                 projects: [
-                    ...prevDeleteItems.projects,
+                    ...deleteItems.projects || [],
                     id
-                ]
+                ],
+                education: deleteItems.education || [],
+                experience: deleteItems.experience || [],
+                courses: deleteItems.courses || [],
+                certificates: deleteItems.certificates || [],
+                languages: deleteItems.languages || [],
+                socials: deleteItems.socials || [],
+                skills: deleteItems.skills || []
             };
-        });
+            setDeleteItems(updatedDeleteItems);
+        }
     };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-        className: "bg-gray-800 rounded-lg p-8 border border-gray-700",
+        className: "space-y-6",
         children: [
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                className: "text-2xl font-bold mb-4 text-white",
-                children: "Projects"
-            }, void 0, false, {
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "flex items-center justify-between",
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
+                        className: "text-2xl font-bold text-gray-300",
+                        children: "Projects"
+                    }, void 0, false, {
+                        fileName: "[project]/app/components/ProjectField.tsx",
+                        lineNumber: 138,
+                        columnNumber: 9
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "h-px flex-1 bg-gray-700 mx-4"
+                    }, void 0, false, {
+                        fileName: "[project]/app/components/ProjectField.tsx",
+                        lineNumber: 139,
+                        columnNumber: 9
+                    }, this)
+                ]
+            }, void 0, true, {
                 fileName: "[project]/app/components/ProjectField.tsx",
-                lineNumber: 81,
+                lineNumber: 137,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "mb-4",
+                className: "bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 shadow-lg",
                 children: [
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
-                        type: "text",
-                        name: "name",
-                        placeholder: "Project Name",
-                        value: newProject.name,
-                        onChange: handleChange,
-                        className: "p-2 mb-2 w-full rounded bg-gray-700 text-gray-300 border border-gray-600"
-                    }, void 0, false, {
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "grid grid-cols-1 gap-4",
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                type: "text",
+                                name: "name",
+                                placeholder: "Project Name",
+                                value: newProject.name,
+                                onChange: handleChange,
+                                className: "bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 placeholder-gray-500 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+                            }, void 0, false, {
+                                fileName: "[project]/app/components/ProjectField.tsx",
+                                lineNumber: 145,
+                                columnNumber: 11
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("textarea", {
+                                name: "description",
+                                placeholder: "Project Description",
+                                value: newProject.description,
+                                onChange: handleChange,
+                                rows: 3,
+                                className: "bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 placeholder-gray-500 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+                            }, void 0, false, {
+                                fileName: "[project]/app/components/ProjectField.tsx",
+                                lineNumber: 153,
+                                columnNumber: 11
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                type: "url",
+                                name: "url",
+                                placeholder: "Project URL",
+                                value: newProject.url,
+                                onChange: handleChange,
+                                className: "bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 placeholder-gray-500 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+                            }, void 0, false, {
+                                fileName: "[project]/app/components/ProjectField.tsx",
+                                lineNumber: 161,
+                                columnNumber: 11
+                            }, this)
+                        ]
+                    }, void 0, true, {
                         fileName: "[project]/app/components/ProjectField.tsx",
-                        lineNumber: 84,
+                        lineNumber: 144,
                         columnNumber: 9
                     }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
-                        type: "text",
-                        name: "description",
-                        placeholder: "Project Description",
-                        value: newProject.description,
-                        onChange: handleChange,
-                        className: "p-2 mb-2 w-full rounded bg-gray-700 text-gray-300 border border-gray-600"
-                    }, void 0, false, {
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "grid grid-cols-2 gap-4 mt-4",
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                type: "month",
+                                name: "startDate",
+                                value: newProject.startDate,
+                                onChange: handleChange,
+                                className: "bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+                            }, void 0, false, {
+                                fileName: "[project]/app/components/ProjectField.tsx",
+                                lineNumber: 172,
+                                columnNumber: 11
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                type: "month",
+                                name: "endDate",
+                                value: newProject.endDate,
+                                onChange: handleChange,
+                                className: "bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+                            }, void 0, false, {
+                                fileName: "[project]/app/components/ProjectField.tsx",
+                                lineNumber: 179,
+                                columnNumber: 11
+                            }, this)
+                        ]
+                    }, void 0, true, {
                         fileName: "[project]/app/components/ProjectField.tsx",
-                        lineNumber: 92,
-                        columnNumber: 9
-                    }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
-                        type: "month" // Changed to month input for start date
-                        ,
-                        name: "startDate",
-                        value: newProject.startDate,
-                        onChange: handleChange,
-                        className: "p-2 mb-2 w-full rounded bg-gray-700 text-gray-300 border border-gray-600"
-                    }, void 0, false, {
-                        fileName: "[project]/app/components/ProjectField.tsx",
-                        lineNumber: 100,
-                        columnNumber: 9
-                    }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
-                        type: "month" // Changed to month input for end date
-                        ,
-                        name: "endDate",
-                        value: newProject.endDate,
-                        onChange: handleChange,
-                        className: "p-2 mb-2 w-full rounded bg-gray-700 text-gray-300 border border-gray-600"
-                    }, void 0, false, {
-                        fileName: "[project]/app/components/ProjectField.tsx",
-                        lineNumber: 107,
-                        columnNumber: 9
-                    }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
-                        type: "text",
-                        name: "url",
-                        placeholder: "Project URL",
-                        value: newProject.url,
-                        onChange: handleChange,
-                        className: "p-2 mb-2 w-full rounded bg-gray-700 text-gray-300 border border-gray-600"
-                    }, void 0, false, {
-                        fileName: "[project]/app/components/ProjectField.tsx",
-                        lineNumber: 114,
+                        lineNumber: 171,
                         columnNumber: 9
                     }, this),
                     newProject.id ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                         onClick: handleUpdateProject,
-                        className: "bg-orange-600 w-full text-white p-2 font-bold rounded mt-2 hover:bg-orange-700",
+                        className: "mt-4 w-full bg-gradient-to-r from-orange-600 to-orange-700 text-white p-3 rounded-lg font-medium hover:from-orange-700 hover:to-orange-800 transition-all duration-200 shadow-lg",
                         children: "Update Project"
                     }, void 0, false, {
                         fileName: "[project]/app/components/ProjectField.tsx",
-                        lineNumber: 124,
+                        lineNumber: 189,
                         columnNumber: 11
                     }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                         onClick: handleAddProject,
-                        className: "bg-orange-600 w-full text-white p-2 font-bold rounded mt-2 hover:bg-orange-700",
+                        className: "mt-4 w-full bg-gradient-to-r from-orange-600 to-orange-700 text-white p-3 rounded-lg font-medium hover:from-orange-700 hover:to-orange-800 transition-all duration-200 shadow-lg",
                         children: "Add Project"
                     }, void 0, false, {
                         fileName: "[project]/app/components/ProjectField.tsx",
-                        lineNumber: 131,
+                        lineNumber: 196,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/ProjectField.tsx",
-                lineNumber: 83,
+                lineNumber: 143,
                 columnNumber: 7
             }, this),
-            projects.length > 0 ? projects.map((project)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                    className: "mb-4 text-gray-300",
-                    children: [
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
-                            children: project.name
-                        }, void 0, false, {
-                            fileName: "[project]/app/components/ProjectField.tsx",
-                            lineNumber: 144,
-                            columnNumber: 13
-                        }, this),
-                        " (",
-                        project.startDate,
-                        " -",
-                        " ",
-                        project.endDate,
-                        ")",
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "mt-2 flex",
-                            children: [
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                    onClick: ()=>handleEditProject(project.id),
-                                    className: "bg-transparent border-gray-300 border font-bold text-white w-1/2 p-2 rounded mr-2 hover:bg-[#01070a] hover:border-[#01070a]",
-                                    children: "Edit"
-                                }, void 0, false, {
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "space-y-4",
+                children: currentProjects.length > 0 ? currentProjects.map((project, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "group bg-gray-800/30 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 shadow-lg hover:bg-gray-800/50 transition-all duration-200",
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "flex justify-between items-start mb-4",
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
+                                                className: "text-xl font-semibold text-gray-200",
+                                                children: project.name
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/components/ProjectField.tsx",
+                                                lineNumber: 215,
+                                                columnNumber: 19
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                className: "text-gray-400 mt-2",
+                                                children: project.description
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/components/ProjectField.tsx",
+                                                lineNumber: 218,
+                                                columnNumber: 19
+                                            }, this),
+                                            project.url && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
+                                                href: project.url,
+                                                target: "_blank",
+                                                rel: "noopener noreferrer",
+                                                className: "text-blue-400 hover:text-blue-300 text-sm mt-2 inline-block",
+                                                children: "View Project →"
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/components/ProjectField.tsx",
+                                                lineNumber: 220,
+                                                columnNumber: 21
+                                            }, this)
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/app/components/ProjectField.tsx",
+                                        lineNumber: 214,
+                                        columnNumber: 17
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "flex space-x-2",
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                                onClick: ()=>project.id && handleEditProject(project.id),
+                                                className: "p-2 rounded-lg bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 hover:text-blue-300 transition-all",
+                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
+                                                    xmlns: "http://www.w3.org/2000/svg",
+                                                    className: "h-5 w-5",
+                                                    fill: "none",
+                                                    viewBox: "0 0 24 24",
+                                                    stroke: "currentColor",
+                                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
+                                                        strokeLinecap: "round",
+                                                        strokeLinejoin: "round",
+                                                        strokeWidth: 2,
+                                                        d: "M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/app/components/ProjectField.tsx",
+                                                        lineNumber: 242,
+                                                        columnNumber: 23
+                                                    }, this)
+                                                }, void 0, false, {
+                                                    fileName: "[project]/app/components/ProjectField.tsx",
+                                                    lineNumber: 235,
+                                                    columnNumber: 21
+                                                }, this)
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/components/ProjectField.tsx",
+                                                lineNumber: 231,
+                                                columnNumber: 19
+                                            }, this),
+                                            project.id && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                                onClick: ()=>project.id && handleDeleteProject(project.id),
+                                                className: "p-2 rounded-lg bg-red-500/20 text-red-400 hover:bg-red-500/30 hover:text-red-300 transition-all",
+                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
+                                                    xmlns: "http://www.w3.org/2000/svg",
+                                                    className: "h-5 w-5",
+                                                    fill: "none",
+                                                    viewBox: "0 0 24 24",
+                                                    stroke: "currentColor",
+                                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
+                                                        strokeLinecap: "round",
+                                                        strokeLinejoin: "round",
+                                                        strokeWidth: 2,
+                                                        d: "M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/app/components/ProjectField.tsx",
+                                                        lineNumber: 264,
+                                                        columnNumber: 25
+                                                    }, this)
+                                                }, void 0, false, {
+                                                    fileName: "[project]/app/components/ProjectField.tsx",
+                                                    lineNumber: 257,
+                                                    columnNumber: 23
+                                                }, this)
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/components/ProjectField.tsx",
+                                                lineNumber: 251,
+                                                columnNumber: 21
+                                            }, this)
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/app/components/ProjectField.tsx",
+                                        lineNumber: 230,
+                                        columnNumber: 17
+                                    }, this)
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/app/components/ProjectField.tsx",
+                                lineNumber: 213,
+                                columnNumber: 15
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "flex justify-between text-sm text-gray-400",
+                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                    children: [
+                                        new Date(project.startDate).toLocaleDateString("en-US", {
+                                            month: "short",
+                                            year: "numeric"
+                                        }),
+                                        " - ",
+                                        project.endDate ? new Date(project.endDate).toLocaleDateString("en-US", {
+                                            month: "short",
+                                            year: "numeric"
+                                        }) : "Present"
+                                    ]
+                                }, void 0, true, {
                                     fileName: "[project]/app/components/ProjectField.tsx",
-                                    lineNumber: 147,
-                                    columnNumber: 15
-                                }, this),
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                    onClick: ()=>handleDeleteProject(project.id),
-                                    className: "bg-transparent border border-gray-300 font-bold text-white w-1/2 p-2 rounded hover:bg-red-800 hover:border-red-800",
-                                    children: "Delete"
-                                }, void 0, false, {
-                                    fileName: "[project]/app/components/ProjectField.tsx",
-                                    lineNumber: 153,
-                                    columnNumber: 15
+                                    lineNumber: 276,
+                                    columnNumber: 17
                                 }, this)
-                            ]
-                        }, void 0, true, {
-                            fileName: "[project]/app/components/ProjectField.tsx",
-                            lineNumber: 146,
-                            columnNumber: 13
-                        }, this)
-                    ]
-                }, project.id, true, {
+                            }, void 0, false, {
+                                fileName: "[project]/app/components/ProjectField.tsx",
+                                lineNumber: 275,
+                                columnNumber: 15
+                            }, this)
+                        ]
+                    }, index, true, {
+                        fileName: "[project]/app/components/ProjectField.tsx",
+                        lineNumber: 209,
+                        columnNumber: 13
+                    }, this)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    className: "text-center py-8",
+                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                        className: "text-gray-400",
+                        children: "No projects added yet."
+                    }, void 0, false, {
+                        fileName: "[project]/app/components/ProjectField.tsx",
+                        lineNumber: 294,
+                        columnNumber: 13
+                    }, this)
+                }, void 0, false, {
                     fileName: "[project]/app/components/ProjectField.tsx",
-                    lineNumber: 143,
+                    lineNumber: 293,
                     columnNumber: 11
-                }, this)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                className: "text-gray-400",
-                children: "No projects added."
+                }, this)
             }, void 0, false, {
                 fileName: "[project]/app/components/ProjectField.tsx",
-                lineNumber: 163,
-                columnNumber: 9
+                lineNumber: 206,
+                columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/ProjectField.tsx",
-        lineNumber: 80,
+        lineNumber: 136,
         columnNumber: 5
     }, this);
 };
-_s(ProjectField, "v+CXB0+p1TYmHaqfUEvJ/N60a3I=", false, function() {
+_s(ProjectField, "o3ax0Xa9s3nmvW9F7BwCQUFwK84=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$providers$2f$ApplicantDetailsProvider$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useApplicant"]
     ];
@@ -1708,188 +2763,313 @@ var _s = __turbopack_refresh__.signature();
 ;
 ;
 ;
-const SkillField = ({ cvId })=>{
+const SkillField = ()=>{
     _s();
-    const { skills, setSkills, setDeleteItems } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$providers$2f$ApplicantDetailsProvider$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useApplicant"])();
+    const { skills, setSkills, setDeleteItems, deleteItems, currentSkills, setCurrentSkills } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$providers$2f$ApplicantDetailsProvider$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useApplicant"])();
     const [newSkill, setNewSkill] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])({
         id: "",
         name: "",
         efficiency: "",
-        cvId
+        isNew: false
     });
+    const handleAddSkill = ()=>{
+        const newId = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$uuid$2f$dist$2f$esm$2d$browser$2f$v4$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__v4$3e$__["v4"])();
+        const newSkillWithId = {
+            ...newSkill,
+            id: newId,
+            isNew: true
+        };
+        setSkills([
+            ...skills,
+            {
+                name: newSkill.name,
+                efficiency: newSkill.efficiency
+            }
+        ]);
+        setCurrentSkills([
+            ...currentSkills,
+            newSkillWithId
+        ]);
+        setNewSkill({
+            id: "",
+            name: "",
+            efficiency: "",
+            isNew: false
+        });
+    };
+    const handleUpdateSkill = ()=>{
+        const updatedSkill = {
+            ...newSkill
+        };
+        setCurrentSkills(currentSkills.map((skill)=>skill.id === newSkill.id ? updatedSkill : skill));
+        setSkills(skills.map((skill)=>skill.id === newSkill.id ? newSkill.isNew ? {
+                name: newSkill.name,
+                efficiency: newSkill.efficiency
+            } : updatedSkill : skill));
+        setNewSkill({
+            id: "",
+            name: "",
+            efficiency: "",
+            isNew: false
+        });
+    };
     const handleChange = (e)=>{
         setNewSkill({
             ...newSkill,
             [e.target.name]: e.target.value
         });
     };
-    const handleAddSkill = ()=>{
-        setSkills([
-            ...skills,
-            {
-                ...newSkill,
-                id: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$uuid$2f$dist$2f$esm$2d$browser$2f$v4$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__v4$3e$__["v4"])()
-            }
-        ]);
-        setNewSkill({
-            id: "",
-            name: "",
-            efficiency: "",
-            cvId
-        });
-    };
     const handleEditSkill = (id)=>{
-        const skillToEdit = skills.find((skill)=>skill.id === id);
+        const skillToEdit = currentSkills.find((skill)=>skill.id === id);
         if (skillToEdit) {
-            setNewSkill(skillToEdit);
+            setNewSkill({
+                ...skillToEdit
+            });
         }
     };
-    const handleUpdateSkill = ()=>{
-        setSkills(skills.map((skill)=>skill.id === newSkill.id ? newSkill : skill));
-        setNewSkill({
-            id: "",
-            name: "",
-            efficiency: "",
-            cvId
-        });
-    };
     const handleDeleteSkill = (id)=>{
+        setCurrentSkills(currentSkills.filter((skill)=>skill.id !== id));
         setSkills(skills.filter((skill)=>skill.id !== id));
-        setDeleteItems((prevDeleteItems)=>{
-            return {
-                ...prevDeleteItems,
+        if (id) {
+            const updatedDeleteItems = {
+                ...deleteItems,
                 skills: [
-                    ...prevDeleteItems.skills,
+                    ...deleteItems.skills || [],
                     id
-                ]
+                ],
+                education: deleteItems.education || [],
+                experience: deleteItems.experience || [],
+                projects: deleteItems.projects || [],
+                courses: deleteItems.courses || [],
+                languages: deleteItems.languages || [],
+                socials: deleteItems.socials || [],
+                certificates: deleteItems.certificates || []
             };
-        });
+            setDeleteItems(updatedDeleteItems);
+        }
     };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-        className: "bg-gray-800 rounded-lg p-8 border border-gray-700",
+        className: "space-y-6",
         children: [
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                className: "text-2xl font-bold mb-4 text-gray-300",
-                children: "Skills"
-            }, void 0, false, {
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "flex items-center justify-between",
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
+                        className: "text-2xl font-bold text-gray-300",
+                        children: "Skills"
+                    }, void 0, false, {
+                        fileName: "[project]/app/components/SkillField.tsx",
+                        lineNumber: 120,
+                        columnNumber: 9
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "h-px flex-1 bg-gray-700 mx-4"
+                    }, void 0, false, {
+                        fileName: "[project]/app/components/SkillField.tsx",
+                        lineNumber: 121,
+                        columnNumber: 9
+                    }, this)
+                ]
+            }, void 0, true, {
                 fileName: "[project]/app/components/SkillField.tsx",
-                lineNumber: 73,
+                lineNumber: 119,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "mb-4",
+                className: "bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 shadow-lg",
                 children: [
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
-                        type: "text",
-                        name: "name",
-                        placeholder: "Skill Name",
-                        value: newSkill.name,
-                        onChange: handleChange,
-                        className: "p-2 mb-2 w-full rounded bg-gray-700 text-gray-300 border border-gray-600"
-                    }, void 0, false, {
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "grid grid-cols-1 md:grid-cols-2 gap-4",
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                type: "text",
+                                name: "name",
+                                placeholder: "Skill Name",
+                                value: newSkill.name,
+                                onChange: handleChange,
+                                className: "bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 placeholder-gray-500 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+                            }, void 0, false, {
+                                fileName: "[project]/app/components/SkillField.tsx",
+                                lineNumber: 127,
+                                columnNumber: 11
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                type: "text",
+                                name: "efficiency",
+                                placeholder: "Efficiency Level",
+                                value: newSkill.efficiency,
+                                onChange: handleChange,
+                                className: "bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 placeholder-gray-500 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+                            }, void 0, false, {
+                                fileName: "[project]/app/components/SkillField.tsx",
+                                lineNumber: 135,
+                                columnNumber: 11
+                            }, this)
+                        ]
+                    }, void 0, true, {
                         fileName: "[project]/app/components/SkillField.tsx",
-                        lineNumber: 77,
-                        columnNumber: 9
-                    }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
-                        type: "text",
-                        name: "efficiency",
-                        placeholder: "Efficiency (e.g., Expert, Intermediate)",
-                        value: newSkill.efficiency,
-                        onChange: handleChange,
-                        className: "p-2 mb-2 w-full rounded bg-gray-700 text-gray-300 border border-gray-600"
-                    }, void 0, false, {
-                        fileName: "[project]/app/components/SkillField.tsx",
-                        lineNumber: 85,
+                        lineNumber: 126,
                         columnNumber: 9
                     }, this),
                     newSkill.id ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                         onClick: handleUpdateSkill,
-                        className: "bg-orange-600 w-full text-white p-2 font-bold rounded mt-2 hover:bg-orange-700",
+                        className: "mt-4 w-full bg-gradient-to-r from-orange-600 to-orange-700 text-white p-3 rounded-lg font-medium hover:from-orange-700 hover:to-orange-800 transition-all duration-200 shadow-lg",
                         children: "Update Skill"
                     }, void 0, false, {
                         fileName: "[project]/app/components/SkillField.tsx",
-                        lineNumber: 95,
+                        lineNumber: 146,
                         columnNumber: 11
                     }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                         onClick: handleAddSkill,
-                        className: "bg-orange-600 w-full text-white p-2 font-bold rounded mt-2 hover:bg-orange-700",
+                        className: "mt-4 w-full bg-gradient-to-r from-orange-600 to-orange-700 text-white p-3 rounded-lg font-medium hover:from-orange-700 hover:to-orange-800 transition-all duration-200 shadow-lg",
                         children: "Add Skill"
                     }, void 0, false, {
                         fileName: "[project]/app/components/SkillField.tsx",
-                        lineNumber: 102,
+                        lineNumber: 153,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/SkillField.tsx",
-                lineNumber: 76,
+                lineNumber: 125,
                 columnNumber: 7
             }, this),
-            skills?.length > 0 ? skills.map((skill)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                    className: "mb-4 text-gray-300",
-                    children: [
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                            className: "block w-full text-white font-bold rounded-md mb-2",
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "space-y-4",
+                children: currentSkills?.length > 0 ? currentSkills.map((skill)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "group bg-gray-800/30 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 shadow-lg hover:bg-gray-800/50 transition-all duration-200",
+                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            className: "flex justify-between items-start",
                             children: [
-                                skill.name,
-                                " (",
-                                skill.efficiency,
-                                ")"
-                            ]
-                        }, void 0, true, {
-                            fileName: "[project]/app/components/SkillField.tsx",
-                            lineNumber: 115,
-                            columnNumber: 13
-                        }, this),
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "mt-2 flex",
-                            children: [
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                    onClick: ()=>handleEditSkill(skill.id),
-                                    className: "bg-transparent border-gray-300 border font-bold text-white w-1/2 p-2 rounded mr-2 hover:bg-[#01070a] hover:border-[#01070a]",
-                                    children: "Edit"
-                                }, void 0, false, {
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
+                                            className: "text-xl font-semibold text-gray-200",
+                                            children: skill.name
+                                        }, void 0, false, {
+                                            fileName: "[project]/app/components/SkillField.tsx",
+                                            lineNumber: 172,
+                                            columnNumber: 19
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                            className: "text-gray-400",
+                                            children: skill.efficiency
+                                        }, void 0, false, {
+                                            fileName: "[project]/app/components/SkillField.tsx",
+                                            lineNumber: 175,
+                                            columnNumber: 19
+                                        }, this)
+                                    ]
+                                }, void 0, true, {
                                     fileName: "[project]/app/components/SkillField.tsx",
-                                    lineNumber: 119,
-                                    columnNumber: 15
+                                    lineNumber: 171,
+                                    columnNumber: 17
                                 }, this),
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                    onClick: ()=>handleDeleteSkill(skill.id),
-                                    className: "bg-red-500 font-bold text-white w-1/2 p-2 rounded hover:bg-red-600",
-                                    children: "Delete"
-                                }, void 0, false, {
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "flex space-x-2",
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                            onClick: ()=>skill.id && handleEditSkill(skill.id),
+                                            className: "p-2 rounded-lg bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 hover:text-blue-300 transition-all",
+                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
+                                                xmlns: "http://www.w3.org/2000/svg",
+                                                className: "h-5 w-5",
+                                                fill: "none",
+                                                viewBox: "0 0 24 24",
+                                                stroke: "currentColor",
+                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
+                                                    strokeLinecap: "round",
+                                                    strokeLinejoin: "round",
+                                                    strokeWidth: 2,
+                                                    d: "M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/app/components/SkillField.tsx",
+                                                    lineNumber: 189,
+                                                    columnNumber: 23
+                                                }, this)
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/components/SkillField.tsx",
+                                                lineNumber: 182,
+                                                columnNumber: 21
+                                            }, this)
+                                        }, void 0, false, {
+                                            fileName: "[project]/app/components/SkillField.tsx",
+                                            lineNumber: 178,
+                                            columnNumber: 19
+                                        }, this),
+                                        skill.id && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                            onClick: ()=>skill.id && handleDeleteSkill(skill.id),
+                                            className: "p-2 rounded-lg bg-red-500/20 text-red-400 hover:bg-red-500/30 hover:text-red-300 transition-all",
+                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
+                                                xmlns: "http://www.w3.org/2000/svg",
+                                                className: "h-5 w-5",
+                                                fill: "none",
+                                                viewBox: "0 0 24 24",
+                                                stroke: "currentColor",
+                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
+                                                    strokeLinecap: "round",
+                                                    strokeLinejoin: "round",
+                                                    strokeWidth: 2,
+                                                    d: "M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/app/components/SkillField.tsx",
+                                                    lineNumber: 209,
+                                                    columnNumber: 25
+                                                }, this)
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/components/SkillField.tsx",
+                                                lineNumber: 202,
+                                                columnNumber: 23
+                                            }, this)
+                                        }, void 0, false, {
+                                            fileName: "[project]/app/components/SkillField.tsx",
+                                            lineNumber: 198,
+                                            columnNumber: 21
+                                        }, this)
+                                    ]
+                                }, void 0, true, {
                                     fileName: "[project]/app/components/SkillField.tsx",
-                                    lineNumber: 125,
-                                    columnNumber: 15
+                                    lineNumber: 177,
+                                    columnNumber: 17
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/components/SkillField.tsx",
-                            lineNumber: 118,
-                            columnNumber: 13
+                            lineNumber: 170,
+                            columnNumber: 15
                         }, this)
-                    ]
-                }, skill.id, true, {
+                    }, skill.id, false, {
+                        fileName: "[project]/app/components/SkillField.tsx",
+                        lineNumber: 166,
+                        columnNumber: 13
+                    }, this)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    className: "text-center py-8",
+                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                        className: "text-gray-400",
+                        children: "No skills added yet."
+                    }, void 0, false, {
+                        fileName: "[project]/app/components/SkillField.tsx",
+                        lineNumber: 224,
+                        columnNumber: 13
+                    }, this)
+                }, void 0, false, {
                     fileName: "[project]/app/components/SkillField.tsx",
-                    lineNumber: 114,
+                    lineNumber: 223,
                     columnNumber: 11
-                }, this)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                className: "text-gray-400",
-                children: "No skills added."
+                }, this)
             }, void 0, false, {
                 fileName: "[project]/app/components/SkillField.tsx",
-                lineNumber: 135,
-                columnNumber: 9
+                lineNumber: 163,
+                columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/SkillField.tsx",
-        lineNumber: 72,
+        lineNumber: 118,
         columnNumber: 5
     }, this);
 };
-_s(SkillField, "xxz+i7+cVe7fPR2H18Q/bd+KfYk=", false, function() {
+_s(SkillField, "vaHfUZeWyVYu3UMYGFVv+18y3vs=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$providers$2f$ApplicantDetailsProvider$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useApplicant"]
     ];
@@ -1922,181 +3102,317 @@ var _s = __turbopack_refresh__.signature();
 ;
 const SocialField = ()=>{
     _s();
-    const { socials, setSocials, setDeleteItems } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$providers$2f$ApplicantDetailsProvider$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useApplicant"])();
+    const { socials, setSocials, setDeleteItems, deleteItems, currentSocials, setCurrentSocials } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$providers$2f$ApplicantDetailsProvider$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useApplicant"])();
     const [newSocial, setNewSocial] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])({
         id: "",
         name: "",
-        url: ""
+        url: "",
+        isNew: false
     });
+    const handleAddSocial = ()=>{
+        const newId = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$uuid$2f$dist$2f$esm$2d$browser$2f$v4$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__v4$3e$__["v4"])();
+        const newSocialWithId = {
+            ...newSocial,
+            id: newId,
+            isNew: true
+        };
+        // For BE, exclude id if it's a new social
+        setSocials([
+            ...socials,
+            {
+                name: newSocial.name,
+                url: newSocial.url
+            }
+        ]);
+        setCurrentSocials([
+            ...currentSocials,
+            newSocialWithId
+        ]);
+        setNewSocial({
+            id: "",
+            name: "",
+            url: "",
+            isNew: false
+        });
+    };
+    const handleUpdateSocial = ()=>{
+        const updatedSocial = {
+            ...newSocial
+        };
+        setCurrentSocials(currentSocials.map((social)=>social.id === newSocial.id ? updatedSocial : social));
+        // For BE, only include id if it's not a new social
+        setSocials(socials.map((social)=>social.id === newSocial.id ? newSocial.isNew ? {
+                name: newSocial.name,
+                url: newSocial.url
+            } : updatedSocial : social));
+        setNewSocial({
+            id: "",
+            name: "",
+            url: "",
+            isNew: false
+        });
+    };
     const handleChange = (e)=>{
         setNewSocial({
             ...newSocial,
             [e.target.name]: e.target.value
         });
     };
-    const handleAddSocial = ()=>{
-        setSocials([
-            ...socials,
-            {
-                ...newSocial,
-                id: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$uuid$2f$dist$2f$esm$2d$browser$2f$v4$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__v4$3e$__["v4"])()
-            }
-        ]);
-        setNewSocial({
-            id: "",
-            name: "",
-            url: ""
-        });
-    };
     const handleEditSocial = (id)=>{
-        const socialToEdit = socials.find((social)=>social.id === id);
+        const socialToEdit = currentSocials.find((social)=>social.id === id);
         if (socialToEdit) {
-            setNewSocial(socialToEdit);
+            // @ts-expect-error Expected type error due to potential undefined id
+            setNewSocial({
+                ...socialToEdit
+            });
         }
     };
-    const handleUpdateSocial = ()=>{
-        setSocials(socials.map((social)=>social.id === newSocial.id ? newSocial : social));
-        setNewSocial({
-            id: "",
-            name: "",
-            url: ""
-        });
-    };
     const handleDeleteSocial = (id)=>{
+        setCurrentSocials(currentSocials.filter((social)=>social.id !== id));
         setSocials(socials.filter((social)=>social.id !== id));
-        setDeleteItems((prevDeleteItems)=>{
-            return {
-                ...prevDeleteItems,
+        if (id) {
+            const updatedDeleteItems = {
+                ...deleteItems,
                 socials: [
-                    ...prevDeleteItems.socials,
+                    ...deleteItems.socials || [],
                     id
-                ]
+                ],
+                education: deleteItems.education || [],
+                experience: deleteItems.experience || [],
+                projects: deleteItems.projects || [],
+                courses: deleteItems.courses || [],
+                certificates: deleteItems.certificates || [],
+                languages: deleteItems.languages || [],
+                skills: deleteItems.skills || []
             };
-        });
+            setDeleteItems(updatedDeleteItems);
+        }
     };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-        className: "bg-gray-800 rounded-lg p-8 border border-gray-700",
+        className: "space-y-6",
         children: [
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                className: "text-2xl font-bold mb-4 text-gray-300",
-                children: "Socials"
-            }, void 0, false, {
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "flex items-center justify-between",
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
+                        className: "text-2xl font-bold text-gray-300",
+                        children: "Social Links"
+                    }, void 0, false, {
+                        fileName: "[project]/app/components/SocialField.tsx",
+                        lineNumber: 126,
+                        columnNumber: 9
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "h-px flex-1 bg-gray-700 mx-4"
+                    }, void 0, false, {
+                        fileName: "[project]/app/components/SocialField.tsx",
+                        lineNumber: 127,
+                        columnNumber: 9
+                    }, this)
+                ]
+            }, void 0, true, {
                 fileName: "[project]/app/components/SocialField.tsx",
-                lineNumber: 67,
+                lineNumber: 125,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "mb-4",
+                className: "bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 shadow-lg",
                 children: [
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
-                        type: "text",
-                        name: "name",
-                        placeholder: "Social Name",
-                        value: newSocial.name,
-                        onChange: handleChange,
-                        className: "p-2 mb-2 w-full rounded bg-gray-700 text-gray-300 border border-gray-600"
-                    }, void 0, false, {
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "grid grid-cols-1 md:grid-cols-2 gap-4",
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                type: "text",
+                                name: "name",
+                                placeholder: "Platform Name",
+                                value: newSocial.name,
+                                onChange: handleChange,
+                                className: "bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 placeholder-gray-500 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+                            }, void 0, false, {
+                                fileName: "[project]/app/components/SocialField.tsx",
+                                lineNumber: 133,
+                                columnNumber: 11
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                type: "url",
+                                name: "url",
+                                placeholder: "Profile URL",
+                                value: newSocial.url,
+                                onChange: handleChange,
+                                className: "bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 placeholder-gray-500 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+                            }, void 0, false, {
+                                fileName: "[project]/app/components/SocialField.tsx",
+                                lineNumber: 141,
+                                columnNumber: 11
+                            }, this)
+                        ]
+                    }, void 0, true, {
                         fileName: "[project]/app/components/SocialField.tsx",
-                        lineNumber: 71,
-                        columnNumber: 9
-                    }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
-                        type: "text",
-                        name: "url",
-                        placeholder: "Social URL (e.g., https://twitter.com)",
-                        value: newSocial.url,
-                        onChange: handleChange,
-                        className: "p-2 mb-2 w-full rounded bg-gray-700 text-gray-300 border border-gray-600"
-                    }, void 0, false, {
-                        fileName: "[project]/app/components/SocialField.tsx",
-                        lineNumber: 79,
+                        lineNumber: 132,
                         columnNumber: 9
                     }, this),
                     newSocial.id ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                         onClick: handleUpdateSocial,
-                        className: "bg-orange-600 w-full text-white p-2 font-bold rounded mt-2 hover:bg-orange-700",
-                        children: "Update Social"
+                        className: "mt-4 w-full bg-gradient-to-r from-orange-600 to-orange-700 text-white p-3 rounded-lg font-medium hover:from-orange-700 hover:to-orange-800 transition-all duration-200 shadow-lg",
+                        children: "Update Social Link"
                     }, void 0, false, {
                         fileName: "[project]/app/components/SocialField.tsx",
-                        lineNumber: 89,
+                        lineNumber: 152,
                         columnNumber: 11
                     }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                         onClick: handleAddSocial,
-                        className: "bg-orange-600 w-full text-white p-2 font-bold rounded mt-2 hover:bg-orange-700",
-                        children: "Add Social"
+                        className: "mt-4 w-full bg-gradient-to-r from-orange-600 to-orange-700 text-white p-3 rounded-lg font-medium hover:from-orange-700 hover:to-orange-800 transition-all duration-200 shadow-lg",
+                        children: "Add Social Link"
                     }, void 0, false, {
                         fileName: "[project]/app/components/SocialField.tsx",
-                        lineNumber: 96,
+                        lineNumber: 159,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/SocialField.tsx",
-                lineNumber: 70,
+                lineNumber: 131,
                 columnNumber: 7
             }, this),
-            socials.length > 0 ? socials.map((social)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                    className: "mb-4 text-gray-300",
-                    children: [
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
-                            href: social.url.startsWith("http") ? social.url : `https://${social.url}`,
-                            target: "_blank",
-                            rel: "noopener noreferrer",
-                            className: "block w-full text-white font-bold rounded-md mb-2",
-                            children: social.name
-                        }, void 0, false, {
-                            fileName: "[project]/app/components/SocialField.tsx",
-                            lineNumber: 109,
-                            columnNumber: 13
-                        }, this),
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "mt-2 flex",
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "space-y-4",
+                children: currentSocials?.length > 0 ? currentSocials.map((social)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "group bg-gray-800/30 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 shadow-lg hover:bg-gray-800/50 transition-all duration-200",
+                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            className: "flex justify-between items-start mb-4",
                             children: [
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                    onClick: ()=>handleEditSocial(social.id),
-                                    className: "bg-transparent border-gray-300 border font-bold text-white w-1/2 p-2 rounded mr-2 hover:bg-[#01070a] hover:border-[#01070a]",
-                                    children: "Edit"
-                                }, void 0, false, {
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
+                                            className: "text-xl font-semibold text-gray-200",
+                                            children: social.name
+                                        }, void 0, false, {
+                                            fileName: "[project]/app/components/SocialField.tsx",
+                                            lineNumber: 178,
+                                            columnNumber: 19
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
+                                            href: social.url.startsWith("http") ? social.url : `https://${social.url}`,
+                                            target: "_blank",
+                                            rel: "noopener noreferrer",
+                                            className: "text-blue-400 hover:text-blue-300 text-sm mt-2 inline-block",
+                                            children: "View Profile →"
+                                        }, void 0, false, {
+                                            fileName: "[project]/app/components/SocialField.tsx",
+                                            lineNumber: 181,
+                                            columnNumber: 19
+                                        }, this)
+                                    ]
+                                }, void 0, true, {
                                     fileName: "[project]/app/components/SocialField.tsx",
-                                    lineNumber: 122,
-                                    columnNumber: 15
+                                    lineNumber: 177,
+                                    columnNumber: 17
                                 }, this),
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                    onClick: ()=>handleDeleteSocial(social.id),
-                                    className: "bg-transparent border border-gray-300 font-bold text-white w-1/2 p-2 rounded hover:bg-red-800 hover:border-red-800",
-                                    children: "Delete"
-                                }, void 0, false, {
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "flex space-x-2",
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                            onClick: ()=>social.id && handleEditSocial(social.id),
+                                            className: "p-2 rounded-lg bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 hover:text-blue-300 transition-all",
+                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
+                                                xmlns: "http://www.w3.org/2000/svg",
+                                                className: "h-5 w-5",
+                                                fill: "none",
+                                                viewBox: "0 0 24 24",
+                                                stroke: "currentColor",
+                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
+                                                    strokeLinecap: "round",
+                                                    strokeLinejoin: "round",
+                                                    strokeWidth: 2,
+                                                    d: "M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/app/components/SocialField.tsx",
+                                                    lineNumber: 206,
+                                                    columnNumber: 23
+                                                }, this)
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/components/SocialField.tsx",
+                                                lineNumber: 199,
+                                                columnNumber: 21
+                                            }, this)
+                                        }, void 0, false, {
+                                            fileName: "[project]/app/components/SocialField.tsx",
+                                            lineNumber: 195,
+                                            columnNumber: 19
+                                        }, this),
+                                        social.id && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                            onClick: ()=>social.id && handleDeleteSocial(social.id),
+                                            className: "p-2 rounded-lg bg-red-500/20 text-red-400 hover:bg-red-500/30 hover:text-red-300 transition-all",
+                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
+                                                xmlns: "http://www.w3.org/2000/svg",
+                                                className: "h-5 w-5",
+                                                fill: "none",
+                                                viewBox: "0 0 24 24",
+                                                stroke: "currentColor",
+                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
+                                                    strokeLinecap: "round",
+                                                    strokeLinejoin: "round",
+                                                    strokeWidth: 2,
+                                                    d: "M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/app/components/SocialField.tsx",
+                                                    lineNumber: 226,
+                                                    columnNumber: 25
+                                                }, this)
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/components/SocialField.tsx",
+                                                lineNumber: 219,
+                                                columnNumber: 23
+                                            }, this)
+                                        }, void 0, false, {
+                                            fileName: "[project]/app/components/SocialField.tsx",
+                                            lineNumber: 215,
+                                            columnNumber: 21
+                                        }, this)
+                                    ]
+                                }, void 0, true, {
                                     fileName: "[project]/app/components/SocialField.tsx",
-                                    lineNumber: 128,
-                                    columnNumber: 15
+                                    lineNumber: 194,
+                                    columnNumber: 17
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/components/SocialField.tsx",
-                            lineNumber: 121,
-                            columnNumber: 13
+                            lineNumber: 176,
+                            columnNumber: 15
                         }, this)
-                    ]
-                }, social.id, true, {
+                    }, social.id, false, {
+                        fileName: "[project]/app/components/SocialField.tsx",
+                        lineNumber: 172,
+                        columnNumber: 13
+                    }, this)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    className: "text-center py-8",
+                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                        className: "text-gray-400",
+                        children: "No social links added yet."
+                    }, void 0, false, {
+                        fileName: "[project]/app/components/SocialField.tsx",
+                        lineNumber: 241,
+                        columnNumber: 13
+                    }, this)
+                }, void 0, false, {
                     fileName: "[project]/app/components/SocialField.tsx",
-                    lineNumber: 108,
+                    lineNumber: 240,
                     columnNumber: 11
-                }, this)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                className: "text-gray-400",
-                children: "No socials added."
+                }, this)
             }, void 0, false, {
                 fileName: "[project]/app/components/SocialField.tsx",
-                lineNumber: 138,
-                columnNumber: 9
+                lineNumber: 169,
+                columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/SocialField.tsx",
-        lineNumber: 66,
+        lineNumber: 124,
         columnNumber: 5
     }, this);
 };
-_s(SocialField, "EE8q7r+v0bui+mcUbi8xztJt5b4=", false, function() {
+_s(SocialField, "ICyOmUQ6KOhIru6+wZZ9XLOnJys=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$providers$2f$ApplicantDetailsProvider$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useApplicant"]
     ];
@@ -2143,7 +3459,7 @@ var _s = __turbopack_refresh__.signature();
 ;
 const ApplicantDetails = ()=>{
     _s();
-    const { loading, error, firstName, setFirstName, lastName, setLastName, email, setEmail, phone, setPhone, summary, setSummary, skills, hobbies, experience, projects, educations, certificates, courses, socials, languages, updateApplicant, applicant } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$providers$2f$ApplicantDetailsProvider$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useApplicant"])();
+    const { loading, error, firstName, setFirstName, lastName, setLastName, email, setEmail, phone, setPhone, summary, setSummary, currentSkills, hobbies, currentExperience, currentProjects, currentEducations, currentCertificates, currentCourses, currentSocials, currentLanguages, updateApplicant, applicant } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$providers$2f$ApplicantDetailsProvider$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useApplicant"])();
     const handleDownload = (fileUrl, fileName)=>{
         const link = document.createElement("a");
         link.href = fileUrl;
@@ -2157,23 +3473,16 @@ const ApplicantDetails = ()=>{
         // You can add save functionality here (API call to update applicant data)
         console.log("Saved Applicant:");
     };
-    if (loading) {
-        return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-            className: "text-white text-center py-12",
-            children: "Loading..."
-        }, void 0, false, {
-            fileName: "[project]/app/applicant/[id]/page.tsx",
-            lineNumber: 59,
-            columnNumber: 12
-        }, this);
-    }
+    // if (loading) {
+    //   return <div className="text-white text-center py-12">Loading...</div>;
+    // }
     if (error) {
         return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
             className: "text-red-500 text-center py-12",
             children: error
         }, void 0, false, {
             fileName: "[project]/app/applicant/[id]/page.tsx",
-            lineNumber: 63,
+            lineNumber: 64,
             columnNumber: 12
         }, this);
     }
@@ -2183,7 +3492,7 @@ const ApplicantDetails = ()=>{
             children: "No applicant found."
         }, void 0, false, {
             fileName: "[project]/app/applicant/[id]/page.tsx",
-            lineNumber: 68,
+            lineNumber: 69,
             columnNumber: 7
         }, this);
     }
@@ -2191,718 +3500,243 @@ const ApplicantDetails = ()=>{
         className: "min-h-screen bg-[#01070a] text-white py-12",
         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
             className: "container mx-auto px-4 flex space-x-5",
-            children: [
-                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                    className: "w-1/2",
-                    children: [
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "bg-gray-800 rounded-lg p-8 mb-8 border border-gray-700",
-                            children: [
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
-                                    className: "text-4xl font-bold mb-4 text-white",
-                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "flex space-x-4",
+            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "w-1/2 overflow-y-auto max-h-[80vh]",
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "space-y-6 mb-8",
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "flex items-center justify-between",
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
+                                        className: "text-2xl font-bold text-gray-300",
+                                        children: "Personal Information"
+                                    }, void 0, false, {
+                                        fileName: "[project]/app/applicant/[id]/page.tsx",
+                                        lineNumber: 81,
+                                        columnNumber: 15
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "h-px flex-1 bg-gray-700 mx-4"
+                                    }, void 0, false, {
+                                        fileName: "[project]/app/applicant/[id]/page.tsx",
+                                        lineNumber: 84,
+                                        columnNumber: 15
+                                    }, this)
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/app/applicant/[id]/page.tsx",
+                                lineNumber: 80,
+                                columnNumber: 13
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 shadow-lg",
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "grid grid-cols-2 gap-4 mb-4",
                                         children: [
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
                                                 type: "text",
                                                 placeholder: "First name",
                                                 value: firstName,
                                                 onChange: (e)=>setFirstName(e.target.value),
-                                                className: "p-2 mb-2 w-full rounded bg-gray-700 text-gray-300 border border-gray-600"
+                                                className: "bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 placeholder-gray-500 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                lineNumber: 81,
+                                                lineNumber: 89,
                                                 columnNumber: 17
                                             }, this),
-                                            " ",
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
                                                 type: "text",
                                                 placeholder: "Last Name",
                                                 value: lastName,
                                                 onChange: (e)=>setLastName(e.target.value),
-                                                className: "p-2 mb-2 w-full rounded bg-gray-700 text-gray-300 border border-gray-600"
+                                                className: "bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 placeholder-gray-500 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                lineNumber: 88,
+                                                lineNumber: 96,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/applicant/[id]/page.tsx",
-                                        lineNumber: 80,
+                                        lineNumber: 88,
                                         columnNumber: 15
-                                    }, this)
-                                }, void 0, false, {
-                                    fileName: "[project]/app/applicant/[id]/page.tsx",
-                                    lineNumber: 79,
-                                    columnNumber: 13
-                                }, this),
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "text-gray-300 space-y-2",
-                                    children: [
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "flex space-x-2 items-center mb-2",
-                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "grid grid-cols-2 gap-4",
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
                                                 type: "email",
                                                 placeholder: "Email",
                                                 value: email,
                                                 onChange: (e)=>setEmail(e.target.value),
-                                                className: "p-2 w-full rounded bg-gray-700 text-gray-300 border border-gray-600"
+                                                className: "bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 placeholder-gray-500 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                lineNumber: 99,
+                                                lineNumber: 105,
                                                 columnNumber: 17
-                                            }, this)
-                                        }, void 0, false, {
-                                            fileName: "[project]/app/applicant/[id]/page.tsx",
-                                            lineNumber: 98,
-                                            columnNumber: 15
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "flex space-x-2 items-center mb-2",
-                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
                                                 type: "text",
                                                 placeholder: "Phone Number",
                                                 value: phone,
                                                 onChange: (e)=>setPhone(e.target.value),
-                                                className: "p-2  w-full rounded bg-gray-700 text-gray-300 border border-gray-600"
+                                                className: "bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 placeholder-gray-500 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                lineNumber: 108,
-                                                columnNumber: 17
-                                            }, this)
-                                        }, void 0, false, {
-                                            fileName: "[project]/app/applicant/[id]/page.tsx",
-                                            lineNumber: 107,
-                                            columnNumber: 15
-                                        }, this)
-                                    ]
-                                }, void 0, true, {
-                                    fileName: "[project]/app/applicant/[id]/page.tsx",
-                                    lineNumber: 97,
-                                    columnNumber: 13
-                                }, this)
-                            ]
-                        }, void 0, true, {
-                            fileName: "[project]/app/applicant/[id]/page.tsx",
-                            lineNumber: 78,
-                            columnNumber: 11
-                        }, this),
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "",
-                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "lg:col-span-2 space-y-8",
-                                children: [
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "bg-gray-800 rounded-lg p-8 border border-gray-700",
-                                        children: [
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                                                className: "text-2xl font-bold mb-4 text-white",
-                                                children: "CV Summary"
-                                            }, void 0, false, {
-                                                fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                lineNumber: 124,
-                                                columnNumber: 17
-                                            }, this),
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("textarea", {
-                                                rows: 10,
-                                                value: summary || "",
-                                                onChange: (e)=>setSummary(e.target.value),
-                                                className: "p-2 w-full rounded bg-gray-700 text-gray-300 border border-gray-600"
-                                            }, void 0, false, {
-                                                fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                lineNumber: 127,
+                                                lineNumber: 112,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/applicant/[id]/page.tsx",
-                                        lineNumber: 123,
-                                        columnNumber: 15
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$EducationField$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
-                                        fileName: "[project]/app/applicant/[id]/page.tsx",
-                                        lineNumber: 135,
-                                        columnNumber: 15
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$ProjectField$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
-                                        fileName: "[project]/app/applicant/[id]/page.tsx",
-                                        lineNumber: 137,
-                                        columnNumber: 15
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$ExperienceField$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
-                                        fileName: "[project]/app/applicant/[id]/page.tsx",
-                                        lineNumber: 139,
-                                        columnNumber: 15
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$CertificateField$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
-                                        fileName: "[project]/app/applicant/[id]/page.tsx",
-                                        lineNumber: 141,
-                                        columnNumber: 15
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$CourseField$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
-                                        fileName: "[project]/app/applicant/[id]/page.tsx",
-                                        lineNumber: 143,
-                                        columnNumber: 15
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$SkillField$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                                        cvId: applicant.id
-                                    }, void 0, false, {
-                                        fileName: "[project]/app/applicant/[id]/page.tsx",
-                                        lineNumber: 145,
-                                        columnNumber: 15
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$LanguageField$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
-                                        fileName: "[project]/app/applicant/[id]/page.tsx",
-                                        lineNumber: 147,
-                                        columnNumber: 15
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$SocialField$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
-                                        fileName: "[project]/app/applicant/[id]/page.tsx",
-                                        lineNumber: 149,
-                                        columnNumber: 15
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$HobbyField$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
-                                        fileName: "[project]/app/applicant/[id]/page.tsx",
-                                        lineNumber: 151,
-                                        columnNumber: 15
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "bg-gray-800 rounded-lg p-8 border border-gray-700",
-                                        children: [
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                                                className: "text-2xl font-bold mb-4 text-white",
-                                                children: "Files"
-                                            }, void 0, false, {
-                                                fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                lineNumber: 154,
-                                                columnNumber: 17
-                                            }, this),
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("ul", {
-                                                className: "list-disc list-inside space-y-2 text-gray-300",
-                                                children: applicant.file?.length ? applicant.file.map((item, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
-                                                        onClick: ()=>handleDownload(item.url, item.name),
-                                                        children: [
-                                                            item.name,
-                                                            item.extension
-                                                        ]
-                                                    }, index, true, {
-                                                        fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                        lineNumber: 158,
-                                                        columnNumber: 25
-                                                    }, this)) : ""
-                                            }, void 0, false, {
-                                                fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                lineNumber: 155,
-                                                columnNumber: 17
-                                            }, this)
-                                        ]
-                                    }, void 0, true, {
-                                        fileName: "[project]/app/applicant/[id]/page.tsx",
-                                        lineNumber: 153,
+                                        lineNumber: 104,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/applicant/[id]/page.tsx",
-                                lineNumber: 121,
+                                lineNumber: 87,
                                 columnNumber: 13
                             }, this)
-                        }, void 0, false, {
-                            fileName: "[project]/app/applicant/[id]/page.tsx",
-                            lineNumber: 119,
-                            columnNumber: 11
-                        }, this)
-                    ]
-                }, void 0, true, {
-                    fileName: "[project]/app/applicant/[id]/page.tsx",
-                    lineNumber: 76,
-                    columnNumber: 9
-                }, this),
-                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                    className: "w-1/2 bg-gray-800 rounded-lg p-8 border border-gray-700",
-                    children: [
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "flex justify-between items-end pb-8 border-b border-gray-700",
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/app/applicant/[id]/page.tsx",
+                        lineNumber: 79,
+                        columnNumber: 11
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "",
+                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            className: "lg:col-span-2 space-y-8",
                             children: [
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
-                                    className: "text-4xl font-bold text-white",
-                                    children: "CV Preview"
-                                }, void 0, false, {
-                                    fileName: "[project]/app/applicant/[id]/page.tsx",
-                                    lineNumber: 174,
-                                    columnNumber: 13
-                                }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                        onClick: ()=>handleSave(),
-                                        className: "mt-4 font-bold w-full text-center bg-orange-600 hover:bg-orange-400 text-white py-2 px-8 rounded-md transition-colors",
-                                        children: "Save"
-                                    }, void 0, false, {
-                                        fileName: "[project]/app/applicant/[id]/page.tsx",
-                                        lineNumber: 176,
-                                        columnNumber: 15
-                                    }, this)
-                                }, void 0, false, {
-                                    fileName: "[project]/app/applicant/[id]/page.tsx",
-                                    lineNumber: 175,
-                                    columnNumber: 13
-                                }, this)
-                            ]
-                        }, void 0, true, {
-                            fileName: "[project]/app/applicant/[id]/page.tsx",
-                            lineNumber: 173,
-                            columnNumber: 11
-                        }, this),
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "py-8 mb-8",
-                            children: [
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
-                                    className: "text-4xl font-bold mb-4 text-white",
+                                    className: "space-y-6 mb-8",
                                     children: [
-                                        firstName,
-                                        " ",
-                                        lastName
-                                    ]
-                                }, void 0, true, {
-                                    fileName: "[project]/app/applicant/[id]/page.tsx",
-                                    lineNumber: 187,
-                                    columnNumber: 13
-                                }, this),
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "text-gray-300 space-y-2",
-                                    children: [
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                            className: "flex items-center justify-between",
                                             children: [
-                                                "Email: ",
-                                                email
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
+                                                    className: "text-2xl font-bold text-gray-300",
+                                                    children: "CV Summary"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/app/applicant/[id]/page.tsx",
+                                                    lineNumber: 129,
+                                                    columnNumber: 19
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                    className: "h-px flex-1 bg-gray-700 mx-4"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/app/applicant/[id]/page.tsx",
+                                                    lineNumber: 132,
+                                                    columnNumber: 19
+                                                }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/applicant/[id]/page.tsx",
-                                            lineNumber: 191,
-                                            columnNumber: 15
+                                            lineNumber: 128,
+                                            columnNumber: 17
                                         }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                            children: [
-                                                "Phone: ",
-                                                phone
-                                            ]
-                                        }, void 0, true, {
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                            className: "bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 shadow-lg",
+                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("textarea", {
+                                                rows: 10,
+                                                placeholder: "Write your CV summary here...",
+                                                value: summary || "",
+                                                onChange: (e)=>setSummary(e.target.value),
+                                                className: "w-full bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 placeholder-gray-500 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all resize-none"
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/applicant/[id]/page.tsx",
+                                                lineNumber: 136,
+                                                columnNumber: 19
+                                            }, this)
+                                        }, void 0, false, {
                                             fileName: "[project]/app/applicant/[id]/page.tsx",
-                                            lineNumber: 192,
-                                            columnNumber: 15
+                                            lineNumber: 135,
+                                            columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/applicant/[id]/page.tsx",
-                                    lineNumber: 190,
-                                    columnNumber: 13
-                                }, this)
-                            ]
-                        }, void 0, true, {
-                            fileName: "[project]/app/applicant/[id]/page.tsx",
-                            lineNumber: 186,
-                            columnNumber: 11
-                        }, this),
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "grid grid-cols-1 lg:grid-cols-3 gap-8",
-                            children: [
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "lg:col-span-2 space-y-8",
-                                    children: [
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "py-8",
-                                            children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                                                    className: "text-2xl font-bold mb-4 text-white",
-                                                    children: "CV Summary"
-                                                }, void 0, false, {
-                                                    fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                    lineNumber: 201,
-                                                    columnNumber: 17
-                                                }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                    className: "text-gray-300",
-                                                    children: summary || "N/A"
-                                                }, void 0, false, {
-                                                    fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                    lineNumber: 204,
-                                                    columnNumber: 17
-                                                }, this)
-                                            ]
-                                        }, void 0, true, {
-                                            fileName: "[project]/app/applicant/[id]/page.tsx",
-                                            lineNumber: 200,
-                                            columnNumber: 15
-                                        }, this),
-                                        educations?.length ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "py-8",
-                                            children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                                                    className: "text-2xl font-bold mb-4 text-white",
-                                                    children: "Educations"
-                                                }, void 0, false, {
-                                                    fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                    lineNumber: 209,
-                                                    columnNumber: 19
-                                                }, this),
-                                                educations.map((education, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                        children: [
-                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
-                                                                children: education.degree
-                                                            }, void 0, false, {
-                                                                fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                                lineNumber: 214,
-                                                                columnNumber: 23
-                                                            }, this),
-                                                            " in ",
-                                                            education.field,
-                                                            " ",
-                                                            "at ",
-                                                            education.institution,
-                                                            "(",
-                                                            education.startDate,
-                                                            " -",
-                                                            " ",
-                                                            education.endDate,
-                                                            ")"
-                                                        ]
-                                                    }, index, true, {
-                                                        fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                        lineNumber: 213,
-                                                        columnNumber: 21
-                                                    }, this))
-                                            ]
-                                        }, void 0, true, {
-                                            fileName: "[project]/app/applicant/[id]/page.tsx",
-                                            lineNumber: 208,
-                                            columnNumber: 17
-                                        }, this) : "",
-                                        projects?.length ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "py-8",
-                                            children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                                                    className: "text-2xl font-bold mb-4 text-white",
-                                                    children: "Projects"
-                                                }, void 0, false, {
-                                                    fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                    lineNumber: 226,
-                                                    columnNumber: 19
-                                                }, this),
-                                                projects.map((project, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
-                                                            children: project.name
-                                                        }, void 0, false, {
-                                                            fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                            lineNumber: 231,
-                                                            columnNumber: 23
-                                                        }, this)
-                                                    }, index, false, {
-                                                        fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                        lineNumber: 230,
-                                                        columnNumber: 21
-                                                    }, this))
-                                            ]
-                                        }, void 0, true, {
-                                            fileName: "[project]/app/applicant/[id]/page.tsx",
-                                            lineNumber: 225,
-                                            columnNumber: 17
-                                        }, this) : "",
-                                        experience?.length ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "py-8",
-                                            children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                                                    className: "text-2xl font-bold mb-4 text-white",
-                                                    children: "Experiences"
-                                                }, void 0, false, {
-                                                    fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                    lineNumber: 241,
-                                                    columnNumber: 19
-                                                }, this),
-                                                experience.map((experience, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                        children: [
-                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
-                                                                children: experience.position
-                                                            }, void 0, false, {
-                                                                fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                                lineNumber: 246,
-                                                                columnNumber: 23
-                                                            }, this),
-                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                                className: "opacity-70",
-                                                                children: [
-                                                                    " ",
-                                                                    "at ",
-                                                                    experience.company
-                                                                ]
-                                                            }, void 0, true, {
-                                                                fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                                lineNumber: 247,
-                                                                columnNumber: 23
-                                                            }, this),
-                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                                children: experience.description
-                                                            }, void 0, false, {
-                                                                fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                                lineNumber: 251,
-                                                                columnNumber: 23
-                                                            }, this)
-                                                        ]
-                                                    }, index, true, {
-                                                        fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                        lineNumber: 245,
-                                                        columnNumber: 21
-                                                    }, this))
-                                            ]
-                                        }, void 0, true, {
-                                            fileName: "[project]/app/applicant/[id]/page.tsx",
-                                            lineNumber: 240,
-                                            columnNumber: 17
-                                        }, this) : ""
-                                    ]
-                                }, void 0, true, {
-                                    fileName: "[project]/app/applicant/[id]/page.tsx",
-                                    lineNumber: 198,
-                                    columnNumber: 13
+                                    lineNumber: 127,
+                                    columnNumber: 15
                                 }, this),
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "lg:col-span-1 space-y-8",
-                                    children: [
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "py-8",
-                                            children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                                                    className: "text-2xl font-bold mb-4 text-white",
-                                                    children: "Skills"
-                                                }, void 0, false, {
-                                                    fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                    lineNumber: 264,
-                                                    columnNumber: 17
-                                                }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    className: "flex flex-wrap gap-2",
-                                                    children: skills?.length ? skills.map((skill, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                            children: [
-                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
-                                                                    children: skill.name
-                                                                }, void 0, false, {
-                                                                    fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                                    lineNumber: 269,
-                                                                    columnNumber: 27
-                                                                }, this),
-                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                                    className: "opacity-70",
-                                                                    children: [
-                                                                        "- ",
-                                                                        skill.efficiency
-                                                                    ]
-                                                                }, void 0, true, {
-                                                                    fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                                    lineNumber: 270,
-                                                                    columnNumber: 27
-                                                                }, this)
-                                                            ]
-                                                        }, index, true, {
-                                                            fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                            lineNumber: 268,
-                                                            columnNumber: 25
-                                                        }, this)) : ""
-                                                }, void 0, false, {
-                                                    fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                    lineNumber: 265,
-                                                    columnNumber: 17
-                                                }, this)
-                                            ]
-                                        }, void 0, true, {
-                                            fileName: "[project]/app/applicant/[id]/page.tsx",
-                                            lineNumber: 263,
-                                            columnNumber: 15
-                                        }, this),
-                                        certificates?.length ? certificates.map((certificate, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                className: "py-8",
-                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                                                    className: "text-2xl font-bold mb-4 text-white",
-                                                    children: certificate.name
-                                                }, void 0, false, {
-                                                    fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                    lineNumber: 282,
-                                                    columnNumber: 23
-                                                }, this)
-                                            }, index, false, {
-                                                fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                lineNumber: 281,
-                                                columnNumber: 21
-                                            }, this)) : "",
-                                        courses?.length ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "py-8",
-                                            children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                                                    className: "text-2xl font-bold mb-4 text-white",
-                                                    children: "Courses"
-                                                }, void 0, false, {
-                                                    fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                    lineNumber: 291,
-                                                    columnNumber: 19
-                                                }, this),
-                                                courses.map((course, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
-                                                            children: course.name
-                                                        }, void 0, false, {
-                                                            fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                            lineNumber: 296,
-                                                            columnNumber: 23
-                                                        }, this)
-                                                    }, index, false, {
-                                                        fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                        lineNumber: 295,
-                                                        columnNumber: 21
-                                                    }, this))
-                                            ]
-                                        }, void 0, true, {
-                                            fileName: "[project]/app/applicant/[id]/page.tsx",
-                                            lineNumber: 290,
-                                            columnNumber: 17
-                                        }, this) : "",
-                                        languages?.length ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "py-8",
-                                            children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                                                    className: "text-2xl font-bold mb-4 text-white",
-                                                    children: "Languages"
-                                                }, void 0, false, {
-                                                    fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                    lineNumber: 306,
-                                                    columnNumber: 19
-                                                }, this),
-                                                languages.map((language, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                        children: [
-                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
-                                                                children: language.name
-                                                            }, void 0, false, {
-                                                                fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                                lineNumber: 311,
-                                                                columnNumber: 23
-                                                            }, this),
-                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                                className: "opacity-70",
-                                                                children: [
-                                                                    " ",
-                                                                    "- ",
-                                                                    language.efficiency
-                                                                ]
-                                                            }, void 0, true, {
-                                                                fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                                lineNumber: 312,
-                                                                columnNumber: 23
-                                                            }, this)
-                                                        ]
-                                                    }, index, true, {
-                                                        fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                        lineNumber: 310,
-                                                        columnNumber: 21
-                                                    }, this))
-                                            ]
-                                        }, void 0, true, {
-                                            fileName: "[project]/app/applicant/[id]/page.tsx",
-                                            lineNumber: 305,
-                                            columnNumber: 17
-                                        }, this) : "",
-                                        socials?.length ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "py-8",
-                                            children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                                                    className: "text-2xl font-bold mb-4 text-white",
-                                                    children: "Socials"
-                                                }, void 0, false, {
-                                                    fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                    lineNumber: 325,
-                                                    columnNumber: 19
-                                                }, this),
-                                                socials.map((social, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
-                                                            href: social.url.startsWith("http") ? social.url : `https://${social.url}`,
-                                                            target: "_blank",
-                                                            rel: "noopener noreferrer",
-                                                            className: "block w-full text-white font-bold rounded-md mb-2",
-                                                            children: social.name
-                                                        }, social.id, false, {
-                                                            fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                            lineNumber: 330,
-                                                            columnNumber: 23
-                                                        }, this)
-                                                    }, index, false, {
-                                                        fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                        lineNumber: 329,
-                                                        columnNumber: 21
-                                                    }, this))
-                                            ]
-                                        }, void 0, true, {
-                                            fileName: "[project]/app/applicant/[id]/page.tsx",
-                                            lineNumber: 324,
-                                            columnNumber: 17
-                                        }, this) : "",
-                                        hobbies?.length ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "py-8",
-                                            children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                                                    className: "text-2xl font-bold mb-4 text-white",
-                                                    children: "Hobbies"
-                                                }, void 0, false, {
-                                                    fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                    lineNumber: 353,
-                                                    columnNumber: 19
-                                                }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("ul", {
-                                                    className: "list-disc list-inside space-y-2 text-gray-300",
-                                                    children: hobbies.map((hobby, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
-                                                            children: hobby
-                                                        }, index, false, {
-                                                            fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                            lineNumber: 358,
-                                                            columnNumber: 23
-                                                        }, this))
-                                                }, void 0, false, {
-                                                    fileName: "[project]/app/applicant/[id]/page.tsx",
-                                                    lineNumber: 356,
-                                                    columnNumber: 19
-                                                }, this)
-                                            ]
-                                        }, void 0, true, {
-                                            fileName: "[project]/app/applicant/[id]/page.tsx",
-                                            lineNumber: 352,
-                                            columnNumber: 17
-                                        }, this) : ""
-                                    ]
-                                }, void 0, true, {
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$EducationField$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                                     fileName: "[project]/app/applicant/[id]/page.tsx",
-                                    lineNumber: 261,
-                                    columnNumber: 13
+                                    lineNumber: 146,
+                                    columnNumber: 15
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$ProjectField$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
+                                    fileName: "[project]/app/applicant/[id]/page.tsx",
+                                    lineNumber: 148,
+                                    columnNumber: 15
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$ExperienceField$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
+                                    fileName: "[project]/app/applicant/[id]/page.tsx",
+                                    lineNumber: 150,
+                                    columnNumber: 15
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$CertificateField$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
+                                    fileName: "[project]/app/applicant/[id]/page.tsx",
+                                    lineNumber: 152,
+                                    columnNumber: 15
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$CourseField$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
+                                    fileName: "[project]/app/applicant/[id]/page.tsx",
+                                    lineNumber: 154,
+                                    columnNumber: 15
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$SkillField$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
+                                    fileName: "[project]/app/applicant/[id]/page.tsx",
+                                    lineNumber: 156,
+                                    columnNumber: 15
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$LanguageField$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
+                                    fileName: "[project]/app/applicant/[id]/page.tsx",
+                                    lineNumber: 158,
+                                    columnNumber: 15
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$SocialField$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
+                                    fileName: "[project]/app/applicant/[id]/page.tsx",
+                                    lineNumber: 160,
+                                    columnNumber: 15
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$HobbyField$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
+                                    fileName: "[project]/app/applicant/[id]/page.tsx",
+                                    lineNumber: 162,
+                                    columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/applicant/[id]/page.tsx",
-                            lineNumber: 196,
-                            columnNumber: 11
+                            lineNumber: 125,
+                            columnNumber: 13
                         }, this)
-                    ]
-                }, void 0, true, {
-                    fileName: "[project]/app/applicant/[id]/page.tsx",
-                    lineNumber: 172,
-                    columnNumber: 9
-                }, this)
-            ]
-        }, void 0, true, {
+                    }, void 0, false, {
+                        fileName: "[project]/app/applicant/[id]/page.tsx",
+                        lineNumber: 123,
+                        columnNumber: 11
+                    }, this)
+                ]
+            }, void 0, true, {
+                fileName: "[project]/app/applicant/[id]/page.tsx",
+                lineNumber: 77,
+                columnNumber: 9
+            }, this)
+        }, void 0, false, {
             fileName: "[project]/app/applicant/[id]/page.tsx",
-            lineNumber: 75,
+            lineNumber: 76,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/app/applicant/[id]/page.tsx",
-        lineNumber: 73,
+        lineNumber: 74,
         columnNumber: 5
     }, this);
 };
-_s(ApplicantDetails, "vzeXpNX8yMf0CyGMO43vQ7TF7fU=", false, function() {
+_s(ApplicantDetails, "eFyCjvoLl85ktH/2dAGhgJa5wjU=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$providers$2f$ApplicantDetailsProvider$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useApplicant"]
     ];

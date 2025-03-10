@@ -7,16 +7,100 @@ export interface ILanguage {
   id: string;
   name: string;
   efficiency: string;
+  isNew?: boolean;
 }
 
 const LanguageField = () => {
-  const { languages, setLanguages, setDeleteItems } = useApplicant();
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const efficiencyLevels = [
+    { value: "beginner", label: "Beginner" },
+    { value: "intermediate", label: "Intermediate" },
+    { value: "advanced", label: "Advanced" },
+    { value: "expert", label: "Expert" },
+  ];
+
+  const {
+    languages,
+    setLanguages,
+    setDeleteItems,
+    deleteItems,
+    currentLanguages,
+    setCurrentLanguages,
+  } = useApplicant();
 
   const [newLanguage, setNewLanguage] = useState<ILanguage>({
     id: "",
     name: "",
     efficiency: "",
+    isNew: false,
   });
+
+  const handleEfficiencySelect = (value: string) => {
+    setNewLanguage({
+      ...newLanguage,
+      efficiency: value,
+    });
+    setIsDropdownOpen(false);
+  };
+
+  const handleAddLanguage = () => {
+    const newId = uuidv4();
+    const newLanguageWithId = {
+      ...newLanguage,
+      id: newId,
+      isNew: true,
+    };
+
+    // For BE, exclude id if it's a new language
+    setLanguages([
+      ...languages,
+      {
+        name: newLanguage.name,
+        efficiency: newLanguage.efficiency,
+      },
+    ]);
+
+    setCurrentLanguages([...currentLanguages, newLanguageWithId]);
+
+    setNewLanguage({
+      id: "",
+      name: "",
+      efficiency: "",
+      isNew: false,
+    });
+  };
+
+  const handleUpdateLanguage = () => {
+    const updatedLanguage = { ...newLanguage };
+
+    setCurrentLanguages(
+      currentLanguages.map((lang) =>
+        lang.id === newLanguage.id ? updatedLanguage : lang
+      )
+    );
+
+    // For BE, only include id if it's not a new language
+    setLanguages(
+      languages.map((lang) =>
+        lang.id === newLanguage.id
+          ? newLanguage.isNew
+            ? {
+                name: newLanguage.name,
+                efficiency: newLanguage.efficiency,
+              }
+            : updatedLanguage
+          : lang
+      )
+    );
+
+    setNewLanguage({
+      id: "",
+      name: "",
+      efficiency: "",
+      isNew: false,
+    });
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewLanguage({
@@ -25,107 +109,180 @@ const LanguageField = () => {
     });
   };
 
-  const handleAddLanguage = () => {
-    setLanguages([...languages, { ...newLanguage, id: uuidv4() }]);
-    setNewLanguage({
-      id: "",
-      name: "",
-      efficiency: "",
-    });
-  };
-
   const handleEditLanguage = (id: string) => {
-    const languageToEdit = languages.find((lang) => lang.id === id);
+    const languageToEdit = currentLanguages.find((lang) => lang.id === id);
     if (languageToEdit) {
-      setNewLanguage(languageToEdit);
+      // @ts-expect-error Expected type error due to potential undefined id
+      setNewLanguage({ ...languageToEdit });
     }
   };
 
-  const handleUpdateLanguage = () => {
-    setLanguages(
-      languages.map((lang) => (lang.id === newLanguage.id ? newLanguage : lang))
-    );
-    setNewLanguage({
-      id: "",
-      name: "",
-      efficiency: "",
-    });
-  };
-
   const handleDeleteLanguage = (id: string) => {
+    setCurrentLanguages(currentLanguages.filter((lang) => lang.id !== id));
     setLanguages(languages.filter((lang) => lang.id !== id));
-    setDeleteItems((prevDeleteItems: IDelete) => {
-      return {
-        ...prevDeleteItems,
-        languages: [...prevDeleteItems.languages, id],
+
+    if (id) {
+      const updatedDeleteItems: IDelete = {
+        ...deleteItems,
+        languages: [...(deleteItems.languages || []), id],
+        education: deleteItems.education || [],
+        experience: deleteItems.experience || [],
+        projects: deleteItems.projects || [],
+        courses: deleteItems.courses || [],
+        certificates: deleteItems.certificates || [],
+        socials: deleteItems.socials || [],
+        skills: deleteItems.skills || [],
       };
-    });
+      setDeleteItems(updatedDeleteItems);
+    }
   };
 
   return (
-    <div className="bg-gray-800 rounded-lg p-8 border border-gray-700">
-      <h2 className="text-2xl font-bold mb-4 text-gray-300">Languages</h2>
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <h2 className="text-2xl font-bold text-gray-300">Languages</h2>
+        <div className="h-px flex-1 bg-gray-700 mx-4" />
+      </div>
 
       {/* Add New Language Form */}
-      <div className="mb-4">
-        <input
-          type="text"
-          name="name"
-          placeholder="Language Name"
-          value={newLanguage.name}
-          onChange={handleChange}
-          className="p-2 mb-2 w-full rounded bg-gray-700 text-gray-300 border border-gray-600"
-        />
-        <input
-          type="text"
-          name="efficiency"
-          placeholder="Efficiency (e.g., Beginner, Intermediate, Fluent)"
-          value={newLanguage.efficiency}
-          onChange={handleChange}
-          className="p-2 mb-2 w-full rounded bg-gray-700 text-gray-300 border border-gray-600"
-        />
+      <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 shadow-lg relative z-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <input
+            type="text"
+            name="name"
+            placeholder="Language Name"
+            value={newLanguage.name}
+            onChange={handleChange}
+            className="bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 placeholder-gray-500 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+          />
+          <div className="relative">
+            <div
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              className="bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 cursor-pointer flex justify-between items-center"
+            >
+              <span
+                className={
+                  newLanguage.efficiency ? "text-gray-300" : "text-gray-500"
+                }
+              >
+                {newLanguage.efficiency || "Select Efficiency Level"}
+              </span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className={`h-5 w-5 transition-transform ${
+                  isDropdownOpen ? "rotate-180" : ""
+                }`}
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </div>
+            {isDropdownOpen && (
+              <div className="absolute z-50 w-full mt-2 bg-gray-800 backdrop-blur-sm border border-gray-700 rounded-lg shadow-xl">
+                {efficiencyLevels.map((level) => (
+                  <div
+                    key={level.value}
+                    onClick={() => handleEfficiencySelect(level.value)}
+                    className="px-4 z-50 py-3 cursor-pointer hover:bg-gray-700 first:rounded-t-lg last:rounded-b-lg text-gray-300"
+                  >
+                    {level.label}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
 
         {newLanguage.id ? (
           <button
             onClick={handleUpdateLanguage}
-            className="bg-orange-600 w-full text-white p-2 font-bold rounded mt-2 hover:bg-orange-700"
+            className="mt-4 w-full bg-gradient-to-r from-orange-600 to-orange-700 text-white p-3 rounded-lg font-medium hover:from-orange-700 hover:to-orange-800 transition-all duration-200 shadow-lg"
           >
             Update Language
           </button>
         ) : (
           <button
             onClick={handleAddLanguage}
-            className="bg-orange-600 w-full text-white p-2 font-bold rounded mt-2 hover:bg-orange-700"
+            className="mt-4 w-full bg-gradient-to-r from-orange-600 to-orange-700 text-white p-3 rounded-lg font-medium hover:from-orange-700 hover:to-orange-800 transition-all duration-200 shadow-lg"
           >
             Add Language
           </button>
         )}
       </div>
 
-      {/* Display List of Languages */}
-      {languages.length > 0 ? (
-        languages.map((lang) => (
-          <div key={lang.id} className="mb-4 text-gray-300">
-            <strong>{lang.name}</strong> ({lang.efficiency})
-            <div className="mt-2 flex">
-              <button
-                onClick={() => handleEditLanguage(lang.id)}
-                className="bg-transparent border-gray-300 border font-bold text-white w-1/2 p-2 rounded mr-2 hover:bg-[#01070a] hover:border-[#01070a]"
-              >
-                Edit
-              </button>
-              <button
-                onClick={() => handleDeleteLanguage(lang.id)}
-                className="bg-transparent border border-gray-300 font-bold text-white w-1/2 p-2 rounded hover:bg-red-800 hover:border-red-800"
-              >
-                Delete
-              </button>
+      {/* Languages List */}
+      <div className="space-y-4 relative z-0">
+        {currentLanguages?.length > 0 ? (
+          currentLanguages.map((lang) => (
+            <div
+              key={lang.id}
+              className="group bg-gray-800/30 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 shadow-lg hover:bg-gray-800/50 transition-all duration-200"
+            >
+              <div className="flex justify-between items-start mb-4">
+                <div>
+                  <h3 className="text-xl font-semibold text-gray-200">
+                    {lang.name}
+                  </h3>
+                  <p className="text-gray-400">{lang.efficiency}</p>
+                </div>
+                <div className="flex space-x-2">
+                  <button
+                    onClick={() => lang.id && handleEditLanguage(lang.id)}
+                    className="p-2 rounded-lg bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 hover:text-blue-300 transition-all"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-5 w-5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                      />
+                    </svg>
+                  </button>
+                  {lang.id && (
+                    <button
+                      onClick={() => lang.id && handleDeleteLanguage(lang.id)}
+                      className="p-2 rounded-lg bg-red-500/20 text-red-400 hover:bg-red-500/30 hover:text-red-300 transition-all"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-5 w-5"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                        />
+                      </svg>
+                    </button>
+                  )}
+                </div>
+              </div>
             </div>
+          ))
+        ) : (
+          <div className="text-center py-8">
+            <p className="text-gray-400">No languages added yet.</p>
           </div>
-        ))
-      ) : (
-        <p className="text-gray-400">No languages added.</p>
-      )}
+        )}
+      </div>
     </div>
   );
 };

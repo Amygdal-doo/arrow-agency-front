@@ -1,3 +1,18 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.continuation-page {
+  padding-top: 40mm;
+}
+
+@media print {
+  @page {
+    margin: 0;
+    size: A4;
+  }
+
+  .page-break {
+    break-before: page;
+  }
+}
