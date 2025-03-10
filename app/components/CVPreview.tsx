@@ -71,7 +71,7 @@ const CVPreview = () => {
   };
 
   return (
-    <div className="w-1/2 bg-gray-800/50 rounded-lg p-8 border border-gray-700 overflow-y-auto max-h-[80vh]">
+    <div className="w-1/2 bg-gray-800/50 rounded-lg p-8 border border-gray-700 overflow-y-auto max-h-[80vh] scrollbar-hide">
       <div className="flex justify-between items-end pb-8 border-b border-gray-700">
         <h1 className="text-4xl font-bold text-white">CV Preview</h1>
         <div className="flex gap-4">

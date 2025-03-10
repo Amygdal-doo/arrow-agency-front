@@ -2,17 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
-.continuation-page {
-  padding-top: 40mm;
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
-@media print {
-  @page {
-    margin: 0;
-    size: A4;
-  }
-
-  .page-break {
-    break-before: page;
-  }
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* Chrome, Safari and Opera */
 }

@@ -363,10 +363,6 @@ img, video {
   top: 1rem;
 }
 
-.bottom-4 {
-  bottom: 1rem;
-}
-
 .z-0 {
   z-index: 0;
 }
@@ -1122,10 +1118,6 @@ img, video {
   padding-top: 2rem;
 }
 
-.pt-\[40mm\] {
-  padding-top: 40mm;
-}
-
 .text-center {
   text-align: center;
 }
@@ -1433,19 +1425,13 @@ img, video {
   transition-duration: .3s;
 }
 
-.continuation-page {
-  padding-top: 40mm;
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
-@media print {
-  @page {
-    margin: 0;
-    size: A4;
-  }
-
-  .page-break {
-    break-before: page;
-  }
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
 }
 
 .first\:rounded-t-lg:first-child {

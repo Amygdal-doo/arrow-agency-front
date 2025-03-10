@@ -74,7 +74,7 @@ const ApplicantDetails = () => {
     <div className="min-h-screen bg-[#01070a] text-white py-12">
       {/* <pre>{JSON.stringify(applicant, null, 2)}</pre> */}
       <div className="container mx-auto px-4 flex space-x-5">
-        <div className="w-1/2 overflow-y-auto max-h-[80vh]">
+        <div className="w-1/2 overflow-y-auto max-h-[80vh] scrollbar-hide">
           {/* Header Section */}
           <div className="space-y-6 mb-8">
             <div className="flex items-center justify-between">
