@@ -49,6 +49,9 @@ const userFormSchema = __TURBOPACK__imported__module__$5b$project$5d2f$node_modu
     name: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$zod$2f$lib$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["z"].string().min(2, {
         message: "Name must be at least 2 characters."
     }),
+    companyName: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$zod$2f$lib$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["z"].string().min(2, {
+        message: "Company Name must be at least 2 characters."
+    }),
     surname: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$zod$2f$lib$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["z"].string().min(2, {
         message: "Surname must be at least 2 characters."
     }),
@@ -72,6 +75,7 @@ const CVForm = ()=>{
     const { register, handleSubmit, setValue, setError, clearErrors, formState: { errors } } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hook$2d$form$2f$dist$2f$index$2e$esm$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useForm"])({
         resolver: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$hookform$2f$resolvers$2f$zod$2f$dist$2f$zod$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["zodResolver"])(userFormSchema),
         defaultValues: {
+            companyName: "",
             name: "",
             surname: "",
             email: "",
@@ -84,9 +88,12 @@ const CVForm = ()=>{
         try {
             const formData = new FormData();
             formData.append("name", data.name);
+            formData.append("companyName", data.companyName);
             formData.append("surname", data.surname);
             formData.append("email", data.email);
             formData.append("phone", data.phone);
+            formData.append("logoId", "b0e7655b-679d-475f-a302-54153616be0e");
+            formData.append("templateId", "cv2");
             if (data.file) {
                 formData.append("file", data.file);
             }
@@ -96,7 +103,7 @@ const CVForm = ()=>{
             // if (data.technologies && data.technologies.length > 0) {
             //   formData.append("technologies", JSON.stringify(data.technologies));
             // }
-            const response = await __TURBOPACK__imported__module__$5b$project$5d2f$core$2f$services$2f$apiService$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["apiService"].post("applicant/cv", formData, {
+            const response = await __TURBOPACK__imported__module__$5b$project$5d2f$core$2f$services$2f$apiService$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["apiService"].post("applicant/create", formData, {
                 headers: {
                     "Content-Type": "multipart/form-data"
                 }
@@ -162,7 +169,7 @@ const CVForm = ()=>{
                         children: "Amygdal"
                     }, void 0, false, {
                         fileName: "[project]/app/components/CVForm.tsx",
-                        lineNumber: 141,
+                        lineNumber: 148,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -170,13 +177,45 @@ const CVForm = ()=>{
                         children: "CV Editor"
                     }, void 0, false, {
                         fileName: "[project]/app/components/CVForm.tsx",
-                        lineNumber: 142,
+                        lineNumber: 149,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/CVForm.tsx",
-                lineNumber: 140,
+                lineNumber: 147,
+                columnNumber: 7
+            }, this),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
+                        className: "block text-sm font-bold",
+                        children: "Company Name"
+                    }, void 0, false, {
+                        fileName: "[project]/app/components/CVForm.tsx",
+                        lineNumber: 153,
+                        columnNumber: 9
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                        ...register("companyName"),
+                        className: "w-full border p-2 rounded"
+                    }, void 0, false, {
+                        fileName: "[project]/app/components/CVForm.tsx",
+                        lineNumber: 154,
+                        columnNumber: 9
+                    }, this),
+                    errors.companyName && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                        className: "text-red-500 text-sm",
+                        children: errors.companyName.message
+                    }, void 0, false, {
+                        fileName: "[project]/app/components/CVForm.tsx",
+                        lineNumber: 159,
+                        columnNumber: 11
+                    }, this)
+                ]
+            }, void 0, true, {
+                fileName: "[project]/app/components/CVForm.tsx",
+                lineNumber: 152,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -186,7 +225,7 @@ const CVForm = ()=>{
                         children: "Name"
                     }, void 0, false, {
                         fileName: "[project]/app/components/CVForm.tsx",
-                        lineNumber: 146,
+                        lineNumber: 164,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -194,7 +233,7 @@ const CVForm = ()=>{
                         className: "w-full border p-2 rounded"
                     }, void 0, false, {
                         fileName: "[project]/app/components/CVForm.tsx",
-                        lineNumber: 147,
+                        lineNumber: 165,
                         columnNumber: 9
                     }, this),
                     errors.name && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -202,13 +241,13 @@ const CVForm = ()=>{
                         children: errors.name.message
                     }, void 0, false, {
                         fileName: "[project]/app/components/CVForm.tsx",
-                        lineNumber: 149,
+                        lineNumber: 167,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/CVForm.tsx",
-                lineNumber: 145,
+                lineNumber: 163,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -218,7 +257,7 @@ const CVForm = ()=>{
                         children: "Surname"
                     }, void 0, false, {
                         fileName: "[project]/app/components/CVForm.tsx",
-                        lineNumber: 154,
+                        lineNumber: 172,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -226,7 +265,7 @@ const CVForm = ()=>{
                         className: "w-full border p-2 rounded"
                     }, void 0, false, {
                         fileName: "[project]/app/components/CVForm.tsx",
-                        lineNumber: 155,
+                        lineNumber: 173,
                         columnNumber: 9
                     }, this),
                     errors.surname && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -234,13 +273,13 @@ const CVForm = ()=>{
                         children: errors.surname.message
                     }, void 0, false, {
                         fileName: "[project]/app/components/CVForm.tsx",
-                        lineNumber: 157,
+                        lineNumber: 175,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/CVForm.tsx",
-                lineNumber: 153,
+                lineNumber: 171,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -250,7 +289,7 @@ const CVForm = ()=>{
                         children: "Email"
                     }, void 0, false, {
                         fileName: "[project]/app/components/CVForm.tsx",
-                        lineNumber: 162,
+                        lineNumber: 180,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -259,7 +298,7 @@ const CVForm = ()=>{
                         className: "w-full border p-2 rounded"
                     }, void 0, false, {
                         fileName: "[project]/app/components/CVForm.tsx",
-                        lineNumber: 163,
+                        lineNumber: 181,
                         columnNumber: 9
                     }, this),
                     errors.email && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -267,13 +306,13 @@ const CVForm = ()=>{
                         children: errors.email.message
                     }, void 0, false, {
                         fileName: "[project]/app/components/CVForm.tsx",
-                        lineNumber: 169,
+                        lineNumber: 187,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/CVForm.tsx",
-                lineNumber: 161,
+                lineNumber: 179,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -283,7 +322,7 @@ const CVForm = ()=>{
                         children: "Phone Number"
                     }, void 0, false, {
                         fileName: "[project]/app/components/CVForm.tsx",
-                        lineNumber: 174,
+                        lineNumber: 192,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -291,7 +330,7 @@ const CVForm = ()=>{
                         className: "w-full border p-2 rounded"
                     }, void 0, false, {
                         fileName: "[project]/app/components/CVForm.tsx",
-                        lineNumber: 175,
+                        lineNumber: 193,
                         columnNumber: 9
                     }, this),
                     errors.phone && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -299,13 +338,13 @@ const CVForm = ()=>{
                         children: errors.phone.message
                     }, void 0, false, {
                         fileName: "[project]/app/components/CVForm.tsx",
-                        lineNumber: 177,
+                        lineNumber: 195,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/CVForm.tsx",
-                lineNumber: 173,
+                lineNumber: 191,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -315,7 +354,7 @@ const CVForm = ()=>{
                         children: "Upload PDF"
                     }, void 0, false, {
                         fileName: "[project]/app/components/CVForm.tsx",
-                        lineNumber: 182,
+                        lineNumber: 200,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -329,7 +368,7 @@ const CVForm = ()=>{
                                 id: "file-upload"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/CVForm.tsx",
-                                lineNumber: 184,
+                                lineNumber: 202,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
@@ -338,13 +377,13 @@ const CVForm = ()=>{
                                 children: "Upload File"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/CVForm.tsx",
-                                lineNumber: 191,
+                                lineNumber: 209,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/CVForm.tsx",
-                        lineNumber: 183,
+                        lineNumber: 201,
                         columnNumber: 9
                     }, this),
                     fileName && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -355,7 +394,7 @@ const CVForm = ()=>{
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/CVForm.tsx",
-                        lineNumber: 199,
+                        lineNumber: 217,
                         columnNumber: 11
                     }, this),
                     errors.file && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -363,13 +402,13 @@ const CVForm = ()=>{
                         children: errors.file.message
                     }, void 0, false, {
                         fileName: "[project]/app/components/CVForm.tsx",
-                        lineNumber: 204,
+                        lineNumber: 222,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/CVForm.tsx",
-                lineNumber: 181,
+                lineNumber: 199,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -379,7 +418,7 @@ const CVForm = ()=>{
                         children: "Technologies"
                     }, void 0, false, {
                         fileName: "[project]/app/components/CVForm.tsx",
-                        lineNumber: 209,
+                        lineNumber: 227,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -394,7 +433,7 @@ const CVForm = ()=>{
                                 placeholder: "Add technology"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/CVForm.tsx",
-                                lineNumber: 211,
+                                lineNumber: 229,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -404,13 +443,13 @@ const CVForm = ()=>{
                                 children: "Add"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/CVForm.tsx",
-                                lineNumber: 219,
+                                lineNumber: 237,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/CVForm.tsx",
-                        lineNumber: 210,
+                        lineNumber: 228,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -422,7 +461,7 @@ const CVForm = ()=>{
                                         children: tech
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/CVForm.tsx",
-                                        lineNumber: 233,
+                                        lineNumber: 251,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -432,24 +471,24 @@ const CVForm = ()=>{
                                         children: "✕"
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/CVForm.tsx",
-                                        lineNumber: 234,
+                                        lineNumber: 252,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, index, true, {
                                 fileName: "[project]/app/components/CVForm.tsx",
-                                lineNumber: 229,
+                                lineNumber: 247,
                                 columnNumber: 13
                             }, this))
                     }, void 0, false, {
                         fileName: "[project]/app/components/CVForm.tsx",
-                        lineNumber: 227,
+                        lineNumber: 245,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/CVForm.tsx",
-                lineNumber: 208,
+                lineNumber: 226,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -458,13 +497,13 @@ const CVForm = ()=>{
                 children: "Submit"
             }, void 0, false, {
                 fileName: "[project]/app/components/CVForm.tsx",
-                lineNumber: 246,
+                lineNumber: 264,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/CVForm.tsx",
-        lineNumber: 136,
+        lineNumber: 143,
         columnNumber: 5
     }, this);
 };

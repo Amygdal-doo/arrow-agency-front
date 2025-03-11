@@ -9,6 +9,9 @@ import { apiService } from "@/core/services/apiService";
 
 const userFormSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
+  companyName: z
+    .string()
+    .min(2, { message: "Company Name must be at least 2 characters." }),
   surname: z
     .string()
     .min(2, { message: "Surname must be at least 2 characters." }),
@@ -39,6 +42,7 @@ const CVForm = () => {
   } = useForm<UserFormInputs>({
     resolver: zodResolver(userFormSchema),
     defaultValues: {
+      companyName: "",
       name: "",
       surname: "",
       email: "",
@@ -52,9 +56,12 @@ const CVForm = () => {
     try {
       const formData = new FormData();
       formData.append("name", data.name);
+      formData.append("companyName", data.companyName);
       formData.append("surname", data.surname);
       formData.append("email", data.email);
       formData.append("phone", data.phone);
+      formData.append("logoId", "b0e7655b-679d-475f-a302-54153616be0e");
+      formData.append("templateId", "cv2");
 
       if (data.file) {
         formData.append("file", data.file);
@@ -71,7 +78,7 @@ const CVForm = () => {
       // }
 
       const response: AxiosResponse = await apiService.post(
-        "applicant/cv",
+        "applicant/create",
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
@@ -140,6 +147,17 @@ const CVForm = () => {
       <div className="flex justify-center pb-8 flex-col items-center">
         <p className="text-2xl font-bold text-[#0a0a23] pr-10">Amygdal</p>
         <p className="text-2xl font-bold text-[#A020F0] pl-20">CV Editor</p>
+      </div>
+
+      <div>
+        <label className="block text-sm font-bold">Company Name</label>
+        <input
+          {...register("companyName")}
+          className="w-full border p-2 rounded"
+        />
+        {errors.companyName && (
+          <p className="text-red-500 text-sm">{errors.companyName.message}</p>
+        )}
       </div>
 
       <div>

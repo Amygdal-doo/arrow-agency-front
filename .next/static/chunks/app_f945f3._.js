@@ -1048,28 +1048,63 @@ const CVPreview = ()=>{
                                             currentExperience.map((experience, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                     className: "mb-4",
                                                     children: [
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                                                            className: "font-bold text-gray-800",
-                                                            children: experience.position
-                                                        }, void 0, false, {
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                            className: "flex justify-between items-start",
+                                                            children: [
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                                    children: [
+                                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
+                                                                            className: "font-bold text-gray-800",
+                                                                            children: experience.position
+                                                                        }, void 0, false, {
+                                                                            fileName: "[project]/app/components/CVPreview.tsx",
+                                                                            lineNumber: 135,
+                                                                            columnNumber: 25
+                                                                        }, this),
+                                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                                            className: "text-gray-600",
+                                                                            children: experience.company
+                                                                        }, void 0, false, {
+                                                                            fileName: "[project]/app/components/CVPreview.tsx",
+                                                                            lineNumber: 138,
+                                                                            columnNumber: 25
+                                                                        }, this)
+                                                                    ]
+                                                                }, void 0, true, {
+                                                                    fileName: "[project]/app/components/CVPreview.tsx",
+                                                                    lineNumber: 134,
+                                                                    columnNumber: 23
+                                                                }, this),
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                                    className: "text-gray-500 text-sm",
+                                                                    children: [
+                                                                        new Date(experience.startDate).toLocaleDateString("en-US", {
+                                                                            month: "short",
+                                                                            year: "numeric"
+                                                                        }),
+                                                                        " - ",
+                                                                        experience.endDate ? new Date(experience.endDate).toLocaleDateString("en-US", {
+                                                                            month: "short",
+                                                                            year: "numeric"
+                                                                        }) : "Present"
+                                                                    ]
+                                                                }, void 0, true, {
+                                                                    fileName: "[project]/app/components/CVPreview.tsx",
+                                                                    lineNumber: 140,
+                                                                    columnNumber: 23
+                                                                }, this)
+                                                            ]
+                                                        }, void 0, true, {
                                                             fileName: "[project]/app/components/CVPreview.tsx",
                                                             lineNumber: 133,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                            className: "text-gray-600",
-                                                            children: experience.company
-                                                        }, void 0, false, {
-                                                            fileName: "[project]/app/components/CVPreview.tsx",
-                                                            lineNumber: 136,
-                                                            columnNumber: 21
-                                                        }, this),
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                            className: "text-gray-500 text-sm mt-1",
+                                                            className: "text-gray-500 mt-2",
                                                             children: experience.description
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/components/CVPreview.tsx",
-                                                            lineNumber: 137,
+                                                            lineNumber: 160,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
@@ -1092,7 +1127,7 @@ const CVPreview = ()=>{
                                                 children: "Education"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/CVPreview.tsx",
-                                                lineNumber: 147,
+                                                lineNumber: 170,
                                                 columnNumber: 17
                                             }, this),
                                             currentEducations.map((education, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1107,7 +1142,7 @@ const CVPreview = ()=>{
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/components/CVPreview.tsx",
-                                                            lineNumber: 152,
+                                                            lineNumber: 175,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1115,31 +1150,37 @@ const CVPreview = ()=>{
                                                             children: education.institution
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/components/CVPreview.tsx",
-                                                            lineNumber: 155,
+                                                            lineNumber: 178,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                                             className: "text-gray-500 text-sm",
                                                             children: [
-                                                                education.startDate,
+                                                                new Date(education.startDate).toLocaleDateString("en-US", {
+                                                                    month: "short",
+                                                                    year: "numeric"
+                                                                }),
                                                                 " - ",
-                                                                education.endDate
+                                                                education.endDate ? new Date(education.endDate).toLocaleDateString("en-US", {
+                                                                    month: "short",
+                                                                    year: "numeric"
+                                                                }) : "Present"
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/components/CVPreview.tsx",
-                                                            lineNumber: 156,
+                                                            lineNumber: 179,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, index, true, {
                                                     fileName: "[project]/app/components/CVPreview.tsx",
-                                                    lineNumber: 151,
+                                                    lineNumber: 174,
                                                     columnNumber: 19
                                                 }, this))
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/components/CVPreview.tsx",
-                                        lineNumber: 146,
+                                        lineNumber: 169,
                                         columnNumber: 15
                                     }, this),
                                     currentProjects?.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
@@ -1150,28 +1191,260 @@ const CVPreview = ()=>{
                                                 children: "Projects"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/CVPreview.tsx",
-                                                lineNumber: 166,
+                                                lineNumber: 205,
                                                 columnNumber: 17
                                             }, this),
                                             currentProjects.map((project, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    className: "mb-2",
-                                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                                                        className: "font-bold text-gray-800",
-                                                        children: project.name
-                                                    }, void 0, false, {
+                                                    className: "mb-4",
+                                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                        className: "flex justify-between items-start",
+                                                        children: [
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                                children: [
+                                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
+                                                                        className: "font-bold text-gray-800",
+                                                                        children: project.name
+                                                                    }, void 0, false, {
+                                                                        fileName: "[project]/app/components/CVPreview.tsx",
+                                                                        lineNumber: 212,
+                                                                        columnNumber: 25
+                                                                    }, this),
+                                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                                        className: "text-gray-600",
+                                                                        children: project.description
+                                                                    }, void 0, false, {
+                                                                        fileName: "[project]/app/components/CVPreview.tsx",
+                                                                        lineNumber: 215,
+                                                                        columnNumber: 25
+                                                                    }, this),
+                                                                    project.url && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
+                                                                        href: project.url,
+                                                                        target: "_blank",
+                                                                        rel: "noopener noreferrer",
+                                                                        className: "text-blue-600 hover:text-blue-800 text-sm mt-1 inline-block",
+                                                                        children: project.url
+                                                                    }, void 0, false, {
+                                                                        fileName: "[project]/app/components/CVPreview.tsx",
+                                                                        lineNumber: 217,
+                                                                        columnNumber: 27
+                                                                    }, this)
+                                                                ]
+                                                            }, void 0, true, {
+                                                                fileName: "[project]/app/components/CVPreview.tsx",
+                                                                lineNumber: 211,
+                                                                columnNumber: 23
+                                                            }, this),
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                                className: "text-gray-500 text-sm",
+                                                                children: [
+                                                                    new Date(project.startDate).toLocaleDateString("en-US", {
+                                                                        month: "short",
+                                                                        year: "numeric"
+                                                                    }),
+                                                                    " - ",
+                                                                    project.endDate ? new Date(project.endDate).toLocaleDateString("en-US", {
+                                                                        month: "short",
+                                                                        year: "numeric"
+                                                                    }) : "Present"
+                                                                ]
+                                                            }, void 0, true, {
+                                                                fileName: "[project]/app/components/CVPreview.tsx",
+                                                                lineNumber: 227,
+                                                                columnNumber: 23
+                                                            }, this)
+                                                        ]
+                                                    }, void 0, true, {
                                                         fileName: "[project]/app/components/CVPreview.tsx",
-                                                        lineNumber: 171,
+                                                        lineNumber: 210,
                                                         columnNumber: 21
                                                     }, this)
                                                 }, index, false, {
                                                     fileName: "[project]/app/components/CVPreview.tsx",
-                                                    lineNumber: 170,
+                                                    lineNumber: 209,
                                                     columnNumber: 19
                                                 }, this))
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/components/CVPreview.tsx",
-                                        lineNumber: 165,
+                                        lineNumber: 204,
+                                        columnNumber: 15
+                                    }, this),
+                                    currentCourses?.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
+                                        className: "mb-6",
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
+                                                className: "text-xl font-bold text-gray-800 mb-3",
+                                                children: "Courses"
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/components/CVPreview.tsx",
+                                                lineNumber: 253,
+                                                columnNumber: 17
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                className: "space-y-3",
+                                                children: currentCourses.map((course, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                        className: "text-gray-600",
+                                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                            className: "flex justify-between items-start",
+                                                            children: [
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                                    children: [
+                                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
+                                                                            className: "font-semibold text-gray-800",
+                                                                            children: course.name
+                                                                        }, void 0, false, {
+                                                                            fileName: "[project]/app/components/CVPreview.tsx",
+                                                                            lineNumber: 261,
+                                                                            columnNumber: 27
+                                                                        }, this),
+                                                                        course.url && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
+                                                                            href: course.url,
+                                                                            target: "_blank",
+                                                                            rel: "noopener noreferrer",
+                                                                            className: "text-blue-600 hover:text-blue-800 text-sm",
+                                                                            children: "Course Link →"
+                                                                        }, void 0, false, {
+                                                                            fileName: "[project]/app/components/CVPreview.tsx",
+                                                                            lineNumber: 265,
+                                                                            columnNumber: 29
+                                                                        }, this)
+                                                                    ]
+                                                                }, void 0, true, {
+                                                                    fileName: "[project]/app/components/CVPreview.tsx",
+                                                                    lineNumber: 260,
+                                                                    columnNumber: 25
+                                                                }, this),
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                                    className: "text-gray-500 text-sm",
+                                                                    children: [
+                                                                        new Date(course.startDate).toLocaleDateString("en-US", {
+                                                                            month: "short",
+                                                                            year: "numeric"
+                                                                        }),
+                                                                        " - ",
+                                                                        course.endDate ? new Date(course.endDate).toLocaleDateString("en-US", {
+                                                                            month: "short",
+                                                                            year: "numeric"
+                                                                        }) : "Present"
+                                                                    ]
+                                                                }, void 0, true, {
+                                                                    fileName: "[project]/app/components/CVPreview.tsx",
+                                                                    lineNumber: 275,
+                                                                    columnNumber: 25
+                                                                }, this)
+                                                            ]
+                                                        }, void 0, true, {
+                                                            fileName: "[project]/app/components/CVPreview.tsx",
+                                                            lineNumber: 259,
+                                                            columnNumber: 23
+                                                        }, this)
+                                                    }, index, false, {
+                                                        fileName: "[project]/app/components/CVPreview.tsx",
+                                                        lineNumber: 258,
+                                                        columnNumber: 21
+                                                    }, this))
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/components/CVPreview.tsx",
+                                                lineNumber: 256,
+                                                columnNumber: 17
+                                            }, this)
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/app/components/CVPreview.tsx",
+                                        lineNumber: 252,
+                                        columnNumber: 15
+                                    }, this),
+                                    currentCertificates?.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
+                                        className: "mb-6",
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
+                                                className: "text-xl font-bold text-gray-800 mb-3",
+                                                children: "Certificates"
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/components/CVPreview.tsx",
+                                                lineNumber: 303,
+                                                columnNumber: 17
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                className: "space-y-3",
+                                                children: currentCertificates.map((certificate, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                        className: "text-gray-600",
+                                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                            className: "flex justify-between items-start",
+                                                            children: [
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                                    children: [
+                                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
+                                                                            className: "font-semibold text-gray-800",
+                                                                            children: certificate.name
+                                                                        }, void 0, false, {
+                                                                            fileName: "[project]/app/components/CVPreview.tsx",
+                                                                            lineNumber: 311,
+                                                                            columnNumber: 27
+                                                                        }, this),
+                                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                                            className: "text-gray-600",
+                                                                            children: certificate.issuer
+                                                                        }, void 0, false, {
+                                                                            fileName: "[project]/app/components/CVPreview.tsx",
+                                                                            lineNumber: 314,
+                                                                            columnNumber: 27
+                                                                        }, this),
+                                                                        certificate.url && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
+                                                                            href: certificate.url,
+                                                                            target: "_blank",
+                                                                            rel: "noopener noreferrer",
+                                                                            className: "text-blue-600 hover:text-blue-800 text-sm",
+                                                                            children: "View Certificate →"
+                                                                        }, void 0, false, {
+                                                                            fileName: "[project]/app/components/CVPreview.tsx",
+                                                                            lineNumber: 316,
+                                                                            columnNumber: 29
+                                                                        }, this)
+                                                                    ]
+                                                                }, void 0, true, {
+                                                                    fileName: "[project]/app/components/CVPreview.tsx",
+                                                                    lineNumber: 310,
+                                                                    columnNumber: 25
+                                                                }, this),
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                                    className: "text-gray-500 text-sm",
+                                                                    children: [
+                                                                        new Date(certificate.issueDate).toLocaleDateString("en-US", {
+                                                                            month: "short",
+                                                                            year: "numeric"
+                                                                        }),
+                                                                        certificate.expirationDate && " - ",
+                                                                        certificate.expirationDate ? new Date(certificate.expirationDate).toLocaleDateString("en-US", {
+                                                                            month: "short",
+                                                                            year: "numeric"
+                                                                        }) : ""
+                                                                    ]
+                                                                }, void 0, true, {
+                                                                    fileName: "[project]/app/components/CVPreview.tsx",
+                                                                    lineNumber: 326,
+                                                                    columnNumber: 25
+                                                                }, this)
+                                                            ]
+                                                        }, void 0, true, {
+                                                            fileName: "[project]/app/components/CVPreview.tsx",
+                                                            lineNumber: 309,
+                                                            columnNumber: 23
+                                                        }, this)
+                                                    }, index, false, {
+                                                        fileName: "[project]/app/components/CVPreview.tsx",
+                                                        lineNumber: 308,
+                                                        columnNumber: 21
+                                                    }, this))
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/components/CVPreview.tsx",
+                                                lineNumber: 306,
+                                                columnNumber: 17
+                                            }, this)
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/app/components/CVPreview.tsx",
+                                        lineNumber: 302,
                                         columnNumber: 15
                                     }, this)
                                 ]
@@ -1191,40 +1464,44 @@ const CVPreview = ()=>{
                                                 children: "Skills"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/CVPreview.tsx",
-                                                lineNumber: 182,
+                                                lineNumber: 356,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                 className: "space-y-2",
                                                 children: currentSkills.map((skill, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                        className: "text-gray-600",
+                                                        className: "flex justify-between items-center text-gray-600",
                                                         children: [
-                                                            skill.name,
-                                                            " -",
-                                                            " ",
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                                className: "text-gray-500",
+                                                                children: skill.name
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/app/components/CVPreview.tsx",
+                                                                lineNumber: 363,
+                                                                columnNumber: 23
+                                                            }, this),
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                className: "text-gray-500 capitalize",
                                                                 children: skill.efficiency
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/components/CVPreview.tsx",
-                                                                lineNumber: 187,
+                                                                lineNumber: 364,
                                                                 columnNumber: 23
                                                             }, this)
                                                         ]
                                                     }, index, true, {
                                                         fileName: "[project]/app/components/CVPreview.tsx",
-                                                        lineNumber: 185,
+                                                        lineNumber: 359,
                                                         columnNumber: 21
                                                     }, this))
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/CVPreview.tsx",
-                                                lineNumber: 183,
+                                                lineNumber: 357,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/components/CVPreview.tsx",
-                                        lineNumber: 181,
+                                        lineNumber: 355,
                                         columnNumber: 15
                                     }, this),
                                     currentLanguages?.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
@@ -1235,120 +1512,45 @@ const CVPreview = ()=>{
                                                 children: "Languages"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/CVPreview.tsx",
-                                                lineNumber: 196,
-                                                columnNumber: 17
-                                            }, this),
-                                            currentLanguages.map((language, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    className: "text-gray-600",
-                                                    children: [
-                                                        language.name,
-                                                        " -",
-                                                        " ",
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                            className: "text-gray-500",
-                                                            children: language.efficiency
-                                                        }, void 0, false, {
-                                                            fileName: "[project]/app/components/CVPreview.tsx",
-                                                            lineNumber: 202,
-                                                            columnNumber: 21
-                                                        }, this)
-                                                    ]
-                                                }, index, true, {
-                                                    fileName: "[project]/app/components/CVPreview.tsx",
-                                                    lineNumber: 200,
-                                                    columnNumber: 19
-                                                }, this))
-                                        ]
-                                    }, void 0, true, {
-                                        fileName: "[project]/app/components/CVPreview.tsx",
-                                        lineNumber: 195,
-                                        columnNumber: 15
-                                    }, this),
-                                    currentCertificates?.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
-                                        className: "mb-6",
-                                        children: [
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                                                className: "text-xl font-bold text-gray-800 mb-3",
-                                                children: "Certificates"
-                                            }, void 0, false, {
-                                                fileName: "[project]/app/components/CVPreview.tsx",
-                                                lineNumber: 210,
+                                                lineNumber: 375,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                 className: "space-y-2",
-                                                children: currentCertificates.map((certificate, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                        className: "text-gray-600",
+                                                children: currentLanguages.map((language, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                        className: "flex justify-between flex-col  text-gray-600",
                                                         children: [
-                                                            certificate.name,
-                                                            certificate.issueDate && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                                className: "text-gray-500 text-sm block",
-                                                                children: [
-                                                                    "Issued: ",
-                                                                    certificate.issueDate
-                                                                ]
-                                                            }, void 0, true, {
-                                                                fileName: "[project]/app/components/CVPreview.tsx",
-                                                                lineNumber: 218,
-                                                                columnNumber: 25
-                                                            }, this)
-                                                        ]
-                                                    }, index, true, {
-                                                        fileName: "[project]/app/components/CVPreview.tsx",
-                                                        lineNumber: 215,
-                                                        columnNumber: 21
-                                                    }, this))
-                                            }, void 0, false, {
-                                                fileName: "[project]/app/components/CVPreview.tsx",
-                                                lineNumber: 213,
-                                                columnNumber: 17
-                                            }, this)
-                                        ]
-                                    }, void 0, true, {
-                                        fileName: "[project]/app/components/CVPreview.tsx",
-                                        lineNumber: 209,
-                                        columnNumber: 15
-                                    }, this),
-                                    currentCourses?.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
-                                        className: "mb-6",
-                                        children: [
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                                                className: "text-xl font-bold text-gray-800 mb-3",
-                                                children: "Courses"
-                                            }, void 0, false, {
-                                                fileName: "[project]/app/components/CVPreview.tsx",
-                                                lineNumber: 230,
-                                                columnNumber: 17
-                                            }, this),
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                className: "space-y-2",
-                                                children: currentCourses.map((course, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                        className: "text-gray-600",
-                                                        children: [
-                                                            course.name,
-                                                            course.url && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                                className: "text-gray-500 text-sm block",
-                                                                children: course.url
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                className: "font-medium",
+                                                                children: language.name
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/components/CVPreview.tsx",
-                                                                lineNumber: 238,
-                                                                columnNumber: 25
+                                                                lineNumber: 384,
+                                                                columnNumber: 23
+                                                            }, this),
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                className: "text-gray-500 capitalize",
+                                                                children: language.efficiency
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/app/components/CVPreview.tsx",
+                                                                lineNumber: 385,
+                                                                columnNumber: 23
                                                             }, this)
                                                         ]
                                                     }, index, true, {
                                                         fileName: "[project]/app/components/CVPreview.tsx",
-                                                        lineNumber: 235,
+                                                        lineNumber: 380,
                                                         columnNumber: 21
                                                     }, this))
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/CVPreview.tsx",
-                                                lineNumber: 233,
+                                                lineNumber: 378,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/components/CVPreview.tsx",
-                                        lineNumber: 229,
+                                        lineNumber: 374,
                                         columnNumber: 15
                                     }, this),
                                     currentSocials?.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
@@ -1359,7 +1561,7 @@ const CVPreview = ()=>{
                                                 children: "Social Links"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/CVPreview.tsx",
-                                                lineNumber: 250,
+                                                lineNumber: 396,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1372,18 +1574,18 @@ const CVPreview = ()=>{
                                                         children: social.name
                                                     }, social.id, false, {
                                                         fileName: "[project]/app/components/CVPreview.tsx",
-                                                        lineNumber: 255,
+                                                        lineNumber: 401,
                                                         columnNumber: 21
                                                     }, this))
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/CVPreview.tsx",
-                                                lineNumber: 253,
+                                                lineNumber: 399,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/components/CVPreview.tsx",
-                                        lineNumber: 249,
+                                        lineNumber: 395,
                                         columnNumber: 15
                                     }, this),
                                     hobbies?.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
@@ -1394,34 +1596,34 @@ const CVPreview = ()=>{
                                                 children: "Hobbies"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/CVPreview.tsx",
-                                                lineNumber: 275,
+                                                lineNumber: 421,
                                                 columnNumber: 17
                                             }, this),
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("ul", {
-                                                className: "list-disc list-inside space-y-1",
-                                                children: hobbies.map((hobby, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                className: "space-y-1",
+                                                children: hobbies.map((hobby, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                                         className: "text-gray-600",
                                                         children: hobby
                                                     }, index, false, {
                                                         fileName: "[project]/app/components/CVPreview.tsx",
-                                                        lineNumber: 280,
+                                                        lineNumber: 426,
                                                         columnNumber: 21
                                                     }, this))
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/CVPreview.tsx",
-                                                lineNumber: 278,
+                                                lineNumber: 424,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/components/CVPreview.tsx",
-                                        lineNumber: 274,
+                                        lineNumber: 420,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/CVPreview.tsx",
-                                lineNumber: 179,
+                                lineNumber: 353,
                                 columnNumber: 11
                             }, this)
                         ]

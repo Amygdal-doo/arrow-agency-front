@@ -26,7 +26,7 @@ const Navbar = () => {
 
   return (
     <nav className="w-full bg-black p-1">
-      <pre>{JSON.stringify(profile, null, 2)}</pre>
+      {/* <pre>{JSON.stringify(profile, null, 2)}</pre> */}
       <div className="container mx-auto flex items-center justify-between">
         <div className="flex items-center space-x-16">
           <Link href="/">

@@ -130,11 +130,34 @@ const CVPreview = () => {
                 </h2>
                 {currentExperience.map((experience, index) => (
                   <div key={index} className="mb-4">
-                    <h3 className="font-bold text-gray-800">
-                      {experience.position}
-                    </h3>
-                    <p className="text-gray-600">{experience.company}</p>
-                    <p className="text-gray-500 text-sm mt-1">
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <h3 className="font-bold text-gray-800">
+                          {experience.position}
+                        </h3>
+                        <p className="text-gray-600">{experience.company}</p>
+                      </div>
+                      <p className="text-gray-500 text-sm">
+                        {new Date(experience.startDate).toLocaleDateString(
+                          "en-US",
+                          {
+                            month: "short",
+                            year: "numeric",
+                          }
+                        )}
+                        {" - "}
+                        {experience.endDate
+                          ? new Date(experience.endDate).toLocaleDateString(
+                              "en-US",
+                              {
+                                month: "short",
+                                year: "numeric",
+                              }
+                            )
+                          : "Present"}
+                      </p>
+                    </div>
+                    <p className="text-gray-500 mt-2">
                       {experience.description}
                     </p>
                   </div>
@@ -154,7 +177,23 @@ const CVPreview = () => {
                     </h3>
                     <p className="text-gray-600">{education.institution}</p>
                     <p className="text-gray-500 text-sm">
-                      {education.startDate} - {education.endDate}
+                      {new Date(education.startDate).toLocaleDateString(
+                        "en-US",
+                        {
+                          month: "short",
+                          year: "numeric",
+                        }
+                      )}
+                      {" - "}
+                      {education.endDate
+                        ? new Date(education.endDate).toLocaleDateString(
+                            "en-US",
+                            {
+                              month: "short",
+                              year: "numeric",
+                            }
+                          )
+                        : "Present"}
                     </p>
                   </div>
                 ))}
@@ -167,10 +206,145 @@ const CVPreview = () => {
                   Projects
                 </h2>
                 {currentProjects.map((project, index) => (
-                  <div key={index} className="mb-2">
-                    <h3 className="font-bold text-gray-800">{project.name}</h3>
+                  <div key={index} className="mb-4">
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <h3 className="font-bold text-gray-800">
+                          {project.name}
+                        </h3>
+                        <p className="text-gray-600">{project.description}</p>
+                        {project.url && (
+                          <a
+                            href={project.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-blue-600 hover:text-blue-800 text-sm mt-1 inline-block"
+                          >
+                            {project.url}
+                          </a>
+                        )}
+                      </div>
+                      <p className="text-gray-500 text-sm">
+                        {new Date(project.startDate).toLocaleDateString(
+                          "en-US",
+                          {
+                            month: "short",
+                            year: "numeric",
+                          }
+                        )}
+                        {" - "}
+                        {project.endDate
+                          ? new Date(project.endDate).toLocaleDateString(
+                              "en-US",
+                              {
+                                month: "short",
+                                year: "numeric",
+                              }
+                            )
+                          : "Present"}
+                      </p>
+                    </div>
                   </div>
                 ))}
+              </section>
+            )}
+            {currentCourses?.length > 0 && (
+              <section className="mb-6">
+                <h2 className="text-xl font-bold text-gray-800 mb-3">
+                  Courses
+                </h2>
+                <div className="space-y-3">
+                  {currentCourses.map((course, index) => (
+                    <div key={index} className="text-gray-600">
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <h3 className="font-semibold text-gray-800">
+                            {course.name}
+                          </h3>
+                          {course.url && (
+                            <a
+                              href={course.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-blue-600 hover:text-blue-800 text-sm"
+                            >
+                              Course Link →
+                            </a>
+                          )}
+                        </div>
+                        <p className="text-gray-500 text-sm">
+                          {new Date(course.startDate).toLocaleDateString(
+                            "en-US",
+                            {
+                              month: "short",
+                              year: "numeric",
+                            }
+                          )}
+                          {" - "}
+                          {course.endDate
+                            ? new Date(course.endDate).toLocaleDateString(
+                                "en-US",
+                                {
+                                  month: "short",
+                                  year: "numeric",
+                                }
+                              )
+                            : "Present"}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {currentCertificates?.length > 0 && (
+              <section className="mb-6">
+                <h2 className="text-xl font-bold text-gray-800 mb-3">
+                  Certificates
+                </h2>
+                <div className="space-y-3">
+                  {currentCertificates.map((certificate, index) => (
+                    <div key={index} className="text-gray-600">
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <h3 className="font-semibold text-gray-800">
+                            {certificate.name}
+                          </h3>
+                          <p className="text-gray-600">{certificate.issuer}</p>
+                          {certificate.url && (
+                            <a
+                              href={certificate.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-blue-600 hover:text-blue-800 text-sm"
+                            >
+                              View Certificate →
+                            </a>
+                          )}
+                        </div>
+                        <p className="text-gray-500 text-sm">
+                          {new Date(certificate.issueDate).toLocaleDateString(
+                            "en-US",
+                            {
+                              month: "short",
+                              year: "numeric",
+                            }
+                          )}
+                          {certificate.expirationDate && " - "}
+                          {certificate.expirationDate
+                            ? new Date(
+                                certificate.expirationDate
+                              ).toLocaleDateString("en-US", {
+                                month: "short",
+                                year: "numeric",
+                              })
+                            : ""}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </section>
             )}
           </div>
@@ -182,9 +356,14 @@ const CVPreview = () => {
                 <h2 className="text-xl font-bold text-gray-800 mb-3">Skills</h2>
                 <div className="space-y-2">
                   {currentSkills.map((skill, index) => (
-                    <div key={index} className="text-gray-600">
-                      {skill.name} -{" "}
-                      <span className="text-gray-500">{skill.efficiency}</span>
+                    <div
+                      key={index}
+                      className="flex justify-between items-center text-gray-600"
+                    >
+                      <span>{skill.name}</span>
+                      <span className="text-gray-500 capitalize">
+                        {skill.efficiency}
+                      </span>
                     </div>
                   ))}
                 </div>
@@ -196,49 +375,16 @@ const CVPreview = () => {
                 <h2 className="text-xl font-bold text-gray-800 mb-3">
                   Languages
                 </h2>
-                {currentLanguages.map((language, index) => (
-                  <div key={index} className="text-gray-600">
-                    {language.name} -{" "}
-                    <span className="text-gray-500">{language.efficiency}</span>
-                  </div>
-                ))}
-              </section>
-            )}
-
-            {currentCertificates?.length > 0 && (
-              <section className="mb-6">
-                <h2 className="text-xl font-bold text-gray-800 mb-3">
-                  Certificates
-                </h2>
                 <div className="space-y-2">
-                  {currentCertificates.map((certificate, index) => (
-                    <div key={index} className="text-gray-600">
-                      {certificate.name}
-                      {certificate.issueDate && (
-                        <span className="text-gray-500 text-sm block">
-                          Issued: {certificate.issueDate}
-                        </span>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </section>
-            )}
-
-            {currentCourses?.length > 0 && (
-              <section className="mb-6">
-                <h2 className="text-xl font-bold text-gray-800 mb-3">
-                  Courses
-                </h2>
-                <div className="space-y-2">
-                  {currentCourses.map((course, index) => (
-                    <div key={index} className="text-gray-600">
-                      {course.name}
-                      {course.url && (
-                        <span className="text-gray-500 text-sm block">
-                          {course.url}
-                        </span>
-                      )}
+                  {currentLanguages.map((language, index) => (
+                    <div
+                      key={index}
+                      className="flex justify-between flex-col  text-gray-600"
+                    >
+                      <span className="font-medium">{language.name}</span>
+                      <span className="text-gray-500 capitalize">
+                        {language.efficiency}
+                      </span>
                     </div>
                   ))}
                 </div>
@@ -275,13 +421,13 @@ const CVPreview = () => {
                 <h2 className="text-xl font-bold text-gray-800 mb-3">
                   Hobbies
                 </h2>
-                <ul className="list-disc list-inside space-y-1">
+                <div className="space-y-1">
                   {hobbies.map((hobby, index) => (
-                    <li key={index} className="text-gray-600">
+                    <p key={index} className="text-gray-600">
                       {hobby}
-                    </li>
+                    </p>
                   ))}
-                </ul>
+                </div>
               </section>
             )}
           </div>
