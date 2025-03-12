@@ -24,12 +24,28 @@ interface IUser {
   files: any[];
 }
 
+interface ICompanyLogo {
+  id: string;
+  name: string;
+  url: string;
+  extension: string;
+  fileCreatedAt: string;
+  userId: string;
+  applicantId: string | null;
+  cvId: string | null;
+  height: number;
+  width: number;
+  profileId: string;
+  createdAt: string;
+  updatedAt: string;
+}
 export interface IUserProfile {
   id: string;
   address: string;
   phoneNumber: string;
   userId: string;
   user: IUser;
+  companyLogos: ICompanyLogo[];
 }
 interface IProfileContextProps {
   profile: IUserProfile | null;

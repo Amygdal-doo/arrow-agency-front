@@ -1,4 +1,4 @@
-// File: /Users/abdulrahimklis/AmygdalData/Projects/amygdal/thehepek/arrow-agency-front/app/api/auth/[...nextauth]/route.ts
+// File: /Users/aisabektas/projects/arrow-agency-front/app/api/auth/[...nextauth]/route.ts
 import * as entry from '../../../../../../app/api/auth/[...nextauth]/route.js'
 import type { NextRequest } from 'next/server.js'
 

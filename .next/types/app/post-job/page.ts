@@ -1,4 +1,4 @@
-// File: /Users/abdulrahimklis/AmygdalData/Projects/amygdal/thehepek/arrow-agency-front/app/post-job/page.tsx
+// File: /Users/aisabektas/projects/arrow-agency-front/app/post-job/page.tsx
 import * as entry from '../../../../app/post-job/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

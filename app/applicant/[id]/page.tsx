@@ -10,13 +10,12 @@ import LanguageField from "@/app/components/LanguageField";
 import ProjectField from "@/app/components/ProjectField";
 import SkillField from "@/app/components/SkillField";
 import SocialField from "@/app/components/SocialField";
-import { IFile, useApplicant } from "@/providers/ApplicantDetailsProvider";
+import { useApplicant } from "@/providers/ApplicantDetailsProvider";
 
 import React from "react";
 
 const ApplicantDetails = () => {
   const {
-    loading,
     error,
     firstName,
     setFirstName,
@@ -28,33 +27,24 @@ const ApplicantDetails = () => {
     setPhone,
     summary,
     setSummary,
-    currentSkills,
-    hobbies,
-    currentExperience,
-    currentProjects,
-    currentEducations,
-    currentCertificates,
-    currentCourses,
-    currentSocials,
-    currentLanguages,
-    updateApplicant,
+    // updateApplicant,
     applicant,
   } = useApplicant();
 
-  const handleDownload = (fileUrl: string, fileName: string) => {
-    const link = document.createElement("a");
-    link.href = fileUrl;
-    link.setAttribute("download", fileName);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
+  // const handleDownload = (fileUrl: string, fileName: string) => {
+  //   const link = document.createElement("a");
+  //   link.href = fileUrl;
+  //   link.setAttribute("download", fileName);
+  //   document.body.appendChild(link);
+  //   link.click();
+  //   document.body.removeChild(link);
+  // };
 
-  const handleSave = async () => {
-    await updateApplicant();
-    // You can add save functionality here (API call to update applicant data)
-    console.log("Saved Applicant:");
-  };
+  // const handleSave = async () => {
+  //   await updateApplicant();
+  //   // You can add save functionality here (API call to update applicant data)
+  //   console.log("Saved Applicant:");
+  // };
 
   // if (loading) {
   //   return <div className="text-white text-center py-12">Loading...</div>;

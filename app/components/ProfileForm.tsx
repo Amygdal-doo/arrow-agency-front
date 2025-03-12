@@ -52,102 +52,113 @@ const ProfileForm = () => {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="bg-gray-800 rounded-lg p-8 border border-gray-700 space-y-6"
-    >
-      <h2 className="text-2xl font-bold text-white">Personal Information</h2>
-
-      {/* First & Last Name */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label className="block text-gray-300">First Name</label>
-          <input
-            {...register("firstName", {
-              required: "First name is required",
-            })}
-            placeholder={profile?.user?.firstName || ""}
-            className="w-full px-4 py-2 rounded-md bg-gray-900 text-white border border-gray-700"
-          />
-          {errors.firstName && (
-            <p className="text-red-500 text-sm">{errors.firstName.message}</p>
-          )}
-        </div>
-
-        <div>
-          <label className="block text-gray-300">Last Name</label>
-          <input
-            placeholder={profile?.user?.lastName || ""}
-            {...register("lastName", { required: "Last name is required" })}
-            className="w-full px-4 py-2 rounded-md bg-gray-900 text-white border border-gray-700"
-          />
-          {errors.lastName && (
-            <p className="text-red-500 text-sm">{errors.lastName.message}</p>
-          )}
-        </div>
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <h2 className="text-2xl font-bold text-white">Personal Information</h2>
+        <div className="h-px flex-1 bg-gray-700 mx-4" />
       </div>
 
-      {/* Phone & Address */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label className="block text-gray-300">Phone Number</label>
-          <input
-            {...register("phoneNumber", {
-              required: "Phone number is required",
-            })}
-            className="w-full px-4 py-2 rounded-md bg-gray-900 text-white border border-gray-700"
-          />
-          {errors.phoneNumber && (
-            <p className="text-red-500 text-sm">{errors.phoneNumber.message}</p>
-          )}
-        </div>
-
-        <div>
-          <label className="block text-gray-300">Address</label>
-          <input
-            {...register("address", { required: "Address is required" })}
-            className="w-full px-4 py-2 rounded-md bg-gray-900 text-white border border-gray-700"
-          />
-          {errors.address && (
-            <p className="text-red-500 text-sm">{errors.address.message}</p>
-          )}
-        </div>
-      </div>
-
-      {/* Read-only Fields */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label className="block text-gray-300">Created At</label>
-          {profile && (
-            <input
-              value={new Date(profile.user?.createdAt).toLocaleDateString()}
-              disabled
-              className="w-full px-4 py-2 rounded-md bg-gray-900 text-gray-400 border border-gray-700 cursor-not-allowed"
-            />
-          )}
-        </div>
-
-        <div>
-          <label className="block text-gray-300">Updated At</label>
-          {profile && (
-            <input
-              value={new Date(profile.user?.updatedAt).toLocaleDateString()}
-              disabled
-              className="w-full px-4 py-2 rounded-md bg-gray-900 text-gray-400 border border-gray-700 cursor-not-allowed"
-            />
-          )}
-        </div>
-      </div>
-
-      {/* Submit Button */}
-      <button
-        type="submit"
-        disabled={isSubmitting}
-        className="w-full bg-orange-600 text-white py-3 px-6 rounded-md hover:bg-orange-400 transition-colors font-semibold"
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 shadow-lg"
       >
-        {isSubmitting ? "Updating..." : "Update Profile"}
-      </button>
-    </form>
+        {/* First & Last Name */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          <div>
+            <input
+              {...register("firstName", {
+                required: "First name is required",
+              })}
+              placeholder="First Name"
+              className="w-full bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 placeholder-gray-500 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+            />
+            {errors.firstName && (
+              <p className="text-red-400 text-sm mt-1">
+                {errors.firstName.message}
+              </p>
+            )}
+          </div>
+
+          <div>
+            <input
+              placeholder="Last Name"
+              {...register("lastName", { required: "Last name is required" })}
+              className="w-full bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 placeholder-gray-500 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+            />
+            {errors.lastName && (
+              <p className="text-red-400 text-sm mt-1">
+                {errors.lastName.message}
+              </p>
+            )}
+          </div>
+        </div>
+
+        {/* Phone & Address */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          <div>
+            <input
+              {...register("phoneNumber", {
+                required: "Phone number is required",
+              })}
+              placeholder="Phone Number"
+              className="w-full bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 placeholder-gray-500 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+            />
+            {errors.phoneNumber && (
+              <p className="text-red-400 text-sm mt-1">
+                {errors.phoneNumber.message}
+              </p>
+            )}
+          </div>
+
+          <div>
+            <input
+              {...register("address", { required: "Address is required" })}
+              placeholder="Address"
+              className="w-full bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 placeholder-gray-500 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+            />
+            {errors.address && (
+              <p className="text-red-400 text-sm mt-1">
+                {errors.address.message}
+              </p>
+            )}
+          </div>
+        </div>
+
+        {/* Read-only Fields */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+          <div>
+            {profile && (
+              <div className="group bg-gray-800/30 backdrop-blur-sm rounded-lg p-3 border border-gray-700/50">
+                <div className="text-sm text-gray-400">Created At</div>
+                <div className="text-gray-300">
+                  {new Date(profile.user?.createdAt).toLocaleDateString()}
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div>
+            {profile && (
+              <div className="group bg-gray-800/30 backdrop-blur-sm rounded-lg p-3 border border-gray-700/50">
+                <div className="text-sm text-gray-400">Updated At</div>
+                <div className="text-gray-300">
+                  {new Date(profile.user?.updatedAt).toLocaleDateString()}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Submit Button */}
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className="w-full bg-gradient-to-r from-orange-600 to-orange-700 text-white p-3 rounded-lg font-medium hover:from-orange-700 hover:to-orange-800 transition-all duration-200 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {isSubmitting ? "Updating..." : "Update Profile"}
+        </button>
+      </form>
+    </div>
   );
 };
 
