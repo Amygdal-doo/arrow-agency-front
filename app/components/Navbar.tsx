@@ -50,6 +50,11 @@ const Navbar = () => {
                 For Talent
               </li>
             </Link>
+            <Link href="/applicant">
+              <li className="text-white hover:underline font-medium text-xl">
+                Applicants
+              </li>
+            </Link>
           </ul>
         </div>
 

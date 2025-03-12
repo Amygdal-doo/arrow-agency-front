@@ -24,7 +24,7 @@ interface IUser {
   files: any[];
 }
 
-interface ICompanyLogo {
+export interface ICompanyLogo {
   id: string;
   name: string;
   url: string;

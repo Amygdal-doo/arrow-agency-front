@@ -1,1 +1,1 @@
-self.__REACT_LOADABLE_MANIFEST='{"node_modules/jspdf/dist/jspdf.es.min.js -> canvg":{"id":69300,"files":["static/chunks/bc98253f.63ca06ab087b2181.js","static/chunks/839.81c6a074c089c982.js"]},"node_modules/jspdf/dist/jspdf.es.min.js -> dompurify":{"id":56457,"files":["static/chunks/457.c356a5ad19e1c6e3.js"]},"node_modules/jspdf/dist/jspdf.es.min.js -> html2canvas":{"id":40078,"files":[]}}';
+self.__REACT_LOADABLE_MANIFEST="{}"

@@ -42,7 +42,7 @@ const ApplicantDetails = () => {
 
   // const handleSave = async () => {
   //   await updateApplicant();
-  //   // You can add save functionality here (API call to update applicant data)
+  //   // You can add save functionality here (API call to update applicant data)cl
   //   console.log("Saved Applicant:");
   // };
 
