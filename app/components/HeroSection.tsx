@@ -20,13 +20,13 @@ const HeroSection = () => {
   };
 
   return (
-    <section className="relative h-[90vh] w-full">
+    <section className="relative h-[100vh] w-full">
       <Image
         src={HeroBackground}
         alt="Hero Background"
-        className="w-full h-[90vh] object-fill absolute"
+        className="w-full h-[100vh] object-fill absolute"
       />
-      <div className="container mx-auto h-full flex flex-col justify-evenly relative">
+      <div className="container mx-auto h-full flex flex-col justify-evenly relative px-4">
         <div className="flex-col space-y-8">
           <p className="text-white text-6xl font-bold max-w-lg">
             Turn AI research into real-world impact
@@ -49,7 +49,7 @@ const HeroSection = () => {
         </div>
       </div>
       <Modal isOpen={showCVModal} onClose={() => setShowCVModal(false)}>
-        <CVForm />
+        <CVForm onClose={() => setShowCVModal(false)} />
       </Modal>
       <Modal isOpen={showLoginModal} onClose={() => setShowLoginModal(false)}>
         {showLoginForm ? (

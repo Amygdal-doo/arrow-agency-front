@@ -1,7 +1,11 @@
 {
-  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
   "/page": "app/page.js",
+  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
+  "/for-talent/page": "app/for-talent/page.js",
   "/favicon.ico/route": "app/favicon.ico/route.js",
   "/profile/page": "app/profile/page.js",
-  "/applicant/page": "app/applicant/page.js"
+  "/applicant/[id]/page": "app/applicant/[id]/page.js",
+  "/applicant/page": "app/applicant/page.js",
+  "/post-job/page": "app/post-job/page.js",
+  "/_not-found/page": "app/_not-found/page.js"
 }

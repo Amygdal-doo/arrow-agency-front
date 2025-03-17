@@ -197,7 +197,7 @@ const authOptions = {
                 try {
                     const { email, password } = credentials;
                     // Make a request to backend API
-                    const response = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["default"].post(`${("TURBOPACK compile-time value", "https://whale-app-z5sve.ondigitalocean.app/api/")}auth/login`, {
+                    const response = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["default"].post(`${("TURBOPACK compile-time value", "https://arrow-agency-back-production.up.railway.app/api/")}auth/login`, {
                         email,
                         password
                     });
@@ -206,7 +206,7 @@ const authOptions = {
                         const user = response.data;
                         console.log("111111", response);
                         // Fetch the profile data using the accessToken
-                        const profileResponse = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["default"].get(`${("TURBOPACK compile-time value", "https://whale-app-z5sve.ondigitalocean.app/api/")}users/me`, {
+                        const profileResponse = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["default"].get(`${("TURBOPACK compile-time value", "https://arrow-agency-back-production.up.railway.app/api/")}users/me`, {
                             headers: {
                                 Authorization: `Bearer ${user.accessToken}`
                             }
@@ -243,12 +243,12 @@ const authOptions = {
             if (account?.provider === "google") {
                 token.accessToken = account.access_token;
                 console.log("Profile google account...", account);
-                const profileResponse = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["default"].get(`${("TURBOPACK compile-time value", "https://whale-app-z5sve.ondigitalocean.app/api/")}auth/google/token?token=${account.id_token}`);
+                const profileResponse = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["default"].get(`${("TURBOPACK compile-time value", "https://arrow-agency-back-production.up.railway.app/api/")}auth/google/token?token=${account.id_token}`);
                 // token.profile = profileResponse.data;
                 token.accessToken = profileResponse.data.accessToken;
                 token.refreshToken = profileResponse.data.refreshToken;
                 console.log("Profile google...", profileResponse.data);
-                const profileResponseReal = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["default"].get(`${("TURBOPACK compile-time value", "https://whale-app-z5sve.ondigitalocean.app/api/")}user/me`, {
+                const profileResponseReal = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["default"].get(`${("TURBOPACK compile-time value", "https://arrow-agency-back-production.up.railway.app/api/")}user/me`, {
                     headers: {
                         Authorization: `Bearer ${profileResponse.data.accessToken}`
                     }

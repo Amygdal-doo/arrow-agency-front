@@ -1,38 +1,45 @@
-'use client';
+"use client";
 
 import { motion } from "framer-motion";
-import Image from "next/image";
+// import Image from "next/image";
 import { useState } from "react";
-import HeroBackground from "../../public/hero.jpg";
+// import HeroBackground from "../../public/hero.jpg";
 import { jobListings } from "../conts/jobList";
 
 export default function Home() {
   const [searchTerm, setSearchTerm] = useState("");
   const [isRemoteOnly, setIsRemoteOnly] = useState(false);
 
-  const filteredJobs = Array.from(new Set(jobListings.filter((job) => {
-    const matchesSearch = 
-      job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      job.technologies.some(tech => 
-        tech.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    
-    const matchesRemote = isRemoteOnly ? job.isRemote : true;
+  const filteredJobs = Array.from(
+    new Set(
+      jobListings
+        .filter((job) => {
+          const matchesSearch =
+            job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            job.technologies.some((tech) =>
+              tech.toLowerCase().includes(searchTerm.toLowerCase())
+            );
 
-    return matchesSearch && matchesRemote;
-  }).map(job => job.id))).map(id => jobListings.find(job => job.id === id));
+          const matchesRemote = isRemoteOnly ? job.isRemote : true;
+
+          return matchesSearch && matchesRemote;
+        })
+        .map((job) => job.id)
+    )
+  ).map((id) => jobListings.find((job) => job.id === id));
 
   return (
     <motion.section
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="relative min-h-screen w-full bg-[#01070a]">
-      <Image
+      className="relative min-h-screen w-full bg-[#01070a] pt-40"
+    >
+      {/* <Image
         src={HeroBackground}
         alt="Hero Background"
         className="w-full h-[90vh] object-fill absolute"
-      />
+      /> */}
       <div className="container mx-auto h-full flex flex-col justify-evenly relative z-10">
         <div className="flex-col px-8 space-y-8 text-white">
           <p className="text-6xl font-bold max-w-lg">
@@ -47,7 +54,8 @@ export default function Home() {
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="rounded-lg p-8 mt-8">
+          className="rounded-lg p-8 mt-8"
+        >
           <div className="mb-8 flex flex-col space-y-4">
             <input
               type="text"
@@ -71,9 +79,10 @@ export default function Home() {
           <h2 className="text-3xl font-bold mb-6 text-white">
             Available Positions
           </h2>
-          <motion.div 
+          <motion.div
             layout
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+          >
             {filteredJobs.map((job) => (
               <motion.div
                 key={job?.id}

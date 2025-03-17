@@ -49,14 +49,14 @@ const SkillField = () => {
     };
 
     setSkills([
-      ...skills,
+      ...(skills || []), // Add fallback empty array if skills is undefined
       {
         name: newSkill.name,
         efficiency: newSkill.efficiency,
       },
     ]);
 
-    setCurrentSkills([...currentSkills, newSkillWithId]);
+    setCurrentSkills([...(currentSkills || []), newSkillWithId]); // Add fallback here too
 
     setNewSkill({
       id: "",

@@ -31,14 +31,14 @@ const ApplicantDetails = () => {
     applicant,
   } = useApplicant();
 
-  // const handleDownload = (fileUrl: string, fileName: string) => {
-  //   const link = document.createElement("a");
-  //   link.href = fileUrl;
-  //   link.setAttribute("download", fileName);
-  //   document.body.appendChild(link);
-  //   link.click();
-  //   document.body.removeChild(link);
-  // };
+  const handleDownload = (fileUrl: string, fileName: string) => {
+    const link = document.createElement("a");
+    link.href = fileUrl;
+    link.setAttribute("download", fileName);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   // const handleSave = async () => {
   //   await updateApplicant();
@@ -61,10 +61,10 @@ const ApplicantDetails = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#01070a] text-white py-12">
+    <div className="min-h-screen bg-[#01070a] text-white py-12 pt-40">
       {/* <pre>{JSON.stringify(applicant, null, 2)}</pre> */}
-      <div className="container mx-auto px-4 flex space-x-5">
-        <div className="w-1/2 overflow-y-auto max-h-[80vh] scrollbar-hide">
+      <div className="container mx-auto px-4 xl:flex xl:space-x-5 space-y-8 xl:space-y-0">
+        <div className="w-full xl:w-1/2 overflow-y-auto max-h-[80vh] scrollbar-hide">
           {/* Header Section */}
           <div className="space-y-6 mb-8">
             <div className="flex items-center justify-between">
@@ -150,50 +150,48 @@ const ApplicantDetails = () => {
               <SocialField />
 
               <HobbyField />
-              {/* 
+
               <div className="space-y-6 mb-8">
                 <div className="flex items-center justify-between">
-                  <h2 className="text-2xl font-bold text-gray-300">Files</h2>
+                  <h2 className="text-2xl font-bold text-gray-300">File</h2>
                   <div className="h-px flex-1 bg-gray-700 mx-4" />
                 </div>
 
                 <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 shadow-lg">
-                  {applicant.file?.length ? (
-                    <div className="space-y-3">
-                      {applicant.file.map((item: IFile, index: number) => (
-                        <div
-                          key={index}
-                          onClick={() => handleDownload(item.url, item.name)}
-                          className="flex items-center justify-between p-3 bg-gray-700/30 rounded-lg hover:bg-gray-700/50 cursor-pointer transition-all"
+                  <div className="space-y-3">
+                    {applicant.file && (
+                      <div
+                        onClick={() =>
+                          handleDownload(
+                            applicant.file.url,
+                            applicant.file.name
+                          )
+                        }
+                        className="flex items-center justify-between p-3 bg-gray-700/30 rounded-lg hover:bg-gray-700/50 cursor-pointer transition-all"
+                      >
+                        <span className="text-gray-300">
+                          {applicant.file.name}
+                          {applicant.file.extension}
+                        </span>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-5 w-5 text-gray-400"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
                         >
-                          <span className="text-gray-300">
-                            {item.name}
-                            {item.extension}
-                          </span>
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-5 w-5 text-gray-400"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
-                            />
-                          </svg>
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="text-center py-4">
-                      <p className="text-gray-400">No files uploaded yet.</p>
-                    </div>
-                  )}
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                          />
+                        </svg>
+                      </div>
+                    )}
+                  </div>
                 </div>
-              </div> */}
+              </div>
             </div>
           </div>
         </div>

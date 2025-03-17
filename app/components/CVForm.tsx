@@ -8,10 +8,12 @@ import { AxiosResponse } from "axios";
 import { apiService } from "@/core/services/apiService";
 import { ICompanyLogo, useProfile } from "@/providers/ProfileInfoProvider";
 import Image from "next/image";
+import { useApplicants } from "@/providers/ApplicantsProvider";
 
 const userFormSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
   logoId: z.string().min(2, { message: "Logo must be selected." }),
+  templateId: z.string().min(2, { message: "Template must be selected." }),
   companyName: z
     .string()
     .min(2, { message: "Company Name must be at least 2 characters." }),
@@ -30,13 +32,26 @@ const userFormSchema = z.object({
 
 type UserFormInputs = z.infer<typeof userFormSchema>;
 
-const CVForm = () => {
+type CVFormProps = {
+  onClose: () => void;
+};
+
+const CVForm = ({ onClose }: CVFormProps) => {
   const { profile } = useProfile();
   const [fileName, setFileName] = useState<string | null>(null);
   const [technologies, setTechnologies] = useState<string[]>([]);
   const [techInput, setTechInput] = useState("");
   const [isLogoDropdownOpen, setIsLogoDropdownOpen] = useState(false);
   const [selectedLogo, setSelectedLogo] = useState<ICompanyLogo | null>(null);
+  const [isTemplateDropdownOpen, setIsTemplateDropdownOpen] = useState(false);
+  const [selectedTemplate, setSelectedTemplate] = useState<string>("");
+  const { fetchApplicants } = useApplicants();
+
+  const templates = [
+    { id: "cv2", name: "Modern Template" },
+    { id: "cv3", name: "Professional Template" },
+    { id: "cv4", name: "Creative Template" },
+  ];
 
   const {
     register,
@@ -55,6 +70,7 @@ const CVForm = () => {
       phone: "",
       technologies: [],
       logoId: "",
+      templateId: "",
     },
   });
 
@@ -67,8 +83,8 @@ const CVForm = () => {
       formData.append("surname", data.surname);
       formData.append("email", data.email);
       formData.append("phone", data.phone);
-      formData.append("logoId", "b0e7655b-679d-475f-a302-54153616be0e");
-      formData.append("templateId", "cv2");
+      formData.append("logoId", data.logoId);
+      formData.append("templateId", data.templateId);
 
       if (data.file) {
         formData.append("file", data.file);
@@ -93,6 +109,8 @@ const CVForm = () => {
       );
 
       console.log("CV Saved Successfully:", response.data);
+      onClose();
+      fetchApplicants();
       return response.data;
     } catch (error) {
       console.error("Error saving CV:", error);
@@ -147,13 +165,75 @@ const CVForm = () => {
   };
 
   return (
-    <div className="space-y-6 p-8">
+    <div className="space-y-6 p-8 max-h-[90vh]">
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold text-white">Create CV</h2>
         <div className="h-px flex-1 bg-gray-700 mx-4" />
       </div>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="space-y-6 overflow-x-auto max-h-[80vh]"
+      >
+        <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 shadow-lg relative z-20">
+          <label className="block text-sm font-medium text-gray-300 mb-4">
+            CV Template
+          </label>
+          <div className="relative">
+            <div
+              onClick={() => setIsTemplateDropdownOpen(!isTemplateDropdownOpen)}
+              className="bg-gray-700/50 border border-gray-600/50 rounded-lg p-4 text-gray-300 cursor-pointer flex items-center justify-between"
+            >
+              <span
+                className={selectedTemplate ? "text-gray-300" : "text-gray-500"}
+              >
+                {selectedTemplate
+                  ? templates.find((t) => t.id === selectedTemplate)?.name
+                  : "Select Template"}
+              </span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className={`h-5 w-5 transition-transform ${
+                  isTemplateDropdownOpen ? "rotate-180" : ""
+                }`}
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </div>
+
+            {isTemplateDropdownOpen && (
+              <div className="absolute z-50 w-full mt-2 bg-gray-800 backdrop-blur-sm border border-gray-700 rounded-lg shadow-xl">
+                {templates.map((template) => (
+                  <div
+                    key={template.id}
+                    onClick={() => {
+                      setSelectedTemplate(template.id);
+                      setValue("templateId", template.id);
+                      setIsTemplateDropdownOpen(false);
+                    }}
+                    className="p-4 cursor-pointer hover:bg-gray-700 transition-colors text-gray-300"
+                  >
+                    {template.name}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+          {errors.templateId && (
+            <p className="mt-1 text-red-400 text-sm">
+              {errors.templateId.message}
+            </p>
+          )}
+        </div>
+
         {/* Company Logo Selection */}
         <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 shadow-lg relative z-10">
           <label className="block text-sm font-medium text-gray-300 mb-4">
@@ -359,12 +439,12 @@ const CVForm = () => {
               onChange={(e) => setTechInput(e.target.value)}
               onKeyDown={handleKeyPress}
               placeholder="Add technology"
-              className="flex-1 bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 placeholder-gray-500 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+              className="w-4/5 bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 placeholder-gray-500 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
             />
             <button
               type="button"
               onClick={handleAddTechnology}
-              className="px-4 bg-gradient-to-r from-orange-600 to-orange-700 text-white rounded-lg font-medium hover:from-orange-700 hover:to-orange-800 transition-all duration-200"
+              className="px-1 sm:px-4 w-1/5 bg-gradient-to-r from-orange-600 to-orange-700 text-white rounded-lg font-medium hover:from-orange-700 hover:to-orange-800 transition-all duration-200"
             >
               Add
             </button>

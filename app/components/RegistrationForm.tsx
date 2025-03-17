@@ -58,8 +58,8 @@ const RegistrationForm = ({ toggleContent }: RegistrationFormProps) => {
       className="w-full max-w-md mx-auto space-y-4 pb-16 pt-8 px-8 rounded-md shadow-2xl"
     >
       <div className="flex justify-center flex-col items-center">
-        <p className="text-2xl font-bold text-text-[#0a0a23] pr-10">Amygdal</p>
-        <p className="text-2xl font-bold text-purple-600 pl-20">CV Editor</p>
+        <p className="text-2xl font-bold text-white pr-10">Amygdal</p>
+        <p className="text-2xl font-bold text-orange-600 pl-20">CV Editor</p>
       </div>
 
       <div className="py-4 px-16">
@@ -73,7 +73,9 @@ const RegistrationForm = ({ toggleContent }: RegistrationFormProps) => {
       )}
 
       <div>
-        <label className="block text-sm font-bold">First Name</label>
+        <label className="block text-sm font-bold text-gray-300">
+          First Name
+        </label>
         <input
           {...register("firstName")}
           type="text"
@@ -85,7 +87,9 @@ const RegistrationForm = ({ toggleContent }: RegistrationFormProps) => {
       </div>
 
       <div>
-        <label className="block text-sm font-bold">Last Name</label>
+        <label className="block text-sm font-bold text-gray-300">
+          Last Name
+        </label>
         <input
           {...register("lastName")}
           type="text"
@@ -97,7 +101,7 @@ const RegistrationForm = ({ toggleContent }: RegistrationFormProps) => {
       </div>
 
       <div>
-        <label className="block text-sm font-bold">Email</label>
+        <label className="block text-sm font-bold text-gray-300">Email</label>
         <input
           {...register("email")}
           type="email"
@@ -109,7 +113,9 @@ const RegistrationForm = ({ toggleContent }: RegistrationFormProps) => {
       </div>
 
       <div>
-        <label className="block text-sm font-bold">Password</label>
+        <label className="block text-sm font-bold text-gray-300">
+          Password
+        </label>
         <input
           {...register("password")}
           type="password"
@@ -120,11 +126,11 @@ const RegistrationForm = ({ toggleContent }: RegistrationFormProps) => {
         )}
       </div>
 
-      <p className="text-gray-500 font-medium text-md">
+      <p className="text-gray-300 font-medium text-md">
         Already have an account?
         <span
           onClick={toggleContent}
-          className="text-purple-600 font-bold cursor-pointer"
+          className="text-orange-600 font-bold cursor-pointer"
         >
           {" "}
           Log in here
@@ -132,7 +138,7 @@ const RegistrationForm = ({ toggleContent }: RegistrationFormProps) => {
       </p>
       <button
         type="submit"
-        className="w-full bg-purple-600 text-sm font-bold text-white p-2 rounded"
+        className="w-full bg-gradient-to-r from-orange-600 to-orange-700 text-white p-3 rounded-lg font-bold hover:from-orange-700 hover:to-orange-800 transition-all duration-200 shadow-lg"
         disabled={loading}
       >
         {loading ? "Registering..." : "Register"}

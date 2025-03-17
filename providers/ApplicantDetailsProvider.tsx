@@ -97,12 +97,13 @@ export interface IDelete {
   skills: string[];
 }
 
-interface IApplicantDetails {
+interface ICV {
   id: string;
   firstName: string;
   lastName: string;
   email: string;
   phone: string;
+  companyName: string;
   summary: string;
   skills: ISkill[];
   hobbies: string[];
@@ -117,12 +118,30 @@ interface IApplicantDetails {
   updatedAt: string;
 }
 
+interface IApplicantDetails {
+  cv: ICV;
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  technologies: string[];
+  userId: string;
+  cvId: string;
+  file: IFile;
+  templateId: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 interface ApplicantContextType {
   applicant?: IApplicantDetails;
   loading: boolean;
   error: string | null;
   firstName: string;
   setFirstName: (value: string) => void;
+  companyName: string;
+  setCompanyName: (value: string) => void;
   lastName: string;
   setLastName: (value: string) => void;
   email: string;
@@ -167,6 +186,8 @@ interface ApplicantContextType {
   setCurrentLanguages: (value: ILanguage[]) => void;
   deleteItems: IDelete;
   setDeleteItems: (value: IDelete) => void;
+  templateId: string;
+  setTemplateId: (value: string) => void;
   updateApplicant: () => Promise<void>;
 }
 
@@ -187,6 +208,7 @@ export const ApplicantProvider = ({
   const [error, setError] = useState<string | null>(null);
 
   // Editable state for each field
+  const [companyName, setCompanyName] = useState<string>("");
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
@@ -221,39 +243,42 @@ export const ApplicantProvider = ({
     socials: [],
     skills: [],
   });
+  const [templateId, setTemplateId] = useState<string>("");
 
   const fetchApplicant = async () => {
     setLoading(true);
     try {
       if (session?.user?.accessToken) {
         const response: AxiosResponse<IApplicantDetails> = await apiService.get(
-          `cv/${id}`
+          `applicant/${id}`
         );
         const data = response.data;
         setApplicant(data);
+        setTemplateId(data.templateId);
 
-        setFirstName(data.firstName);
-        setLastName(data.lastName);
-        setEmail(data.email);
-        setPhone(data.phone);
-        setSummary(data.summary);
-        setSkills(data.skills);
-        setCurrentSkills(data.skills);
-        setHobbies(data.hobbies);
-        setExperience(data.experience);
-        setCurrentExperience(data.experience);
-        setProjects(data.projects);
-        setCurrentProjects(data.projects);
-        setEducations(data.educations);
-        setCurrentEducations(data.educations);
-        setCertificates(data.certificates);
-        setCurrentCertificates(data.certificates);
-        setCourses(data.courses);
-        setCurrentCourses(data.courses);
-        setSocials(data.socials);
-        setCurrentSocials(data.socials);
-        setLanguages(data.languages);
-        setCurrentLanguages(data.languages);
+        setFirstName(data.cv.firstName);
+        setCompanyName(data.cv.companyName);
+        setLastName(data.cv.lastName);
+        setEmail(data.cv.email);
+        setPhone(data.cv.phone);
+        setSummary(data.cv.summary);
+        setSkills(data.cv.skills);
+        setCurrentSkills(data.cv.skills);
+        setHobbies(data.cv.hobbies);
+        setExperience(data.cv.experience);
+        setCurrentExperience(data.cv.experience);
+        setProjects(data.cv.projects);
+        setCurrentProjects(data.cv.projects);
+        setEducations(data.cv.educations);
+        setCurrentEducations(data.cv.educations);
+        setCertificates(data.cv.certificates);
+        setCurrentCertificates(data.cv.certificates);
+        setCourses(data.cv.courses);
+        setCurrentCourses(data.cv.courses);
+        setSocials(data.cv.socials);
+        setCurrentSocials(data.cv.socials);
+        setLanguages(data.cv.languages);
+        setCurrentLanguages(data.cv.languages);
       }
     } catch (err) {
       setError((err as Error).message);
@@ -265,13 +290,13 @@ export const ApplicantProvider = ({
   const updateApplicant = async () => {
     try {
       setLoading(true);
-      await apiService.put(`/cv/${applicant?.id}`, {
+      await apiService.put(`/cv/${applicant?.cvId}?templateId=${templateId}`, {
         firstName,
         lastName,
         email,
         phone,
         summary,
-        skills,
+        skills: skills || [],
         hobbies,
         experience,
         projects,
@@ -311,6 +336,8 @@ export const ApplicantProvider = ({
         applicant,
         loading,
         error,
+        companyName,
+        setCompanyName,
         firstName,
         setFirstName,
         lastName,
@@ -357,6 +384,8 @@ export const ApplicantProvider = ({
         setCurrentLanguages,
         deleteItems,
         setDeleteItems,
+        templateId,
+        setTemplateId,
         updateApplicant,
       }}
     >

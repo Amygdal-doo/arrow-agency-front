@@ -54,11 +54,11 @@ export default function Profile() {
   };
 
   return (
-    <div className="min-h-screen bg-[#01070a] text-white py-12">
+    <div className="min-h-screen bg-[#01070a] text-white pb-12 pt-40">
       <div className="container mx-auto px-4">
         {/* Header Section */}
         {/* <pre className="text-white">{JSON.stringify(profile, null, 2)}</pre> */}
-        <div className="bg-gray-800 flex justify-between items-start rounded-lg p-8 mb-8 border border-gray-700">
+        <div className="bg-gray-800/50 flex justify-between items-start rounded-lg p-8 mb-8 border border-gray-700">
           <div>
             <h1 className="text-4xl font-bold mb-4 text-white">Profile</h1>
             <p className="text-gray-300">{profile?.user?.email}</p>
@@ -156,12 +156,14 @@ export default function Profile() {
           </button>
         </div>
 
+        {/* <pre>{JSON.stringify(applicants, null, 2)}</pre> */}
+
         {applicants?.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {applicants.map((applicant) => (
               <div
-                key={applicant.cvId}
-                className="bg-gray-800 rounded-lg p-6 shadow-md hover:shadow-lg transition-shadow border border-gray-700 cursor-pointer"
+                key={applicant.id}
+                className="bg-gray-800/50 rounded-lg p-6 shadow-md hover:shadow-lg transition-shadow border border-gray-700 cursor-pointer"
               >
                 <div className="flex justify-between items-start mb-4">
                   <div>
@@ -182,7 +184,7 @@ export default function Profile() {
                 <p className="text-gray-300 mb-4">{applicant.phone}</p>
 
                 <a
-                  href={`/applicant/${applicant?.cvId}`}
+                  href={`/applicant/${applicant?.id}`}
                   className="mt-4 block font-bold w-full text-center bg-orange-600 hover:bg-orange-400 text-white py-2 rounded-md transition-colors"
                 >
                   View Details
@@ -193,62 +195,18 @@ export default function Profile() {
         ) : (
           <p className="text-xl">No applicant added</p>
         )}
-        {applicants?.length ? (
-          <div className="flex justify-end items-center my-4 space-x-4">
-            <button
-              onClick={() => setPage(page - 1)}
-              disabled={page === 1}
-              className="rounded-full disabled:opacity-50 h-10 w-10 bg-gray-700 flex items-center justify-center"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                fill="none"
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                className="w-5 h-5 text-white"
-                viewBox="0 0 24 24"
-              >
-                <path d="M15 19l-7-7 7-7" />
-              </svg>
-            </button>
-
-            {/* Page Number */}
-            <p className="text-lg font-bold text-white">
-              {page} <span className="opacity-50">of {pages}</span>
-            </p>
-
-            <button
-              onClick={() => setPage(page + 1)}
-              disabled={page === pages}
-              className="rounded-full h-10 w-10 disabled:opacity-50 bg-gray-700 flex items-center justify-center"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                fill="none"
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                className="w-5 h-5 text-white"
-                viewBox="0 0 24 24"
-              >
-                <path d="M9 5l7 7-7 7" />
-              </svg>
-            </button>
-          </div>
-        ) : (
-          ""
-        )}
+        <div className="flex w-full justify-end py-8">
+          <button
+            onClick={() => router.push("/applicant")}
+            className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-orange-600 to-orange-700 text-white rounded-lg font-medium hover:from-orange-700 hover:to-orange-800 transition-all duration-200 shadow-lg disabled:opacity-50"
+          >
+            View all
+          </button>
+        </div>
       </div>
 
       <Modal isOpen={showCVModal} onClose={() => setShowCVModal(false)}>
-        <CVForm />
+        <CVForm onClose={() => setShowCVModal(false)} />
       </Modal>
     </div>
   );
