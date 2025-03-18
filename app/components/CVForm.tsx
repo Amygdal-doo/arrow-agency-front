@@ -23,8 +23,8 @@ const userFormSchema = z.object({
   email: z.string().email({ message: "Invalid email address." }),
   phone: z.string().min(6, { message: "Phone number must be valid." }),
   file: z
-    .instanceof(File, { message: "File is required and must be a PDF." })
-    .refine((file) => file.type === "application/pdf", {
+    .custom<File>()
+    .refine((file) => !file || file.type === "application/pdf", {
       message: "Only PDF files are allowed.",
     }),
   technologies: z.array(z.string()).optional(),
