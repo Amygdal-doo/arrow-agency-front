@@ -16,7 +16,7 @@ export default function Profile() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const { profile, fetchProfile } = useProfile();
-  const { applicants, page, setPage, pages, fetchApplicants } = useApplicants();
+  const { applicants, fetchApplicants } = useApplicants();
 
   useEffect(() => {
     if (status === "unauthenticated") {
