@@ -15,30 +15,46 @@ const CVPreviewOne = () => {
     currentSocials,
     companyName,
     currentLanguages,
+    showPersonalInfo,
+    showCompanyInfo,
+    firstName,
+    lastName,
+    email,
+    phone,
   } = useApplicant();
 
   return (
     <div className="w-full min-h-[29.7cm] p-10 mx-auto bg-white shadow-md rounded-lg font-['Inter']">
       {/* Header Section */}
       <div className="mb-12">
-        <div className="flex items-center gap-6 pb-6 border-b border-gray-200">
-          {/* <Image
+        {showCompanyInfo ? (
+          <div className="flex items-center gap-6 pb-6 border-b border-gray-200">
+            {/* <Image
             src={profile?.companyLogos?.url}
             alt="Company Logo"
             className="w-12 h-12 rounded-lg bg-white p-2"
           /> */}
-          <h2 className="text-xl font-semibold text-gray-900">{companyName}</h2>
-        </div>
-
-        {/* <div className="mt-6 flex flex-col gap-2">
-          <h1 className="text-2xl font-semibold text-gray-900">
-            {firstName} {lastName}
-          </h1>
-          <div className="text-gray-600 space-y-1">
-            <p>{email}</p>
-            <p>{phone}</p>
+            <h2 className="text-xl font-semibold text-gray-900">
+              {companyName}
+            </h2>
           </div>
-        </div> */}
+        ) : (
+          ""
+        )}
+
+        {showPersonalInfo ? (
+          <div className="mt-6 flex flex-col gap-2">
+            <h1 className="text-2xl font-semibold text-gray-900">
+              {firstName} {lastName}
+            </h1>
+            <div className="text-gray-600 space-y-1">
+              <p>{email}</p>
+              <p>{phone}</p>
+            </div>
+          </div>
+        ) : (
+          ""
+        )}
       </div>
 
       <div className="grid grid-cols-[2.5fr,1fr] gap-12">

@@ -116,6 +116,8 @@ interface ICV {
   socials: ISocial[];
   createdAt: string;
   updatedAt: string;
+  // showPersonalInfo: boolean;
+  // showCompanyInfo: boolean;
 }
 
 interface IApplicantDetails {
@@ -188,6 +190,10 @@ interface ApplicantContextType {
   setDeleteItems: (value: IDelete) => void;
   templateId: string;
   setTemplateId: (value: string) => void;
+  showPersonalInfo: boolean;
+  setShowPersonalInfo: (value: boolean) => void;
+  showCompanyInfo: boolean;
+  setShowCompanyInfo: (value: boolean) => void;
   updateApplicant: () => Promise<void>;
 }
 
@@ -208,6 +214,8 @@ export const ApplicantProvider = ({
   const [error, setError] = useState<string | null>(null);
 
   // Editable state for each field
+  const [showPersonalInfo, setShowPersonalInfo] = useState<boolean>(true);
+  const [showCompanyInfo, setShowCompanyInfo] = useState<boolean>(true);
   const [companyName, setCompanyName] = useState<string>("");
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
@@ -256,6 +264,9 @@ export const ApplicantProvider = ({
         setApplicant(data);
         setTemplateId(data.templateId);
 
+        // setShowPersonalInfo(data.cv.showPersonalInfo);
+        // setShowCompanyInfo(data.cv.showCompanyInfo);
+
         setFirstName(data.cv.firstName);
         setCompanyName(data.cv.companyName);
         setLastName(data.cv.lastName);
@@ -291,6 +302,8 @@ export const ApplicantProvider = ({
     try {
       setLoading(true);
       await apiService.put(`/cv/${applicant?.cvId}?templateId=${templateId}`, {
+        // showPersonalInfo,
+        // showCompanyInfo,
         firstName,
         lastName,
         email,
@@ -386,6 +399,10 @@ export const ApplicantProvider = ({
         setDeleteItems,
         templateId,
         setTemplateId,
+        showPersonalInfo,
+        setShowPersonalInfo,
+        showCompanyInfo,
+        setShowCompanyInfo,
         updateApplicant,
       }}
     >

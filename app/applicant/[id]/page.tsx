@@ -27,7 +27,10 @@ const ApplicantDetails = () => {
     setPhone,
     summary,
     setSummary,
-    // updateApplicant,
+    showPersonalInfo,
+    setShowPersonalInfo,
+    showCompanyInfo,
+    setShowCompanyInfo,
     applicant,
   } = useApplicant();
 
@@ -72,6 +75,18 @@ const ApplicantDetails = () => {
                 Personal Information
               </h2>
               <div className="h-px flex-1 bg-gray-700 mx-4" />
+              <label className="inline-flex items-center cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={showPersonalInfo}
+                  onChange={() => setShowPersonalInfo(!showPersonalInfo)}
+                  className="sr-only peer"
+                />
+                <div className="relative w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-orange-600"></div>
+                <span className="ml-3 text-sm font-medium text-gray-300">
+                  {showPersonalInfo ? "Visible" : "Hidden"}
+                </span>
+              </label>
             </div>
 
             <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 shadow-lg">
@@ -104,6 +119,46 @@ const ApplicantDetails = () => {
                   placeholder="Phone Number"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
+                  className="bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 placeholder-gray-500 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="space-y-6 mb-8">
+            <div className="flex items-center justify-between">
+              <h2 className="text-2xl font-bold text-gray-300">
+                Company Information
+              </h2>
+              <div className="h-px flex-1 bg-gray-700 mx-4" />
+              <label className="inline-flex items-center cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={showCompanyInfo}
+                  onChange={() => setShowCompanyInfo(!showCompanyInfo)}
+                  className="sr-only peer"
+                />
+                <div className="relative w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-orange-600"></div>
+                <span className="ml-3 text-sm font-medium text-gray-300">
+                  {showCompanyInfo ? "Visible" : "Hidden"}
+                </span>
+              </label>
+            </div>
+
+            <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 shadow-lg">
+              <div className="grid grid-cols-2 gap-4 mb-4">
+                <input
+                  type="text"
+                  placeholder="Company name"
+                  // value={companyName}
+                  // onChange={(e) => setCompanyName(e.target.value)}
+                  className="bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 placeholder-gray-500 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+                />
+                <input
+                  type="text"
+                  placeholder="Company Logo"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
                   className="bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 placeholder-gray-500 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
                 />
               </div>
