@@ -4,6 +4,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { signIn } from "next-auth/react";
+import { Eye, EyeOff } from "lucide-react";
 
 const loginSchema = z.object({
   email: z.string().email({ message: "Invalid email address." }),
@@ -22,6 +23,7 @@ type LoginFormProps = {
 const LoginForm = ({ toggleContent, onClose }: LoginFormProps) => {
   const [loading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const {
     register,
@@ -89,11 +91,20 @@ const LoginForm = ({ toggleContent, onClose }: LoginFormProps) => {
         <label className="block text-sm font-bold text-gray-300">
           Password
         </label>
-        <input
-          {...register("password")}
-          type="password"
-          className="w-full border p-2 rounded"
-        />
+        <div className="relative">
+          <input
+            {...register("password")}
+            type={showPassword ? "text" : "password"}
+            className="w-full border p-2 rounded"
+          />
+          <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+          >
+            {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+          </button>
+        </div>
         {errors.password && (
           <p className="text-red-500 text-sm">{errors.password.message}</p>
         )}

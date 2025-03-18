@@ -172,18 +172,20 @@ const CertificateField = () => {
 
         <div className="grid grid-cols-2 gap-4 my-4">
           <input
-            type="month"
+            type="text"
             name="issueDate"
+            placeholder="Jan 2025"
             value={newCertificate.issueDate}
             onChange={handleChange}
-            className="bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+            className="bg-gray-700/50 border placeholder-gray-500  border-gray-600/50 rounded-lg p-3 text-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
           />
           <input
-            type="month"
+            type="text"
             name="expirationDate"
+            placeholder="Jan 2030"
             value={newCertificate.expirationDate}
             onChange={handleChange}
-            className="bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+            className="bg-gray-700/50 border placeholder-gray-500  border-gray-600/50 rounded-lg p-3 text-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
           />
         </div>
 
@@ -285,20 +287,9 @@ const CertificateField = () => {
               </div>
               <div className="flex justify-end text-sm text-gray-400">
                 <span>
-                  {new Date(cert.issueDate).toLocaleDateString("en-US", {
-                    month: "short",
-                    year: "numeric",
-                  })}
+                  {cert.issueDate ? cert.issueDate : ""}
                   {" - "}
-                  {cert.expirationDate
-                    ? new Date(cert.expirationDate).toLocaleDateString(
-                        "en-US",
-                        {
-                          month: "short",
-                          year: "numeric",
-                        }
-                      )
-                    : "No Expiration"}
+                  {cert.expirationDate ? cert.expirationDate : "No Expiration"}
                 </span>
               </div>
             </div>

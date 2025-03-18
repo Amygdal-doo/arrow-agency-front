@@ -154,18 +154,20 @@ const CourseField = () => {
 
         <div className="grid grid-cols-2 gap-4 mt-4">
           <input
-            type="month"
+            type="text"
+            placeholder="Jan 2017"
             name="startDate"
             value={newCourse.startDate}
             onChange={handleChange}
-            className="bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+            className="bg-gray-700/50 border placeholder-gray-500 border-gray-600/50 rounded-lg p-3 text-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
           />
           <input
-            type="month"
+            type="text"
             name="endDate"
+            placeholder="Dec 2017"
             value={newCourse.endDate}
             onChange={handleChange}
-            className="bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+            className="bg-gray-700/50 border placeholder-gray-500 border-gray-600/50 rounded-lg p-3 text-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
           />
         </div>
 
@@ -255,17 +257,9 @@ const CourseField = () => {
               </div>
               <div className="flex justify-end text-sm text-gray-400">
                 <span>
-                  {new Date(course.startDate).toLocaleDateString("en-US", {
-                    month: "short",
-                    year: "numeric",
-                  })}
+                  {course.startDate ? course.startDate : ""}
                   {" - "}
-                  {course.endDate
-                    ? new Date(course.endDate).toLocaleDateString("en-US", {
-                        month: "short",
-                        year: "numeric",
-                      })
-                    : "Present"}
+                  {course.endDate ? course.endDate : "Present"}
                 </span>
               </div>
             </div>

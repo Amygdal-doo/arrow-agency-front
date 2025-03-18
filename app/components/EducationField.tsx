@@ -179,18 +179,20 @@ const EducationField = () => {
 
         <div className="grid grid-cols-2 gap-4">
           <input
-            type="month"
+            type="text"
             name="startDate"
+            placeholder="Jan 2015"
             value={newEducation.startDate}
             onChange={handleChange}
-            className="bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+            className="bg-gray-700/50 border placeholder-gray-500 border-gray-600/50 rounded-lg p-3 text-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
           />
           <input
-            type="month"
+            type="text"
             name="endDate"
+            placeholder="Jun 2019"
             value={newEducation.endDate}
             onChange={handleChange}
-            className="bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+            className="bg-gray-700/50 border placeholder-gray-500 border-gray-600/50 rounded-lg p-3 text-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
           />
         </div>
         {newEducation.id ? (
@@ -275,17 +277,9 @@ const EducationField = () => {
               <div className="flex justify-between text-sm text-gray-400">
                 <span>{education.field}</span>
                 <span>
-                  {new Date(education.startDate).toLocaleDateString("en-US", {
-                    month: "short",
-                    year: "numeric",
-                  })}
+                  {education.startDate ? education.startDate : ""}
                   {" - "}
-                  {education.endDate
-                    ? new Date(education.endDate).toLocaleDateString("en-US", {
-                        month: "short",
-                        year: "numeric",
-                      })
-                    : "Present"}
+                  {education.endDate ? education.endDate : "Present"}
                 </span>
               </div>
             </div>

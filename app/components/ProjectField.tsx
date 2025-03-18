@@ -170,18 +170,20 @@ const ProjectField = () => {
 
         <div className="grid grid-cols-2 gap-4 mt-4">
           <input
-            type="month"
+            type="text"
             name="startDate"
             value={newProject.startDate}
+            placeholder="Jan 2015"
             onChange={handleChange}
-            className="bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+            className="bg-gray-700/50 border  placeholder-gray-500 border-gray-600/50 rounded-lg p-3 text-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
           />
           <input
-            type="month"
+            type="text"
             name="endDate"
             value={newProject.endDate}
             onChange={handleChange}
-            className="bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+            placeholder="Jun 2015"
+            className="bg-gray-700/50 border placeholder-gray-500 border-gray-600/50 rounded-lg p-3 text-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
           />
         </div>
 
@@ -274,17 +276,9 @@ const ProjectField = () => {
               </div>
               <div className="flex justify-between text-sm text-gray-400">
                 <span>
-                  {new Date(project.startDate).toLocaleDateString("en-US", {
-                    month: "short",
-                    year: "numeric",
-                  })}
+                  {project.startDate ? project.startDate : ""}
                   {" - "}
-                  {project.endDate
-                    ? new Date(project.endDate).toLocaleDateString("en-US", {
-                        month: "short",
-                        year: "numeric",
-                      })
-                    : "Present"}
+                  {project.endDate ? project.endDate : "Present"}
                 </span>
               </div>
             </div>

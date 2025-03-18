@@ -177,8 +177,14 @@ const Navbar = () => {
       )}
 
       {/* Login/Register Modal */}
-      <Modal isOpen={showLoginModal} onClose={() => setShowLoginModal(false)}>
-        {showLoginForm ? (
+      <Modal
+        isOpen={showLoginModal}
+        onClose={() => {
+          setShowLoginModal(false);
+          setShowLoginForm(false);
+        }}
+      >
+        {!showLoginForm ? (
           <LoginForm
             toggleContent={toggleLoginForm}
             onClose={() => setShowLoginModal(false)}

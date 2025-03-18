@@ -100,17 +100,9 @@ const CVPreviewOne = () => {
                       </h3>
                       <p className="text-gray-600">{edu.institution}</p>
                       <span className="text-xs text-gray-400 font-medium">
-                        {new Date(edu.startDate).toLocaleDateString("en-US", {
-                          month: "short",
-                          year: "numeric",
-                        })}
+                        {edu.startDate ? edu.startDate : ""}
                         {" - "}
-                        {edu.endDate
-                          ? new Date(edu.endDate).toLocaleDateString("en-US", {
-                              month: "short",
-                              year: "numeric",
-                            })
-                          : "Present"}
+                        {edu.endDate ? edu.endDate : "Present"}
                       </span>
                     </div>
                   </div>

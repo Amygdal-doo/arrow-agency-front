@@ -165,18 +165,20 @@ const ExperienceField = () => {
 
         <div className="grid grid-cols-2 gap-4 my-4">
           <input
-            type="month"
+            type="text"
+            placeholder="Jan 2015"
             name="startDate"
             value={newExperience.startDate}
             onChange={handleChange}
-            className="bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+            className="bg-gray-700/50 border placeholder-gray-500 border-gray-600/50 rounded-lg p-3 text-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
           />
           <input
-            type="month"
+            type="text"
+            placeholder="Jun 2017"
             name="endDate"
             value={newExperience.endDate}
             onChange={handleChange}
-            className="bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+            className="bg-gray-700/50 border placeholder-gray-500 border-gray-600/50 rounded-lg p-3 text-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
           />
         </div>
 
@@ -267,17 +269,9 @@ const ExperienceField = () => {
               <p className="text-gray-400 mb-3">{exp.description}</p>
               <div className="flex justify-end text-sm text-gray-400">
                 <span>
-                  {new Date(exp.startDate).toLocaleDateString("en-US", {
-                    month: "short",
-                    year: "numeric",
-                  })}
+                  {exp.startDate ? exp.startDate : ""}
                   {" - "}
-                  {exp.endDate
-                    ? new Date(exp.endDate).toLocaleDateString("en-US", {
-                        month: "short",
-                        year: "numeric",
-                      })
-                    : "Present"}
+                  {exp.endDate ? exp.endDate : "Present"}
                 </span>
               </div>
             </div>

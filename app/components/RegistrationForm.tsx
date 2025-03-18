@@ -3,6 +3,7 @@ import { apiService } from "@/core/services/apiService";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { Eye, EyeOff } from "lucide-react";
 import { z } from "zod";
 
 const registrationSchema = z.object({
@@ -27,6 +28,7 @@ type RegistrationFormProps = {
 const RegistrationForm = ({ toggleContent }: RegistrationFormProps) => {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const {
     register,
@@ -116,11 +118,20 @@ const RegistrationForm = ({ toggleContent }: RegistrationFormProps) => {
         <label className="block text-sm font-bold text-gray-300">
           Password
         </label>
-        <input
-          {...register("password")}
-          type="password"
-          className="w-full border p-2 rounded"
-        />
+        <div className="relative">
+          <input
+            {...register("password")}
+            type={showPassword ? "text" : "password"}
+            className="w-full border p-2 rounded"
+          />
+          <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+          >
+            {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+          </button>
+        </div>
         {errors.password && (
           <p className="text-red-500 text-sm">{errors.password.message}</p>
         )}

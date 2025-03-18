@@ -51,8 +51,14 @@ const HeroSection = () => {
       <Modal isOpen={showCVModal} onClose={() => setShowCVModal(false)}>
         <CVForm onClose={() => setShowCVModal(false)} />
       </Modal>
-      <Modal isOpen={showLoginModal} onClose={() => setShowLoginModal(false)}>
-        {showLoginForm ? (
+      <Modal
+        isOpen={showLoginModal}
+        onClose={() => {
+          setShowLoginModal(false);
+          setShowLoginForm(false);
+        }}
+      >
+        {!showLoginForm ? (
           <LoginForm
             toggleContent={toggleLoginForm}
             onClose={() => setShowLoginModal(false)}
