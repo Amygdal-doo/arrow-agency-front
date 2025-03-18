@@ -121,7 +121,7 @@ const CVForm = ({ onClose }: CVFormProps) => {
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
 
-    if (!file) {
+    if (!file || !(file instanceof File)) {
       setError("file", {
         type: "manual",
         message: "File is required and must be a PDF.",
