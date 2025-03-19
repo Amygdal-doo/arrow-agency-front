@@ -1,5 +1,6 @@
 "use client";
 import { useApplicant } from "@/providers/ApplicantDetailsProvider";
+import Image from "next/image";
 import React from "react";
 
 const CVPreviewOne = () => {
@@ -21,6 +22,8 @@ const CVPreviewOne = () => {
     lastName,
     email,
     phone,
+    companyLogo,
+    colorPalette,
   } = useApplicant();
 
   return (
@@ -29,11 +32,13 @@ const CVPreviewOne = () => {
       <div className="mb-12">
         {showCompanyInfo ? (
           <div className="flex items-center gap-6 pb-6 border-b border-gray-200">
-            {/* <Image
-            src={profile?.companyLogos?.url}
-            alt="Company Logo"
-            className="w-12 h-12 rounded-lg bg-white p-2"
-          /> */}
+            <Image
+              src={companyLogo.url}
+              alt="Company Logo"
+              className="w-16 h-16 rounded-lg bg-white p-2"
+              width={companyLogo.width}
+              height={companyLogo.height}
+            />
             <h2 className="text-xl font-semibold text-gray-900">
               {companyName}
             </h2>
@@ -47,9 +52,46 @@ const CVPreviewOne = () => {
             <h1 className="text-2xl font-semibold text-gray-900">
               {firstName} {lastName}
             </h1>
-            <div className="text-gray-600 space-y-1">
-              <p>{email}</p>
-              <p>{phone}</p>
+            <div
+              className="flex items-center gap-4"
+              style={{ color: colorPalette }}
+            >
+              <span className="flex items-center gap-2">
+                {" "}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-4 h-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={1.5}
+                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                  />
+                </svg>
+                {email}
+              </span>
+              <span className="flex items-center gap-2">
+                {" "}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-4 h-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={1.5}
+                    d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                  />
+                </svg>
+                {phone}
+              </span>
             </div>
           </div>
         ) : (
@@ -68,7 +110,10 @@ const CVPreviewOne = () => {
 
           {currentExperience?.length > 0 && (
             <section>
-              <h2 className="text-xs font-semibold text-indigo-600 uppercase tracking-wider mb-6 pb-3 border-b border-gray-200">
+              <h2
+                style={{ color: colorPalette }}
+                className="text-xs font-semibold  uppercase tracking-wider mb-6 pb-3 border-b border-gray-200"
+              >
                 Work Experience
               </h2>
               <div className="space-y-7">
@@ -80,17 +125,9 @@ const CVPreviewOne = () => {
                       </h3>
                       <p className="text-gray-600">{exp.company}</p>
                       <span className="text-xs text-gray-400 font-medium">
-                        {new Date(exp.startDate).toLocaleDateString("en-US", {
-                          month: "short",
-                          year: "numeric",
-                        })}
-                        {" - "}
-                        {exp.endDate
-                          ? new Date(exp.endDate).toLocaleDateString("en-US", {
-                              month: "short",
-                              year: "numeric",
-                            })
-                          : "Present"}
+                        {exp.startDate ? exp.startDate : ""}
+                        {exp.startDate && " - "}
+                        {exp.endDate ? exp.endDate : "Present"}
                       </span>
                     </div>
                     <p className="text-gray-600 leading-relaxed">
@@ -104,7 +141,10 @@ const CVPreviewOne = () => {
 
           {currentEducations?.length > 0 && (
             <section>
-              <h2 className="text-xs font-semibold text-indigo-600 uppercase tracking-wider mb-6 pb-3 border-b border-gray-200">
+              <h2
+                style={{ color: colorPalette }}
+                className="text-xs font-semibold  uppercase tracking-wider mb-6 pb-3 border-b border-gray-200"
+              >
                 Education
               </h2>
               <div className="space-y-6">
@@ -117,7 +157,7 @@ const CVPreviewOne = () => {
                       <p className="text-gray-600">{edu.institution}</p>
                       <span className="text-xs text-gray-400 font-medium">
                         {edu.startDate ? edu.startDate : ""}
-                        {" - "}
+                        {edu.startDate && " - "}
                         {edu.endDate ? edu.endDate : "Present"}
                       </span>
                     </div>
@@ -129,7 +169,10 @@ const CVPreviewOne = () => {
 
           {currentProjects?.length > 0 && (
             <section>
-              <h2 className="text-xs font-semibold text-indigo-600 uppercase tracking-wider mb-6 pb-3 border-b border-gray-200">
+              <h2
+                style={{ color: colorPalette }}
+                className="text-xs font-semibold  uppercase tracking-wider mb-6 pb-3 border-b border-gray-200"
+              >
                 Projects
               </h2>
               <div className="space-y-6">
@@ -145,29 +188,16 @@ const CVPreviewOne = () => {
                           href={project.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-indigo-600 hover:text-indigo-700 text-sm"
+                          className="text-sm hover:opacity-80 transition-opacity"
+                          style={{ color: colorPalette }}
                         >
                           {project.url}
                         </a>
                       )}
                       <span className="text-xs text-gray-400 font-medium">
-                        {new Date(project.startDate).toLocaleDateString(
-                          "en-US",
-                          {
-                            month: "short",
-                            year: "numeric",
-                          }
-                        )}
-                        {" - "}
-                        {project.endDate
-                          ? new Date(project.endDate).toLocaleDateString(
-                              "en-US",
-                              {
-                                month: "short",
-                                year: "numeric",
-                              }
-                            )
-                          : "Present"}
+                        {project.startDate ? project.startDate : ""}
+                        {project.startDate && " - "}
+                        {project.endDate ? project.endDate : "Present"}
                       </span>
                     </div>
                   </div>
@@ -178,7 +208,10 @@ const CVPreviewOne = () => {
 
           {currentCourses?.length > 0 && (
             <section>
-              <h2 className="text-xs font-semibold text-indigo-600 uppercase tracking-wider mb-6 pb-3 border-b border-gray-200">
+              <h2
+                style={{ color: colorPalette }}
+                className="text-xs font-semibold  uppercase tracking-wider mb-6 pb-3 border-b border-gray-200"
+              >
                 Courses
               </h2>
               <div className="space-y-6">
@@ -193,29 +226,16 @@ const CVPreviewOne = () => {
                           href={course.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-indigo-600 hover:text-indigo-700 text-sm"
+                          className="text-sm hover:opacity-80 transition-opacity"
+                          style={{ color: colorPalette }}
                         >
                           View Course →
                         </a>
                       )}
                       <span className="text-xs text-gray-400 font-medium">
-                        {new Date(course.startDate).toLocaleDateString(
-                          "en-US",
-                          {
-                            month: "short",
-                            year: "numeric",
-                          }
-                        )}
-                        {" - "}
-                        {course.endDate
-                          ? new Date(course.endDate).toLocaleDateString(
-                              "en-US",
-                              {
-                                month: "short",
-                                year: "numeric",
-                              }
-                            )
-                          : "Present"}
+                        {course.startDate ? course.startDate : ""}
+                        {course.startDate && " - "}
+                        {course.endDate ? course.endDate : "Present"}
                       </span>
                     </div>
                   </div>
@@ -226,7 +246,10 @@ const CVPreviewOne = () => {
 
           {currentCertificates?.length > 0 && (
             <section>
-              <h2 className="text-xs font-semibold text-indigo-600 uppercase tracking-wider mb-6 pb-3 border-b border-gray-200">
+              <h2
+                style={{ color: colorPalette }}
+                className="text-xs font-semibold uppercase tracking-wider mb-6 pb-3 border-b border-gray-200"
+              >
                 Certificates
               </h2>
               <div className="space-y-6">
@@ -242,25 +265,16 @@ const CVPreviewOne = () => {
                           href={cert.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-indigo-600 hover:text-indigo-700 text-sm"
+                          className="text-sm hover:opacity-80 transition-opacity"
+                          style={{ color: colorPalette }}
                         >
                           View Certificate →
                         </a>
                       )}
                       <span className="text-xs text-gray-400 font-medium">
-                        {new Date(cert.issueDate).toLocaleDateString("en-US", {
-                          month: "short",
-                          year: "numeric",
-                        })}
-                        {cert.expirationDate && " - "}
-                        {cert.expirationDate &&
-                          new Date(cert.expirationDate).toLocaleDateString(
-                            "en-US",
-                            {
-                              month: "short",
-                              year: "numeric",
-                            }
-                          )}
+                        {cert.issueDate && cert.issueDate}
+                        {cert.issueDate && " - "}
+                        {cert.expirationDate && cert.expirationDate}
                       </span>
                     </div>
                   </div>
@@ -274,7 +288,10 @@ const CVPreviewOne = () => {
         <div className="space-y-10">
           {currentSkills?.length > 0 && (
             <section>
-              <h2 className="text-xs font-semibold text-indigo-600 uppercase tracking-wider mb-6 pb-3 border-b border-gray-200">
+              <h2
+                style={{ color: colorPalette }}
+                className="text-xs font-semibold  uppercase tracking-wider mb-6 pb-3 border-b border-gray-200"
+              >
                 Skills
               </h2>
               <div className="space-y-3">
@@ -295,7 +312,10 @@ const CVPreviewOne = () => {
 
           {currentLanguages?.length > 0 && (
             <section>
-              <h2 className="text-xs font-semibold text-indigo-600 uppercase tracking-wider mb-6 pb-3 border-b border-gray-200">
+              <h2
+                style={{ color: colorPalette }}
+                className="text-xs font-semibold  uppercase tracking-wider mb-6 pb-3 border-b border-gray-200"
+              >
                 Languages
               </h2>
               <div className="space-y-3">
@@ -316,7 +336,10 @@ const CVPreviewOne = () => {
 
           {currentSocials?.length > 0 && (
             <section>
-              <h2 className="text-xs font-semibold text-indigo-600 uppercase tracking-wider mb-6 pb-3 border-b border-gray-200">
+              <h2
+                style={{ color: colorPalette }}
+                className="text-xs font-semibold  uppercase tracking-wider mb-6 pb-3 border-b border-gray-200"
+              >
                 Social Links
               </h2>
               <div className="space-y-3">
@@ -330,7 +353,8 @@ const CVPreviewOne = () => {
                     }
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-indigo-600 hover:text-indigo-700 block transition-colors"
+                    className="hover:opacity-80 block transition-opacity"
+                    style={{ color: colorPalette }}
                   >
                     {social.name}
                   </a>
@@ -341,7 +365,10 @@ const CVPreviewOne = () => {
 
           {hobbies?.length > 0 && (
             <section>
-              <h2 className="text-xs font-semibold text-indigo-600 uppercase tracking-wider mb-6 pb-3 border-b border-gray-200">
+              <h2
+                style={{ color: colorPalette }}
+                className="text-xs font-semibold  uppercase tracking-wider mb-6 pb-3 border-b border-gray-200"
+              >
                 Hobbies
               </h2>
               <div className="space-y-2">

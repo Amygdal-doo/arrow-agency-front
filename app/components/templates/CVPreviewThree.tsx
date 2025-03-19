@@ -1,5 +1,6 @@
 "use client";
 import { useApplicant } from "@/providers/ApplicantDetailsProvider";
+import Image from "next/image";
 // import Image from "next/image";
 import React from "react";
 
@@ -16,28 +17,112 @@ const CVPreviewThree = () => {
     currentSocials,
     companyName,
     currentLanguages,
+    showPersonalInfo,
+    showCompanyInfo,
+    companyLogo,
+    colorPalette,
+    firstName,
+    lastName,
+    email,
+    phone,
   } = useApplicant();
+
+  // const secondaryColor = "rgb(236, 72, 153)";
+  const secondaryColor = "rgb(99, 102, 241)";
+  // const secondaryColor = "rgb(15, 23, 42)";
+  // const secondaryColor = "rgb(234, 179, 8)";
+  // const secondaryColor = "rgb(15, 23, 42)";
+  // const secondaryColor = "rgb(0,0,0)";
+  // const secondaryColor = "rgb(75, 0, 130)";
+  // const secondaryColor = "rgb(34, 197, 94)";
+  // const secondaryColor = "rgb(234, 179, 8)";
+  // const secondaryColor = "rgb(31,31,31)";
+  // const secondaryColor = "rgb(17,24,39)";
+
+  // const secondaryColor = "rgb(99, 102, 241)";
 
   return (
     <div className="w-full min-h-[29.7cm] mx-auto bg-white shadow-md rounded-2xl overflow-hidden font-['Space_Grotesk'] grid grid-cols-[280px,1fr]">
       {/* Sidebar */}
-      <div className="bg-slate-900 p-8 text-white">
-        <div className="text-center mb-8 pb-6 border-b border-white/10">
-          {/* <Image
-            src="/placeholder-logo.png"
-            alt="Company Logo"
-            className="w-16 h-16 mb-4 mx-auto rounded-lg bg-white p-2"
-          /> */}
-          <h2 className="text-xl font-semibold text-white">{companyName}</h2>
-        </div>
+      <div className="p-8 text-white" style={{ backgroundColor: colorPalette }}>
+        {showCompanyInfo ? (
+          <div className="text-center mb-8 pb-6 border-b border-white/10">
+            <Image
+              src={companyLogo.url}
+              alt="Company Logo"
+              width={companyLogo.width}
+              height={companyLogo.height}
+              className="w-16 h-16 mb-4 mx-auto rounded-lg bg-white p-2"
+            />
+            <h2 className="text-xl font-semibold text-white">{companyName}</h2>
+          </div>
+        ) : (
+          ""
+        )}
+
+        {showPersonalInfo ? (
+          <div className="mt-6 mb-8 flex flex-col gap-2 border-b border-white/10 pb-6">
+            <h1 className="text-2xl font-semibold text-white">
+              {firstName} {lastName}
+            </h1>
+            <div className="flex flex-col space-y-3">
+              <span className="flex items-center gap-2 text-white">
+                {" "}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-4 h-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={1.5}
+                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                  />
+                </svg>
+                {email}
+              </span>
+              <span className="flex items-center gap-2 text-white">
+                {" "}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-4 h-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={1.5}
+                    d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                  />
+                </svg>
+                {phone}
+              </span>
+            </div>
+          </div>
+        ) : (
+          ""
+        )}
 
         {currentSkills?.length > 0 && (
           <div className="mb-10">
             <div className="flex items-center gap-4 mb-6">
-              <h2 className="text-xl text-indigo-500 uppercase tracking-wider">
+              <h2
+                className="text-xl uppercase tracking-wider"
+                style={{ color: secondaryColor }}
+              >
                 Skills
               </h2>
-              <div className="flex-1 h-0.5 bg-gradient-to-r from-indigo-500 to-purple-500 rounded"></div>
+              <div
+                className="flex-1 h-0.5 rounded"
+                style={{
+                  background: `linear-gradient(to right, ${secondaryColor}, #a855f7)`,
+                }}
+              ></div>
             </div>
             <div className="space-y-3">
               {currentSkills.map((skill, index) => (
@@ -46,7 +131,12 @@ const CVPreviewThree = () => {
                   className="bg-white/10 p-4 rounded-lg flex justify-between items-center"
                 >
                   <span className="font-medium">{skill.name}</span>
-                  <span className="text-sm px-3 py-1 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-500">
+                  <span
+                    className="text-sm px-3 py-1 rounded-xl"
+                    style={{
+                      background: `linear-gradient(to right, ${secondaryColor}, #a855f7)`,
+                    }}
+                  >
                     {skill.efficiency}
                   </span>
                 </div>
@@ -58,19 +148,26 @@ const CVPreviewThree = () => {
         {currentLanguages?.length > 0 && (
           <div className="mb-10">
             <div className="flex items-center gap-4 mb-6">
-              <h2 className="text-xl text-indigo-500 uppercase tracking-wider">
+              <h2
+                className="text-xl  uppercase tracking-wider"
+                style={{ color: secondaryColor }}
+              >
                 Languages
               </h2>
-              <div className="flex-1 h-0.5 bg-gradient-to-r from-indigo-500 to-purple-500 rounded"></div>
+              <div
+                className="flex-1 h-0.5  rounded"
+                style={{
+                  background: `linear-gradient(to right, ${secondaryColor}, #a855f7)`,
+                }}
+              ></div>
             </div>
             <div className="space-y-4">
               {currentLanguages.map((lang, index) => (
-                <div
-                  key={index}
-                  className="flex justify-between text-slate-400"
-                >
+                <div key={index} className="flex justify-between text-white">
                   <span>{lang.name}</span>
-                  <span className="text-indigo-500">{lang.efficiency}</span>
+                  <span style={{ color: secondaryColor }}>
+                    {lang.efficiency}
+                  </span>
                 </div>
               ))}
             </div>
@@ -80,14 +177,22 @@ const CVPreviewThree = () => {
         {hobbies?.length > 0 && (
           <div className="mb-10">
             <div className="flex items-center gap-4 mb-6">
-              <h2 className="text-xl text-indigo-500 uppercase tracking-wider">
+              <h2
+                className="text-xl  uppercase tracking-wider"
+                style={{ color: secondaryColor }}
+              >
                 Hobbies
               </h2>
-              <div className="flex-1 h-0.5 bg-gradient-to-r from-indigo-500 to-purple-500 rounded"></div>
+              <div
+                className="flex-1 h-0.5 rounded"
+                style={{
+                  background: `linear-gradient(to right, ${secondaryColor}, #a855f7)`,
+                }}
+              ></div>
             </div>
             <div className="space-y-2">
               {hobbies.map((hobby, index) => (
-                <p key={index} className="text-slate-400">
+                <p key={index} className="text-white">
                   {hobby}
                 </p>
               ))}
@@ -98,10 +203,18 @@ const CVPreviewThree = () => {
         {currentSocials?.length > 0 && (
           <div className="mb-10">
             <div className="flex items-center gap-4 mb-6">
-              <h2 className="text-xl text-indigo-500 uppercase tracking-wider">
+              <h2
+                className="text-xl uppercase tracking-wider"
+                style={{ color: secondaryColor }}
+              >
                 Connect
               </h2>
-              <div className="flex-1 h-0.5 bg-gradient-to-r from-indigo-500 to-purple-500 rounded"></div>
+              <div
+                className="flex-1 h-0.5 rounded"
+                style={{
+                  background: `linear-gradient(to right, ${secondaryColor}, #a855f7)`,
+                }}
+              ></div>
             </div>
             <div className="space-y-3">
               {currentSocials.map((social) => (
@@ -114,7 +227,7 @@ const CVPreviewThree = () => {
                   }
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-3 p-3 bg-white/10 rounded-lg text-white hover:bg-indigo-500 transition-all hover:translate-x-1"
+                  className="flex items-center gap-3 p-3 bg-white/10 rounded-lg text-white"
                 >
                   {social.name}
                 </a>
@@ -129,10 +242,18 @@ const CVPreviewThree = () => {
         {summary && (
           <div className="mb-10">
             <div className="flex items-center gap-4 mb-6">
-              <h2 className="text-xl text-indigo-500 uppercase tracking-wider">
+              <h2
+                style={{ color: secondaryColor }}
+                className="text-xl uppercase tracking-wider"
+              >
                 About
               </h2>
-              <div className="flex-1 h-0.5 bg-gradient-to-r from-indigo-500 to-purple-500 rounded"></div>
+              <div
+                className="flex-1 h-0.5 rounded"
+                style={{
+                  background: `linear-gradient(to right, ${secondaryColor}, #a855f7)`,
+                }}
+              ></div>
             </div>
             <p className="text-slate-600">{summary}</p>
           </div>
@@ -141,10 +262,18 @@ const CVPreviewThree = () => {
         {currentExperience?.length > 0 && (
           <div className="mb-10">
             <div className="flex items-center gap-4 mb-6">
-              <h2 className="text-xl text-indigo-500 uppercase tracking-wider">
+              <h2
+                style={{ color: secondaryColor }}
+                className="text-xl uppercase tracking-wider"
+              >
                 Experience
               </h2>
-              <div className="flex-1 h-0.5 bg-gradient-to-r from-indigo-500 to-purple-500 rounded"></div>
+              <div
+                style={{
+                  background: `linear-gradient(to right, ${secondaryColor}, #a855f7)`,
+                }}
+                className="flex-1 h-0.5 rounded"
+              ></div>
             </div>
             <div className="space-y-4">
               {currentExperience.map((exp, index) => (
@@ -155,21 +284,16 @@ const CVPreviewThree = () => {
                   <h3 className="text-lg font-semibold text-slate-900">
                     {exp.position}
                   </h3>
-                  <div className="text-indigo-500 font-medium mt-1">
+                  <div
+                    style={{ color: secondaryColor }}
+                    className=" font-medium mt-1"
+                  >
                     {exp.company}
                   </div>
                   <div className="text-sm text-slate-400 mt-1">
-                    {new Date(exp.startDate).toLocaleDateString("en-US", {
-                      month: "short",
-                      year: "numeric",
-                    })}
-                    {" - "}
-                    {exp.endDate
-                      ? new Date(exp.endDate).toLocaleDateString("en-US", {
-                          month: "short",
-                          year: "numeric",
-                        })
-                      : "Present"}
+                    {exp.startDate ? exp.startDate : ""}
+                    {exp.startDate && " - "}
+                    {exp.endDate ? exp.endDate : "Present"}
                   </div>
                   <p className="mt-4 text-slate-600">{exp.description}</p>
                 </div>
@@ -181,10 +305,18 @@ const CVPreviewThree = () => {
         {currentProjects?.length > 0 && (
           <div className="mb-10">
             <div className="flex items-center gap-4 mb-6">
-              <h2 className="text-xl text-indigo-500 uppercase tracking-wider">
+              <h2
+                style={{ color: secondaryColor }}
+                className="text-xl  uppercase tracking-wider"
+              >
                 Projects
               </h2>
-              <div className="flex-1 h-0.5 bg-gradient-to-r from-indigo-500 to-purple-500 rounded"></div>
+              <div
+                style={{
+                  background: `linear-gradient(to right, ${secondaryColor}, #a855f7)`,
+                }}
+                className="flex-1 h-0.5 rounded"
+              ></div>
             </div>
             <div className="space-y-4">
               {currentProjects.map((project, index) => (
@@ -196,17 +328,9 @@ const CVPreviewThree = () => {
                     {project.name}
                   </h3>
                   <div className="text-sm text-slate-400 mt-1">
-                    {new Date(project.startDate).toLocaleDateString("en-US", {
-                      month: "short",
-                      year: "numeric",
-                    })}
-                    {" - "}
-                    {project.endDate
-                      ? new Date(project.endDate).toLocaleDateString("en-US", {
-                          month: "short",
-                          year: "numeric",
-                        })
-                      : "Present"}
+                    {project.startDate ? project.startDate : ""}
+                    {project.startDate && " - "}
+                    {project.endDate ? project.endDate : "Present"}
                   </div>
                   <p className="mt-4 text-slate-600">{project.description}</p>
                   {project.url && (
@@ -214,7 +338,10 @@ const CVPreviewThree = () => {
                       href={project.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-block mt-2 px-4 py-1 text-sm text-white bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full"
+                      style={{
+                        background: `linear-gradient(to right, ${secondaryColor}, #a855f7)`,
+                      }}
+                      className="inline-block mt-2 px-4 py-1 text-sm text-white rounded-full"
                     >
                       View Project
                     </a>
@@ -228,10 +355,18 @@ const CVPreviewThree = () => {
         {currentCourses?.length > 0 && (
           <div className="mb-10">
             <div className="flex items-center gap-4 mb-6">
-              <h2 className="text-xl text-indigo-500 uppercase tracking-wider">
+              <h2
+                style={{ color: secondaryColor }}
+                className="text-xl  uppercase tracking-wider"
+              >
                 Courses
               </h2>
-              <div className="flex-1 h-0.5 bg-gradient-to-r from-indigo-500 to-purple-500 rounded"></div>
+              <div
+                style={{
+                  background: `linear-gradient(to right, ${secondaryColor}, #a855f7)`,
+                }}
+                className="flex-1 h-0.5  rounded"
+              ></div>
             </div>
             <div className="space-y-4">
               {currentCourses.map((course, index) => (
@@ -243,24 +378,19 @@ const CVPreviewThree = () => {
                     {course.name}
                   </h3>
                   <div className="text-sm text-slate-400 mt-1">
-                    {new Date(course.startDate).toLocaleDateString("en-US", {
-                      month: "short",
-                      year: "numeric",
-                    })}
-                    {" - "}
-                    {course.endDate
-                      ? new Date(course.endDate).toLocaleDateString("en-US", {
-                          month: "short",
-                          year: "numeric",
-                        })
-                      : "Present"}
+                    {course.startDate ? course.startDate : ""}
+                    {course.startDate && " - "}
+                    {course.endDate ? course.endDate : "Present"}
                   </div>
                   {course.url && (
                     <a
                       href={course.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-block mt-2 px-4 py-1 text-sm text-white bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full"
+                      className="inline-block mt-2 px-4 py-1 text-sm text-white rounded-full"
+                      style={{
+                        background: `linear-gradient(to right, ${secondaryColor}, #a855f7)`,
+                      }}
                     >
                       View Course
                     </a>
@@ -274,10 +404,18 @@ const CVPreviewThree = () => {
         {currentEducations?.length > 0 && (
           <div className="mb-10">
             <div className="flex items-center gap-4 mb-6">
-              <h2 className="text-xl text-indigo-500 uppercase tracking-wider">
+              <h2
+                style={{ color: secondaryColor }}
+                className="text-xl uppercase tracking-wider"
+              >
                 Education
               </h2>
-              <div className="flex-1 h-0.5 bg-gradient-to-r from-indigo-500 to-purple-500 rounded"></div>
+              <div
+                style={{
+                  background: `linear-gradient(to right, ${secondaryColor}, #a855f7)`,
+                }}
+                className="flex-1 h-0.5  rounded"
+              ></div>
             </div>
             <div className="space-y-4">
               {currentEducations.map((edu, index) => (
@@ -288,21 +426,16 @@ const CVPreviewThree = () => {
                   <h3 className="text-lg font-semibold text-slate-900">
                     {edu.degree} {edu.field}
                   </h3>
-                  <div className="text-indigo-500 font-medium mt-1">
+                  <div
+                    style={{ color: secondaryColor }}
+                    className=" font-medium mt-1"
+                  >
                     {edu.institution}
                   </div>
                   <div className="text-sm text-slate-400 mt-1">
-                    {new Date(edu.startDate).toLocaleDateString("en-US", {
-                      month: "short",
-                      year: "numeric",
-                    })}
-                    {" - "}
-                    {edu.endDate
-                      ? new Date(edu.endDate).toLocaleDateString("en-US", {
-                          month: "short",
-                          year: "numeric",
-                        })
-                      : "Present"}
+                    {edu.startDate ? edu.startDate : ""}
+                    {edu.startDate && " - "}
+                    {edu.endDate ? edu.endDate : "Present"}
                   </div>
                 </div>
               ))}
@@ -313,10 +446,18 @@ const CVPreviewThree = () => {
         {currentCertificates?.length > 0 && (
           <div className="mb-10">
             <div className="flex items-center gap-4 mb-6">
-              <h2 className="text-xl text-indigo-500 uppercase tracking-wider">
+              <h2
+                style={{ color: secondaryColor }}
+                className="text-xl  uppercase tracking-wider"
+              >
                 Certificates
               </h2>
-              <div className="flex-1 h-0.5 bg-gradient-to-r from-indigo-500 to-purple-500 rounded"></div>
+              <div
+                style={{
+                  background: `linear-gradient(to right, ${secondaryColor}, #a855f7)`,
+                }}
+                className="flex-1 h-0.5  rounded"
+              ></div>
             </div>
             <div className="space-y-4">
               {currentCertificates.map((cert, index) => (
@@ -327,27 +468,26 @@ const CVPreviewThree = () => {
                   <h3 className="text-lg font-semibold text-slate-900">
                     {cert.name}
                   </h3>
-                  <div className="text-indigo-500 font-medium mt-1">
+                  <div
+                    style={{ color: secondaryColor }}
+                    className="font-medium mt-1"
+                  >
                     {cert.issuer}
                   </div>
                   <div className="text-sm text-slate-400 mt-1">
-                    {new Date(cert.issueDate).toLocaleDateString("en-US", {
-                      month: "short",
-                      year: "numeric",
-                    })}
-                    {cert.expirationDate && " - "}
-                    {cert.expirationDate &&
-                      new Date(cert.expirationDate).toLocaleDateString(
-                        "en-US",
-                        { month: "short", year: "numeric" }
-                      )}
+                    {cert.issueDate ? cert.issueDate : ""}
+                    {cert.issueDate && " - "}
+                    {cert.expirationDate ? cert.expirationDate : ""}
                   </div>
                   {cert.url && (
                     <a
                       href={cert.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-block mt-2 px-4 py-1 text-sm text-white bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full"
+                      style={{
+                        background: `linear-gradient(to right, ${secondaryColor}, #a855f7)`,
+                      }}
+                      className="inline-block mt-2 px-4 py-1 text-sm text-white  rounded-full"
                     >
                       View Certificate
                     </a>

@@ -78,6 +78,9 @@ const CVForm = ({ onClose }: CVFormProps) => {
     console.log("Form Data:", data);
     try {
       const formData = new FormData();
+      formData.append("showPersonalInfo", JSON.stringify(true));
+      formData.append("showCompanyInfo",JSON.stringify(true));
+      formData.append("colorPallete", "#000000");
       formData.append("name", data.name);
       formData.append("companyName", data.companyName);
       formData.append("surname", data.surname);

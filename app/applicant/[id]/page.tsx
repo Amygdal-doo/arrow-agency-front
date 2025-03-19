@@ -11,8 +11,10 @@ import ProjectField from "@/app/components/ProjectField";
 import SkillField from "@/app/components/SkillField";
 import SocialField from "@/app/components/SocialField";
 import { useApplicant } from "@/providers/ApplicantDetailsProvider";
+import { useProfile } from "@/providers/ProfileInfoProvider";
+import Image from "next/image";
 
-import React from "react";
+import React, { useState } from "react";
 
 const ApplicantDetails = () => {
   const {
@@ -32,7 +34,15 @@ const ApplicantDetails = () => {
     showCompanyInfo,
     setShowCompanyInfo,
     applicant,
+    companyLogo,
+    companyName,
+    setCompanyName,
+    setCompanyLogo,
   } = useApplicant();
+
+  const { profile } = useProfile();
+
+  const [isLogoDropdownOpen, setIsLogoDropdownOpen] = useState(false);
 
   const handleDownload = (fileUrl: string, fileName: string) => {
     const link = document.createElement("a");
@@ -65,7 +75,7 @@ const ApplicantDetails = () => {
 
   return (
     <div className="min-h-screen bg-[#01070a] text-white py-12 pt-40">
-      {/* <pre>{JSON.stringify(applicant, null, 2)}</pre> */}
+      {/* <pre>{JSON.stringify(companyLogo, null, 2)}</pre> */}
       <div className="container mx-auto px-4 xl:flex xl:space-x-5 space-y-8 xl:space-y-0">
         <div className="w-full xl:w-1/2 overflow-y-auto max-h-[80vh] scrollbar-hide">
           {/* Header Section */}
@@ -146,21 +156,80 @@ const ApplicantDetails = () => {
             </div>
 
             <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 shadow-lg">
-              <div className="grid grid-cols-2 gap-4 mb-4">
+              <div className="grid grid-cols-2 gap-4">
                 <input
                   type="text"
                   placeholder="Company name"
-                  // value={companyName}
-                  // onChange={(e) => setCompanyName(e.target.value)}
+                  value={companyName}
+                  onChange={(e) => setCompanyName(e.target.value)}
                   className="bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 placeholder-gray-500 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
                 />
-                <input
-                  type="text"
-                  placeholder="Company Logo"
-                  value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
-                  className="bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 placeholder-gray-500 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
-                />
+
+                <div className="relative">
+                  <div
+                    onClick={() => setIsLogoDropdownOpen(!isLogoDropdownOpen)}
+                    className="bg-gray-700/50 border border-gray-600/50 rounded-lg p-4 text-gray-300 cursor-pointer flex items-center justify-between"
+                  >
+                    <div className="flex items-center gap-3">
+                      {companyLogo ? (
+                        <>
+                          <Image
+                            src={companyLogo.url}
+                            alt={companyLogo.name}
+                            width={40}
+                            height={40}
+                            className="rounded-md"
+                          />
+                          <span>{companyLogo.name}</span>
+                        </>
+                      ) : (
+                        <span className="text-gray-500">
+                          Select Company Logo
+                        </span>
+                      )}
+                    </div>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className={`h-5 w-5 transition-transform ${
+                        isLogoDropdownOpen ? "rotate-180" : ""
+                      }`}
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19 9l-7 7-7-7"
+                      />
+                    </svg>
+                  </div>
+
+                  {isLogoDropdownOpen && profile?.companyLogos && (
+                    <div className="absolute z-50 w-full mt-2 bg-gray-800 backdrop-blur-sm border border-gray-700 rounded-lg shadow-xl">
+                      {profile.companyLogos.map((logo) => (
+                        <div
+                          key={logo.id}
+                          onClick={() => {
+                            setCompanyLogo(logo);
+                            setIsLogoDropdownOpen(false);
+                          }}
+                          className="flex items-center gap-3 p-4 cursor-pointer hover:bg-gray-700 transition-colors"
+                        >
+                          <Image
+                            src={logo.url}
+                            alt={logo.name}
+                            width={40}
+                            height={40}
+                            className="rounded-md"
+                          />
+                          <span className="text-gray-300">{logo.name}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </div>

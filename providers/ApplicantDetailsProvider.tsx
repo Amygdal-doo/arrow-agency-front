@@ -10,6 +10,7 @@ import {
 import { AxiosResponse } from "axios";
 import { apiService } from "@/core/services/apiService";
 import { useSession } from "next-auth/react";
+import { ICompanyLogo } from "./ProfileInfoProvider";
 
 export interface IExperience {
   id?: string;
@@ -104,6 +105,7 @@ interface ICV {
   email: string;
   phone: string;
   companyName: string;
+  companyLogo: ICompanyLogo;
   summary: string;
   skills: ISkill[];
   hobbies: string[];
@@ -116,8 +118,9 @@ interface ICV {
   socials: ISocial[];
   createdAt: string;
   updatedAt: string;
-  // showPersonalInfo: boolean;
-  // showCompanyInfo: boolean;
+  showPersonalInfo: boolean;
+  showCompanyInfo: boolean;
+  colorPalette: string;
 }
 
 interface IApplicantDetails {
@@ -144,6 +147,8 @@ interface ApplicantContextType {
   setFirstName: (value: string) => void;
   companyName: string;
   setCompanyName: (value: string) => void;
+  companyLogo: ICompanyLogo;
+  setCompanyLogo: (value: ICompanyLogo) => void;
   lastName: string;
   setLastName: (value: string) => void;
   email: string;
@@ -190,6 +195,8 @@ interface ApplicantContextType {
   setDeleteItems: (value: IDelete) => void;
   templateId: string;
   setTemplateId: (value: string) => void;
+  colorPalette: string;
+  setColorPalette: (value: string) => void;
   showPersonalInfo: boolean;
   setShowPersonalInfo: (value: boolean) => void;
   showCompanyInfo: boolean;
@@ -217,6 +224,9 @@ export const ApplicantProvider = ({
   const [showPersonalInfo, setShowPersonalInfo] = useState<boolean>(true);
   const [showCompanyInfo, setShowCompanyInfo] = useState<boolean>(true);
   const [companyName, setCompanyName] = useState<string>("");
+  const [companyLogo, setCompanyLogo] = useState<ICompanyLogo>(
+    {} as ICompanyLogo
+  );
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
@@ -252,6 +262,7 @@ export const ApplicantProvider = ({
     skills: [],
   });
   const [templateId, setTemplateId] = useState<string>("");
+  const [colorPalette, setColorPalette] = useState<string>("");
 
   const fetchApplicant = async () => {
     setLoading(true);
@@ -264,11 +275,13 @@ export const ApplicantProvider = ({
         setApplicant(data);
         setTemplateId(data.templateId);
 
-        // setShowPersonalInfo(data.cv.showPersonalInfo);
-        // setShowCompanyInfo(data.cv.showCompanyInfo);
+        setShowPersonalInfo(data.cv.showPersonalInfo);
+        setShowCompanyInfo(data.cv.showCompanyInfo);
+        setColorPalette(data.cv.colorPalette);
 
         setFirstName(data.cv.firstName);
         setCompanyName(data.cv.companyName);
+        setCompanyLogo(data.cv.companyLogo);
         setLastName(data.cv.lastName);
         setEmail(data.cv.email);
         setPhone(data.cv.phone);
@@ -302,9 +315,11 @@ export const ApplicantProvider = ({
     try {
       setLoading(true);
       await apiService.put(`/cv/${applicant?.cvId}?templateId=${templateId}`, {
-        // showPersonalInfo,
-        // showCompanyInfo,
-        firstName,
+        showPersonalInfo,
+        showCompanyInfo,
+        companyName,
+        companyLogoId: companyLogo.id,
+        colorPalette,
         lastName,
         email,
         phone,
@@ -351,6 +366,8 @@ export const ApplicantProvider = ({
         error,
         companyName,
         setCompanyName,
+        companyLogo,
+        setCompanyLogo,
         firstName,
         setFirstName,
         lastName,
@@ -399,6 +416,8 @@ export const ApplicantProvider = ({
         setDeleteItems,
         templateId,
         setTemplateId,
+        colorPalette,
+        setColorPalette,
         showPersonalInfo,
         setShowPersonalInfo,
         showCompanyInfo,

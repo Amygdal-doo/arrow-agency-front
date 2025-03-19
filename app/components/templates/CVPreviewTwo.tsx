@@ -1,6 +1,6 @@
 "use client";
 import { useApplicant } from "@/providers/ApplicantDetailsProvider";
-// import Image from "next/image";
+import Image from "next/image";
 import React from "react";
 
 const CVPreviewTwo = () => {
@@ -16,25 +16,97 @@ const CVPreviewTwo = () => {
     currentSocials,
     companyName,
     currentLanguages,
+    showPersonalInfo,
+    showCompanyInfo,
+    companyLogo,
+    colorPalette,
+    firstName,
+    lastName,
+    email,
+    phone,
   } = useApplicant();
 
   return (
-    <div className="w-full min-h-[29.7cm] mx-auto bg-white shadow-md rounded-xl overflow-hidden font-['Plus_Jakarta_Sans']">
+    <div className="w-full h-auto mx-auto bg-white shadow-md rounded-xl overflow-hidden font-['Plus_Jakarta_Sans']">
       {/* Header */}
-      <div className="bg-sky-500 p-8 text-white">
-        <div className="flex items-center gap-4 mb-6">
-          {/* <Image
-            src="/placeholder-logo.png"
-            alt="Company Logo"
-            className="w-12 h-12 rounded-lg bg-white p-2"
-          /> */}
-          <h2 className="text-xl font-semibold">{companyName}</h2>
-        </div>
+
+      <div className="p-8 text-white" style={{ backgroundColor: colorPalette }}>
+        {showCompanyInfo ? (
+          <div className="flex items-center gap-4 mb-0">
+            <Image
+              src={companyLogo.url}
+              width={companyLogo.width}
+              height={companyLogo.height}
+              alt="Company Logo"
+              className="w-12 h-12 rounded-lg bg-white p-2"
+            />
+            <h2 className="text-xl font-semibold">{companyName}</h2>
+          </div>
+        ) : (
+          ""
+        )}
       </div>
 
-      <div className="grid grid-cols-[1.8fr,1fr]">
+      <div className="grid grid-cols-[1.8fr,1fr] ">
         {/* Left Column */}
         <div className="p-8 space-y-8">
+          {showPersonalInfo ? (
+            <div
+              className="p-8 text-white rounded-lg"
+              style={{
+                backgroundColor: colorPalette
+                  .replace("rgb", "rgba")
+                  .replace(")", ", 0.1)"),
+              }}
+            >
+              <div className="mt-0 flex flex-col gap-2">
+                <h1 className="text-2xl font-semibold text-gray-900">
+                  {firstName} {lastName}
+                </h1>
+                <div className="" style={{ color: colorPalette }}>
+                  <span className="flex items-center gap-2">
+                    {" "}
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="w-4 h-4"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={1.5}
+                        d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                      />
+                    </svg>
+                    {email}
+                  </span>
+                  <span className="flex items-center gap-2">
+                    {" "}
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="w-4 h-4"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={1.5}
+                        d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                      />
+                    </svg>
+                    {phone}
+                  </span>
+                </div>
+              </div>
+            </div>
+          ) : (
+            ""
+          )}
+
           {summary && (
             <div className="mb-8">
               <p className="text-gray-600 text-base">{summary}</p>
@@ -42,35 +114,39 @@ const CVPreviewTwo = () => {
           )}
           {currentExperience?.length > 0 && (
             <section className="mb-8">
-              <h2 className="text-sm font-semibold text-sky-500 uppercase tracking-wider mb-5 flex items-center gap-2 before:content-[''] before:block before:w-5 before:h-0.5 before:bg-sky-500">
-                Work Experience
-              </h2>
+              <div className="flex items-center gap-2 mb-4">
+                <div
+                  className="w-5 h-0.5"
+                  style={{ backgroundColor: colorPalette }}
+                ></div>
+                <h2
+                  style={{ color: colorPalette }}
+                  className="text-sm font-semibold  uppercase"
+                >
+                  Work Experience
+                </h2>
+              </div>
               <div className="space-y-6">
                 {currentExperience.map((exp, index) => (
-                  <div
-                    key={index}
-                    className="relative pl-5 before:content-[''] before:absolute before:left-0 before:top-2 before:w-1.5 before:h-1.5 before:rounded-full before:bg-sky-500 before:opacity-30"
-                  >
-                    <h3 className="text-lg font-semibold text-gray-900">
-                      {exp.position}
-                    </h3>
-                    <p className="text-base text-gray-600">{exp.company}</p>
-                    <span className="text-xs text-gray-400 font-medium block mt-1">
-                      {new Date(exp.startDate).toLocaleDateString("en-US", {
-                        month: "short",
-                        year: "numeric",
-                      })}
-                      {" - "}
-                      {exp.endDate
-                        ? new Date(exp.endDate).toLocaleDateString("en-US", {
-                            month: "short",
-                            year: "numeric",
-                          })
-                        : "Present"}
-                    </span>
-                    <p className="text-base text-gray-600 mt-2 leading-relaxed">
-                      {exp.description}
-                    </p>
+                  <div key={index} className="flex gap-4 items-start">
+                    <div
+                      className="w-1.5 h-1.5 rounded-full mt-3 opacity-30"
+                      style={{ backgroundColor: colorPalette }}
+                    ></div>
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900">
+                        {exp.position}
+                      </h3>
+                      <p className="text-base text-gray-600">{exp.company}</p>
+                      <span className="text-xs text-gray-400 font-medium block mt-1">
+                        {exp.startDate ? exp.startDate : ""}
+                        {exp.startDate && " - "}
+                        {exp.endDate ? exp.endDate : "Present"}
+                      </span>
+                      <p className="text-base text-gray-600 mt-2 leading-relaxed">
+                        {exp.description}
+                      </p>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -78,32 +154,38 @@ const CVPreviewTwo = () => {
           )}
           {currentEducations?.length > 0 && (
             <section className="mb-8">
-              <h2 className="text-sm font-semibold text-sky-500 uppercase tracking-wider mb-5 flex items-center gap-2 before:content-[''] before:block before:w-5 before:h-0.5 before:bg-sky-500">
-                Education
-              </h2>
+              <div className="flex items-center gap-2 mb-4">
+                <div
+                  className="w-5 h-0.5"
+                  style={{ backgroundColor: colorPalette }}
+                ></div>
+                <h2
+                  style={{ color: colorPalette }}
+                  className="text-sm font-semibold  uppercase"
+                >
+                  Education
+                </h2>
+              </div>
               <div className="space-y-6">
                 {currentEducations.map((edu, index) => (
-                  <div
-                    key={index}
-                    className="relative pl-5 before:content-[''] before:absolute before:left-0 before:top-2 before:w-1.5 before:h-1.5 before:rounded-full before:bg-sky-500 before:opacity-30"
-                  >
-                    <h3 className="text-lg font-semibold text-gray-900">
-                      {edu.degree} in {edu.field}
-                    </h3>
-                    <p className="text-base text-gray-600">{edu.institution}</p>
-                    <span className="text-xs text-gray-400 font-medium block mt-1">
-                      {new Date(edu.startDate).toLocaleDateString("en-US", {
-                        month: "short",
-                        year: "numeric",
-                      })}
-                      {" - "}
-                      {edu.endDate
-                        ? new Date(edu.endDate).toLocaleDateString("en-US", {
-                            month: "short",
-                            year: "numeric",
-                          })
-                        : "Present"}
-                    </span>
+                  <div key={index} className="flex items-start gap-4">
+                    <div
+                      className="w-1.5 h-1.5 rounded-full mt-3 opacity-30"
+                      style={{ backgroundColor: colorPalette }}
+                    ></div>
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900">
+                        {edu.degree} in {edu.field}
+                      </h3>
+                      <p className="text-base text-gray-600">
+                        {edu.institution}
+                      </p>
+                      <span className="text-xs text-gray-400 font-medium block mt-1">
+                        {edu.startDate ? edu.startDate : ""}
+                        {edu.startDate && " - "}
+                        {edu.endDate ? edu.endDate : "Present"}
+                      </span>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -111,44 +193,50 @@ const CVPreviewTwo = () => {
           )}
           {currentProjects?.length > 0 && (
             <section className="mb-8">
-              <h2 className="text-sm font-semibold text-sky-500 uppercase tracking-wider mb-5 flex items-center gap-2 before:content-[''] before:block before:w-5 before:h-0.5 before:bg-sky-500">
-                Projects
-              </h2>
+              <div className="flex items-center gap-2 mb-4">
+                <div
+                  className="w-5 h-0.5"
+                  style={{ backgroundColor: colorPalette }}
+                ></div>
+                <h2
+                  style={{ color: colorPalette }}
+                  className="text-sm font-semibold  uppercase"
+                >
+                  Projects
+                </h2>
+              </div>
               <div className="space-y-6">
                 {currentProjects.map((project, index) => (
-                  <div
-                    key={index}
-                    className="relative pl-5 before:content-[''] before:absolute before:left-0 before:top-2 before:w-1.5 before:h-1.5 before:rounded-full before:bg-sky-500 before:opacity-30"
-                  >
-                    <h3 className="text-lg font-semibold text-gray-900">
-                      {project.name}
-                    </h3>
-                    <p className="text-base text-gray-600">
-                      {project.description}
-                    </p>
-                    {project.url && (
-                      <a
-                        href={project.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-sky-500 hover:text-sky-600 text-sm mt-1 block"
-                      >
-                        View Project →
-                      </a>
-                    )}
-                    <span className="text-xs text-gray-400 font-medium block mt-1">
-                      {new Date(project.startDate).toLocaleDateString("en-US", {
-                        month: "short",
-                        year: "numeric",
-                      })}
-                      {" - "}
-                      {project.endDate
-                        ? new Date(project.endDate).toLocaleDateString(
-                            "en-US",
-                            { month: "short", year: "numeric" }
-                          )
-                        : "Present"}
-                    </span>
+                  <div key={index} className="flex items-center gap-2 mb-4">
+                    <div
+                      className="w-1.5 h-1.5 rounded-full mt-3 opacity-30"
+                      style={{ backgroundColor: colorPalette }}
+                    ></div>
+                    <div>
+                      {" "}
+                      <h3 className="text-lg font-semibold text-gray-900">
+                        {project.name}
+                      </h3>
+                      <p className="text-base text-gray-600">
+                        {project.description}
+                      </p>
+                      {project.url && (
+                        <a
+                          href={project.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          style={{ color: colorPalette }}
+                          className="hover:opacity-80 text-sm mt-1 block"
+                        >
+                          View Project →
+                        </a>
+                      )}
+                      <span className="text-xs text-gray-400 font-medium block mt-1">
+                        {project.startDate ? project.startDate : ""}
+                        {project.startDate && " - "}
+                        {project.endDate ? project.endDate : "Present"}
+                      </span>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -157,41 +245,46 @@ const CVPreviewTwo = () => {
 
           {currentCourses?.length > 0 && (
             <section className="mb-8">
-              <h2 className="text-sm font-semibold text-sky-500 uppercase tracking-wider mb-5 flex items-center gap-2 before:content-[''] before:block before:w-5 before:h-0.5 before:bg-sky-500">
-                Courses
-              </h2>
+              <div className="flex items-center gap-2 mb-4">
+                <div
+                  className="w-5 h-0.5"
+                  style={{ backgroundColor: colorPalette }}
+                ></div>
+                <h2
+                  style={{ color: colorPalette }}
+                  className="text-sm font-semibold  uppercase"
+                >
+                  Courses
+                </h2>
+              </div>
               <div className="space-y-6">
                 {currentCourses.map((course, index) => (
-                  <div
-                    key={index}
-                    className="relative pl-5 before:content-[''] before:absolute before:left-0 before:top-2 before:w-1.5 before:h-1.5 before:rounded-full before:bg-sky-500 before:opacity-30"
-                  >
-                    <h3 className="text-lg font-semibold text-gray-900">
-                      {course.name}
-                    </h3>
-                    {course.url && (
-                      <a
-                        href={course.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-sky-500 hover:text-sky-600 text-sm mt-1 block"
-                      >
-                        View Course →
-                      </a>
-                    )}
-                    <span className="text-xs text-gray-400 font-medium block mt-1">
-                      {new Date(course.startDate).toLocaleDateString("en-US", {
-                        month: "short",
-                        year: "numeric",
-                      })}
-                      {" - "}
-                      {course.endDate
-                        ? new Date(course.endDate).toLocaleDateString("en-US", {
-                            month: "short",
-                            year: "numeric",
-                          })
-                        : "Present"}
-                    </span>
+                  <div key={index} className="flex items-start gap-4">
+                    <div
+                      className="w-1.5 h-1.5 rounded-full mt-3 opacity-30"
+                      style={{ backgroundColor: colorPalette }}
+                    ></div>
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900">
+                        {course.name}
+                      </h3>
+                      {course.url && (
+                        <a
+                          href={course.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          style={{ color: colorPalette }}
+                          className=" hover:opacity-80 text-sm mt-1 block"
+                        >
+                          View Course →
+                        </a>
+                      )}
+                      <span className="text-xs text-gray-400 font-medium block mt-1">
+                        {course.startDate ? course.startDate : ""}
+                        {course.startDate && " - "}
+                        {course.endDate ? course.endDate : "Present"}
+                      </span>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -200,44 +293,47 @@ const CVPreviewTwo = () => {
 
           {currentCertificates?.length > 0 && (
             <section className="mb-8">
-              <h2 className="text-sm font-semibold text-sky-500 uppercase tracking-wider mb-5 flex items-center gap-2 before:content-[''] before:block before:w-5 before:h-0.5 before:bg-sky-500">
-                Certificates
-              </h2>
+              <div className="flex items-center gap-2 mb-4">
+                <div
+                  className="w-5 h-0.5"
+                  style={{ backgroundColor: colorPalette }}
+                ></div>
+                <h2
+                  style={{ color: colorPalette }}
+                  className="text-sm font-semibold  uppercase"
+                >
+                  Certificates
+                </h2>
+              </div>
               <div className="space-y-6">
                 {currentCertificates.map((cert, index) => (
-                  <div
-                    key={index}
-                    className="relative pl-5 before:content-[''] before:absolute before:left-0 before:top-2 before:w-1.5 before:h-1.5 before:rounded-full before:bg-sky-500 before:opacity-30"
-                  >
-                    <h3 className="text-lg font-semibold text-gray-900">
-                      {cert.name}
-                    </h3>
-                    <p className="text-base text-gray-600">{cert.issuer}</p>
-                    {cert.url && (
-                      <a
-                        href={cert.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-sky-500 hover:text-sky-600 text-sm mt-1 block"
-                      >
-                        View Certificate →
-                      </a>
-                    )}
-                    <span className="text-xs text-gray-400 font-medium block mt-1">
-                      {new Date(cert.issueDate).toLocaleDateString("en-US", {
-                        month: "short",
-                        year: "numeric",
-                      })}
-                      {cert.expirationDate && " - "}
-                      {cert.expirationDate &&
-                        new Date(cert.expirationDate).toLocaleDateString(
-                          "en-US",
-                          {
-                            month: "short",
-                            year: "numeric",
-                          }
-                        )}
-                    </span>
+                  <div key={index} className="flex items-center gap-4">
+                    <div
+                      className="w-1.5 h-1.5 rounded-full mt-3 opacity-30"
+                      style={{ backgroundColor: colorPalette }}
+                    ></div>
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900">
+                        {cert.name}
+                      </h3>
+                      <p className="text-base text-gray-600">{cert.issuer}</p>
+                      {cert.url && (
+                        <a
+                          href={cert.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          style={{ color: colorPalette }}
+                          className="hover:hover:opacity-80 text-sm mt-1 block"
+                        >
+                          View Certificate →
+                        </a>
+                      )}
+                      <span className="text-xs text-gray-400 font-medium block mt-1">
+                        {cert.issueDate ? cert.issueDate : ""}
+                        {cert.issueDate && " - "}
+                        {cert.expirationDate ? cert.expirationDate : "Present"}
+                      </span>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -245,12 +341,28 @@ const CVPreviewTwo = () => {
           )}
         </div>
         {/* Right Column */}
-        <div className="bg-sky-50 p-8 space-y-8">
+        <div
+          className="p-8 space-y-8 h-full"
+          style={{
+            backgroundColor: colorPalette
+              .replace("rgb", "rgba")
+              .replace(")", ", 0.1)"),
+          }}
+        >
           {currentSkills?.length > 0 && (
             <section>
-              <h2 className="text-sm font-semibold text-sky-500 uppercase tracking-wider mb-5 flex items-center gap-2 before:content-[''] before:block before:w-5 before:h-0.5 before:bg-sky-500">
-                Skills
-              </h2>
+              <div className="flex items-center gap-2 mb-4">
+                <div
+                  className="w-5 h-0.5"
+                  style={{ backgroundColor: colorPalette }}
+                ></div>
+                <h2
+                  style={{ color: colorPalette }}
+                  className="text-sm font-semibold  uppercase"
+                >
+                  Skills
+                </h2>
+              </div>
               <div className="space-y-3">
                 {currentSkills.map((skill, index) => (
                   <div
@@ -258,7 +370,10 @@ const CVPreviewTwo = () => {
                     className="bg-white p-3 px-4 rounded-lg flex justify-between items-center"
                   >
                     <span className="text-gray-900">{skill.name}</span>
-                    <span className="text-sm text-sky-500 font-semibold">
+                    <span
+                      className="text-sm font-semibold"
+                      style={{ color: colorPalette }}
+                    >
                       {skill.efficiency}
                     </span>
                   </div>
@@ -269,9 +384,18 @@ const CVPreviewTwo = () => {
 
           {currentLanguages?.length > 0 && (
             <section>
-              <h2 className="text-sm font-semibold text-sky-500 uppercase tracking-wider mb-5 flex items-center gap-2 before:content-[''] before:block before:w-5 before:h-0.5 before:bg-sky-500">
-                Languages
-              </h2>
+              <div className="flex items-center gap-2 mb-4">
+                <div
+                  className="w-5 h-0.5"
+                  style={{ backgroundColor: colorPalette }}
+                ></div>
+                <h2
+                  style={{ color: colorPalette }}
+                  className="text-sm font-semibold  uppercase"
+                >
+                  Languages
+                </h2>
+              </div>
               <div className="space-y-3">
                 {currentLanguages.map((lang, index) => (
                   <div
@@ -279,7 +403,10 @@ const CVPreviewTwo = () => {
                     className="bg-white p-3 px-4 rounded-lg flex justify-between items-center"
                   >
                     <span className="text-gray-900">{lang.name}</span>
-                    <span className="text-sm text-sky-500 font-semibold">
+                    <span
+                      className="text-sm  font-semibold"
+                      style={{ color: colorPalette }}
+                    >
                       {lang.efficiency}
                     </span>
                   </div>
@@ -290,9 +417,18 @@ const CVPreviewTwo = () => {
 
           {currentSocials?.length > 0 && (
             <section>
-              <h2 className="text-sm font-semibold text-sky-500 uppercase tracking-wider mb-5 flex items-center gap-2 before:content-[''] before:block before:w-5 before:h-0.5 before:bg-sky-500">
-                Social Links
-              </h2>
+              <div className="flex items-center gap-2 mb-4">
+                <div
+                  className="w-5 h-0.5"
+                  style={{ backgroundColor: colorPalette }}
+                ></div>
+                <h2
+                  style={{ color: colorPalette }}
+                  className="text-sm font-semibold  uppercase"
+                >
+                  Social Links
+                </h2>
+              </div>
               <div className="space-y-3">
                 {currentSocials.map((social) => (
                   <a
@@ -304,7 +440,8 @@ const CVPreviewTwo = () => {
                     }
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="bg-white p-3 px-4 rounded-lg block text-sky-500 font-medium text-sm hover:-translate-y-0.5 transition-transform hover:shadow-md"
+                    style={{ color: colorPalette }}
+                    className="bg-white p-3 px-4 rounded-lg block  font-medium text-sm hover:-translate-y-0.5 transition-transform hover:shadow-md"
                   >
                     {social.name}
                   </a>
@@ -315,9 +452,18 @@ const CVPreviewTwo = () => {
 
           {hobbies?.length > 0 && (
             <section>
-              <h2 className="text-sm font-semibold text-sky-500 uppercase tracking-wider mb-5 flex items-center gap-2 before:content-[''] before:block before:w-5 before:h-0.5 before:bg-sky-500">
-                Hobbies
-              </h2>
+              <div className="flex items-center gap-2 mb-4">
+                <div
+                  className="w-5 h-0.5"
+                  style={{ backgroundColor: colorPalette }}
+                ></div>
+                <h2
+                  style={{ color: colorPalette }}
+                  className="text-sm font-semibold  uppercase"
+                >
+                  Hobbies
+                </h2>
+              </div>
               <div className="flex flex-wrap gap-2">
                 {hobbies.map((hobby, index) => (
                   <p
