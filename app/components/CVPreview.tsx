@@ -195,7 +195,7 @@ const CVPreview = () => {
       <div className="lg:flex justify-between items-end pb-8 border-b border-gray-700">
         <h1 className="text-4xl font-bold text-white">CV Preview</h1>
 
-        <div className="flex gap-4">
+        <div className="flex flex-col md:flex-row gap-4">
           {applicant && (
             <button
               onClick={() =>
@@ -208,13 +208,13 @@ const CVPreview = () => {
           )}
           <button
             onClick={handleSave}
-            className="mt-4 font-bold text-center bg-orange-600 hover:bg-orange-400 text-white py-2 px-8 rounded-md transition-colors"
+            className="md:mt-4 font-bold text-center bg-orange-600 hover:bg-orange-400 text-white py-2 px-8 rounded-md transition-colors"
           >
             {loading ? "Saving..." : "Save"}
           </button>
         </div>
       </div>
-      <div className="flex gap-4 py-8">
+      <div className="flex flex-col md:flex-row gap-4 py-8">
         {templates.map((template) => (
           <button
             key={template.id}
@@ -234,7 +234,7 @@ const CVPreview = () => {
           <h3 className="text-lg font-semibold text-gray-300">Color Theme</h3>
           <div className="h-px flex-1 bg-gray-700" />
         </div>
-        <div className="flex space-x-4 justify-evenly overflow-x-auto bg-gray-800 backdrop-blur-sm rounded-xl p-3 border border-gray-700/50 shadow-lg">
+        <div className="flex space-x-4 justify-evenly scrollbar-hide overflow-x-auto bg-gray-800 backdrop-blur-sm rounded-xl p-3 border border-gray-700/50 shadow-lg">
           {templateColors.map((color) => (
             <div
               key={color.id}

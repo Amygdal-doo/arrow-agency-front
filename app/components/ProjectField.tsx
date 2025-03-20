@@ -39,11 +39,11 @@ const ProjectField = () => {
     setProjects([
       ...projects,
       {
-        name: newProject.name,
-        description: newProject.description,
-        startDate: newProject.startDate,
-        endDate: newProject.endDate,
-        url: newProject.url,
+        name: newProject.name || "",
+        description: newProject.description || "",
+        startDate: newProject.startDate || "",
+        endDate: newProject.endDate || "",
+        url: newProject.url || "",
       },
     ]);
 
@@ -108,7 +108,14 @@ const ProjectField = () => {
   const handleEditProject = (id: string) => {
     const projectToEdit = currentProjects.find((project) => project.id === id);
     if (projectToEdit) {
-      setNewProject({ ...projectToEdit });
+      setNewProject({
+        ...projectToEdit,
+        name: projectToEdit.name || "",
+        description: projectToEdit.description || "",
+        startDate: projectToEdit.startDate || "",
+        endDate: projectToEdit.endDate || "",
+        url: projectToEdit.url || "",
+      });
     }
   };
 
@@ -138,7 +145,7 @@ const ProjectField = () => {
         <h2 className="text-2xl font-bold text-gray-300">Projects</h2>
         <div className="h-px flex-1 bg-gray-700 mx-4" />
       </div>
-
+      {/* <pre>{JSON.stringify(projects, null, 2)}</pre> */}
       {/* Add New Project Form */}
       <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 shadow-lg">
         <div className="grid grid-cols-1 gap-4">
