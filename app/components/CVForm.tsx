@@ -79,8 +79,10 @@ const CVForm = ({ onClose }: CVFormProps) => {
     try {
       const formData = new FormData();
       formData.append("showPersonalInfo", JSON.stringify(true));
-      formData.append("showCompanyInfo",JSON.stringify(true));
-      formData.append("colorPallete", "#000000");
+      formData.append("showCompanyInfo", JSON.stringify(true));
+      formData.append("primaryColor", "rgb(15, 23, 42)");
+      formData.append("secondaryColor", "15, 23, 42");
+      formData.append("tertiaryColor", "rgb(99, 102, 241)");
       formData.append("name", data.name);
       formData.append("companyName", data.companyName);
       formData.append("surname", data.surname);

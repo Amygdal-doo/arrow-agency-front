@@ -29,8 +29,10 @@ const CVPreview = () => {
     deleteItems,
     templateId,
     setTemplateId,
-    colorPalette,
-    setColorPalette,
+    primaryColor,
+    setPrimaryColor,
+    setSecondaryColor,
+    setTertiaryColor,
   } = useApplicant();
 
   // const pdfRef = useRef<HTMLDivElement>(null);
@@ -111,81 +113,79 @@ const CVPreview = () => {
     { id: "cv4", name: "Creative Template" },
   ];
 
-  // const templateColors = [
-  //   { id: 1, value: "#000000", name: "Classic Black" },
-  //   { id: 2, value: "#0f172a", name: "Slate Dark" },
-  //   { id: 3, value: "#4f46e5", name: "Royal Blue" },
-  //   { id: 4, value: "#2563eb", name: "Ocean Blue" },
-  //   { id: 5, value: "#0891b2", name: "Cyan" },
-  //   { id: 6, value: "#059669", name: "Emerald" },
-  //   { id: 7, value: "#ea580c", name: "Vibrant Orange" },
-  //   { id: 8, value: "#7f1d1d", name: "Deep Burgundy" },
-  //   { id: 9, value: "#6d28d9", name: "Royal Purple" },
-  //   { id: 10, value: "#be185d", name: "Magenta" },
-  // ];
-
   const templateColors = [
     {
       id: 1,
-      value: "rgb(0, 0, 0)",
-      secondary: "rgb(236, 72, 153)",
+      primary: "rgb(0, 0, 0)",
+      secondary: "0, 0, 0",
+      tertiary: "rgb(236, 72, 153)",
       name: "Classic Black",
     },
     {
       id: 2,
-      value: "rgb(15, 23, 42)",
-      secondary: "rgb(99, 102, 241)",
+      primary: "rgb(15, 23, 42)",
+      secondary: "15, 23, 42",
+      tertiary: "rgb(99, 102, 241)",
       name: "Slate Dark",
     },
     {
       id: 3,
-      value: "rgb(79, 70, 229)",
-      secondary: "rgb(15, 23, 42)",
+      primary: "rgb(79, 70, 229)",
+      secondary: "79, 70, 229",
+      tertiary: "rgb(15, 23, 42)",
       name: "Royal Blue",
     },
     {
       id: 4,
-      value: "rgb(37, 99, 235)",
-      secondary: "rgb(234, 179, 8)",
+      primary: "rgb(37, 99, 235)",
+      secondary: "37, 99, 235",
+      tertiary: "rgb(234, 179, 8)",
       name: "Ocean Blue",
     },
     {
       id: 5,
-      value: "rgb(8, 145, 178)",
-      secondary: "rgb(15, 23, 42)",
+      primary: "rgb(8, 145, 178)",
+      secondary: "8, 145, 178",
+      tertiary: "rgb(15, 23, 42)",
       name: "Cyan",
     },
     {
       id: 6,
-      value: "rgb(5, 150, 105)",
-      secondary: "rgb(168, 85, 247)",
+      primary: "rgb(5, 150, 105)",
+      secondary: "5, 150, 105",
+      tertiary: "rgb(0, 0, 0)",
       name: "Emerald",
     },
     {
       id: 7,
-      value: "rgb(234, 88, 12)",
-      secondary: "rgb(59, 130, 246)",
+      primary: "rgb(234, 88, 12)",
+      secondary: "234, 88, 12",
+      tertiary: "rgb(75, 0, 130)",
       name: "Vibrant Orange",
     },
     {
       id: 8,
-      value: "rgb(127, 29, 29)",
-      secondary: "rgb(34, 197, 94)",
+      primary: "rgb(127, 29, 29)",
+      secondary: "127, 29, 29",
+      tertiary: "rgb(34, 197, 94)",
       name: "Deep Burgundy",
     },
     {
       id: 9,
-      value: "rgb(109, 40, 217)",
-      secondary: "rgb(234, 179, 8)",
+      primary: "rgb(109, 40, 217)",
+      secondary: "109, 40, 217",
+      tertiary: "rgb(234, 179, 8)",
       name: "Royal Purple",
     },
     {
       id: 10,
-      value: "rgb(190, 24, 93)",
-      secondary: "rgb(17,24,39)",
+      primary: "rgb(190, 24, 93)",
+      secondary: "190, 24, 93",
+      tertiary: "rgb(17, 24, 39)",
       name: "Magenta",
     },
   ];
+
   const handleTemplateChange = async (newTemplateId: string) => {
     setTemplateId(newTemplateId);
   };
@@ -234,24 +234,28 @@ const CVPreview = () => {
           <h3 className="text-lg font-semibold text-gray-300">Color Theme</h3>
           <div className="h-px flex-1 bg-gray-700" />
         </div>
-        <div className="grid grid-cols-12 gap-4">
+        <div className="flex space-x-4 justify-evenly overflow-x-auto bg-gray-800 backdrop-blur-sm rounded-xl p-3 border border-gray-700/50 shadow-lg">
           {templateColors.map((color) => (
             <div
               key={color.id}
-              onClick={() => setColorPalette(color.value)}
+              onClick={() => {
+                setPrimaryColor(color.primary);
+                setSecondaryColor(color.secondary);
+                setTertiaryColor(color.tertiary);
+              }}
               className="group cursor-pointer relative"
             >
               <div className="flex flex-col items-center gap-3">
                 <div
                   className={`w-4 h-4 rounded-xl shadow-lg transition-all duration-300 ${
-                    colorPalette === color.value
+                    primaryColor === color.primary
                       ? "ring-2 ring-offset-2 ring-offset-gray-800 ring-orange-500 scale-110"
                       : "hover:scale-105"
                   }`}
                 >
                   <div
                     className="w-full h-full rounded-xl"
-                    style={{ backgroundColor: color.value }}
+                    style={{ backgroundColor: color.primary }}
                   />
                 </div>
               </div>

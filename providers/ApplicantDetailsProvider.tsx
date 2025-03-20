@@ -120,7 +120,9 @@ interface ICV {
   updatedAt: string;
   showPersonalInfo: boolean;
   showCompanyInfo: boolean;
-  colorPalette: string;
+  primaryColor: string;
+  secondaryColor: string;
+  tertiaryColor: string;
 }
 
 interface IApplicantDetails {
@@ -195,8 +197,12 @@ interface ApplicantContextType {
   setDeleteItems: (value: IDelete) => void;
   templateId: string;
   setTemplateId: (value: string) => void;
-  colorPalette: string;
-  setColorPalette: (value: string) => void;
+  primaryColor: string;
+  setPrimaryColor: (value: string) => void;
+  secondaryColor: string;
+  setSecondaryColor: (value: string) => void;
+  tertiaryColor: string;
+  setTertiaryColor: (value: string) => void;
   showPersonalInfo: boolean;
   setShowPersonalInfo: (value: boolean) => void;
   showCompanyInfo: boolean;
@@ -262,7 +268,9 @@ export const ApplicantProvider = ({
     skills: [],
   });
   const [templateId, setTemplateId] = useState<string>("");
-  const [colorPalette, setColorPalette] = useState<string>("");
+  const [primaryColor, setPrimaryColor] = useState<string>("");
+  const [secondaryColor, setSecondaryColor] = useState<string>("");
+  const [tertiaryColor, setTertiaryColor] = useState<string>("");
 
   const fetchApplicant = async () => {
     setLoading(true);
@@ -277,7 +285,9 @@ export const ApplicantProvider = ({
 
         setShowPersonalInfo(data.cv.showPersonalInfo);
         setShowCompanyInfo(data.cv.showCompanyInfo);
-        setColorPalette(data.cv.colorPalette);
+        setPrimaryColor(data.cv.primaryColor);
+        setSecondaryColor(data.cv.secondaryColor);
+        setTertiaryColor(data.cv.tertiaryColor);
 
         setFirstName(data.cv.firstName);
         setCompanyName(data.cv.companyName);
@@ -319,7 +329,9 @@ export const ApplicantProvider = ({
         showCompanyInfo,
         companyName,
         companyLogoId: companyLogo.id,
-        colorPalette,
+        primaryColor,
+        secondaryColor,
+        tertiaryColor,
         lastName,
         email,
         phone,
@@ -416,8 +428,12 @@ export const ApplicantProvider = ({
         setDeleteItems,
         templateId,
         setTemplateId,
-        colorPalette,
-        setColorPalette,
+        primaryColor,
+        setPrimaryColor,
+        secondaryColor,
+        setSecondaryColor,
+        tertiaryColor,
+        setTertiaryColor,
         showPersonalInfo,
         setShowPersonalInfo,
         showCompanyInfo,

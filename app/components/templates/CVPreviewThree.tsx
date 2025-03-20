@@ -20,31 +20,18 @@ const CVPreviewThree = () => {
     showPersonalInfo,
     showCompanyInfo,
     companyLogo,
-    colorPalette,
+    primaryColor,
+    tertiaryColor,
     firstName,
     lastName,
     email,
     phone,
   } = useApplicant();
 
-  // const secondaryColor = "rgb(236, 72, 153)";
-  const secondaryColor = "rgb(99, 102, 241)";
-  // const secondaryColor = "rgb(15, 23, 42)";
-  // const secondaryColor = "rgb(234, 179, 8)";
-  // const secondaryColor = "rgb(15, 23, 42)";
-  // const secondaryColor = "rgb(0,0,0)";
-  // const secondaryColor = "rgb(75, 0, 130)";
-  // const secondaryColor = "rgb(34, 197, 94)";
-  // const secondaryColor = "rgb(234, 179, 8)";
-  // const secondaryColor = "rgb(31,31,31)";
-  // const secondaryColor = "rgb(17,24,39)";
-
-  // const secondaryColor = "rgb(99, 102, 241)";
-
   return (
     <div className="w-full min-h-[29.7cm] mx-auto bg-white shadow-md rounded-2xl overflow-hidden font-['Space_Grotesk'] grid grid-cols-[280px,1fr]">
       {/* Sidebar */}
-      <div className="p-8 text-white" style={{ backgroundColor: colorPalette }}>
+      <div className="p-8 text-white" style={{ backgroundColor: primaryColor }}>
         {showCompanyInfo ? (
           <div className="text-center mb-8 pb-6 border-b border-white/10">
             <Image
@@ -113,14 +100,14 @@ const CVPreviewThree = () => {
             <div className="flex items-center gap-4 mb-6">
               <h2
                 className="text-xl uppercase tracking-wider"
-                style={{ color: secondaryColor }}
+                style={{ color: tertiaryColor }}
               >
                 Skills
               </h2>
               <div
                 className="flex-1 h-0.5 rounded"
                 style={{
-                  background: `linear-gradient(to right, ${secondaryColor}, #a855f7)`,
+                  background: `linear-gradient(to right, ${tertiaryColor}, #a855f7)`,
                 }}
               ></div>
             </div>
@@ -128,13 +115,15 @@ const CVPreviewThree = () => {
               {currentSkills.map((skill, index) => (
                 <div
                   key={index}
-                  className="bg-white/10 p-4 rounded-lg flex justify-between items-center"
+                  className="bg-white/[10] p-4 rounded-lg flex justify-between items-center"
                 >
-                  <span className="font-medium">{skill.name}</span>
+                  <span className="font-medium" style={{ color: primaryColor }}>
+                    {skill.name}
+                  </span>
                   <span
                     className="text-sm px-3 py-1 rounded-xl"
                     style={{
-                      background: `linear-gradient(to right, ${secondaryColor}, #a855f7)`,
+                      background: `linear-gradient(to right, ${tertiaryColor}, #a855f7)`,
                     }}
                   >
                     {skill.efficiency}
@@ -150,14 +139,14 @@ const CVPreviewThree = () => {
             <div className="flex items-center gap-4 mb-6">
               <h2
                 className="text-xl  uppercase tracking-wider"
-                style={{ color: secondaryColor }}
+                style={{ color: tertiaryColor }}
               >
                 Languages
               </h2>
               <div
                 className="flex-1 h-0.5  rounded"
                 style={{
-                  background: `linear-gradient(to right, ${secondaryColor}, #a855f7)`,
+                  background: `linear-gradient(to right, ${tertiaryColor}, #a855f7)`,
                 }}
               ></div>
             </div>
@@ -165,7 +154,7 @@ const CVPreviewThree = () => {
               {currentLanguages.map((lang, index) => (
                 <div key={index} className="flex justify-between text-white">
                   <span>{lang.name}</span>
-                  <span style={{ color: secondaryColor }}>
+                  <span style={{ color: tertiaryColor }}>
                     {lang.efficiency}
                   </span>
                 </div>
@@ -179,14 +168,14 @@ const CVPreviewThree = () => {
             <div className="flex items-center gap-4 mb-6">
               <h2
                 className="text-xl  uppercase tracking-wider"
-                style={{ color: secondaryColor }}
+                style={{ color: tertiaryColor }}
               >
                 Hobbies
               </h2>
               <div
                 className="flex-1 h-0.5 rounded"
                 style={{
-                  background: `linear-gradient(to right, ${secondaryColor}, #a855f7)`,
+                  background: `linear-gradient(to right, ${tertiaryColor}, #a855f7)`,
                 }}
               ></div>
             </div>
@@ -205,14 +194,14 @@ const CVPreviewThree = () => {
             <div className="flex items-center gap-4 mb-6">
               <h2
                 className="text-xl uppercase tracking-wider"
-                style={{ color: secondaryColor }}
+                style={{ color: tertiaryColor }}
               >
                 Connect
               </h2>
               <div
                 className="flex-1 h-0.5 rounded"
                 style={{
-                  background: `linear-gradient(to right, ${secondaryColor}, #a855f7)`,
+                  background: `linear-gradient(to right, ${tertiaryColor}, #a855f7)`,
                 }}
               ></div>
             </div>
@@ -243,7 +232,7 @@ const CVPreviewThree = () => {
           <div className="mb-10">
             <div className="flex items-center gap-4 mb-6">
               <h2
-                style={{ color: secondaryColor }}
+                style={{ color: tertiaryColor }}
                 className="text-xl uppercase tracking-wider"
               >
                 About
@@ -251,7 +240,7 @@ const CVPreviewThree = () => {
               <div
                 className="flex-1 h-0.5 rounded"
                 style={{
-                  background: `linear-gradient(to right, ${secondaryColor}, #a855f7)`,
+                  background: `linear-gradient(to right, ${tertiaryColor}, #a855f7)`,
                 }}
               ></div>
             </div>
@@ -263,14 +252,14 @@ const CVPreviewThree = () => {
           <div className="mb-10">
             <div className="flex items-center gap-4 mb-6">
               <h2
-                style={{ color: secondaryColor }}
+                style={{ color: tertiaryColor }}
                 className="text-xl uppercase tracking-wider"
               >
                 Experience
               </h2>
               <div
                 style={{
-                  background: `linear-gradient(to right, ${secondaryColor}, #a855f7)`,
+                  background: `linear-gradient(to right, ${tertiaryColor}, #a855f7)`,
                 }}
                 className="flex-1 h-0.5 rounded"
               ></div>
@@ -285,8 +274,8 @@ const CVPreviewThree = () => {
                     {exp.position}
                   </h3>
                   <div
-                    style={{ color: secondaryColor }}
-                    className=" font-medium mt-1"
+                    style={{ color: tertiaryColor }}
+                    className="font-medium mt-1"
                   >
                     {exp.company}
                   </div>
@@ -306,14 +295,14 @@ const CVPreviewThree = () => {
           <div className="mb-10">
             <div className="flex items-center gap-4 mb-6">
               <h2
-                style={{ color: secondaryColor }}
+                style={{ color: tertiaryColor }}
                 className="text-xl  uppercase tracking-wider"
               >
                 Projects
               </h2>
               <div
                 style={{
-                  background: `linear-gradient(to right, ${secondaryColor}, #a855f7)`,
+                  background: `linear-gradient(to right, ${tertiaryColor}, #a855f7)`,
                 }}
                 className="flex-1 h-0.5 rounded"
               ></div>
@@ -339,7 +328,7 @@ const CVPreviewThree = () => {
                       target="_blank"
                       rel="noopener noreferrer"
                       style={{
-                        background: `linear-gradient(to right, ${secondaryColor}, #a855f7)`,
+                        background: `linear-gradient(to right, ${tertiaryColor}, #a855f7)`,
                       }}
                       className="inline-block mt-2 px-4 py-1 text-sm text-white rounded-full"
                     >
@@ -356,14 +345,14 @@ const CVPreviewThree = () => {
           <div className="mb-10">
             <div className="flex items-center gap-4 mb-6">
               <h2
-                style={{ color: secondaryColor }}
+                style={{ color: tertiaryColor }}
                 className="text-xl  uppercase tracking-wider"
               >
                 Courses
               </h2>
               <div
                 style={{
-                  background: `linear-gradient(to right, ${secondaryColor}, #a855f7)`,
+                  background: `linear-gradient(to right, ${tertiaryColor}, #a855f7)`,
                 }}
                 className="flex-1 h-0.5  rounded"
               ></div>
@@ -389,7 +378,7 @@ const CVPreviewThree = () => {
                       rel="noopener noreferrer"
                       className="inline-block mt-2 px-4 py-1 text-sm text-white rounded-full"
                       style={{
-                        background: `linear-gradient(to right, ${secondaryColor}, #a855f7)`,
+                        background: `linear-gradient(to right, ${tertiaryColor}, #a855f7)`,
                       }}
                     >
                       View Course
@@ -405,14 +394,14 @@ const CVPreviewThree = () => {
           <div className="mb-10">
             <div className="flex items-center gap-4 mb-6">
               <h2
-                style={{ color: secondaryColor }}
+                style={{ color: tertiaryColor }}
                 className="text-xl uppercase tracking-wider"
               >
                 Education
               </h2>
               <div
                 style={{
-                  background: `linear-gradient(to right, ${secondaryColor}, #a855f7)`,
+                  background: `linear-gradient(to right, ${tertiaryColor}, #a855f7)`,
                 }}
                 className="flex-1 h-0.5  rounded"
               ></div>
@@ -427,7 +416,7 @@ const CVPreviewThree = () => {
                     {edu.degree} {edu.field}
                   </h3>
                   <div
-                    style={{ color: secondaryColor }}
+                    style={{ color: tertiaryColor }}
                     className=" font-medium mt-1"
                   >
                     {edu.institution}
@@ -447,14 +436,14 @@ const CVPreviewThree = () => {
           <div className="mb-10">
             <div className="flex items-center gap-4 mb-6">
               <h2
-                style={{ color: secondaryColor }}
+                style={{ color: tertiaryColor }}
                 className="text-xl  uppercase tracking-wider"
               >
                 Certificates
               </h2>
               <div
                 style={{
-                  background: `linear-gradient(to right, ${secondaryColor}, #a855f7)`,
+                  background: `linear-gradient(to right, ${tertiaryColor}, #a855f7)`,
                 }}
                 className="flex-1 h-0.5  rounded"
               ></div>
@@ -469,7 +458,7 @@ const CVPreviewThree = () => {
                     {cert.name}
                   </h3>
                   <div
-                    style={{ color: secondaryColor }}
+                    style={{ color: tertiaryColor }}
                     className="font-medium mt-1"
                   >
                     {cert.issuer}
@@ -485,7 +474,7 @@ const CVPreviewThree = () => {
                       target="_blank"
                       rel="noopener noreferrer"
                       style={{
-                        background: `linear-gradient(to right, ${secondaryColor}, #a855f7)`,
+                        background: `linear-gradient(to right, ${tertiaryColor}, #a855f7)`,
                       }}
                       className="inline-block mt-2 px-4 py-1 text-sm text-white  rounded-full"
                     >

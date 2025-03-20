@@ -23,7 +23,7 @@ const CVPreviewOne = () => {
     email,
     phone,
     companyLogo,
-    colorPalette,
+    primaryColor,
   } = useApplicant();
 
   return (
@@ -54,7 +54,7 @@ const CVPreviewOne = () => {
             </h1>
             <div
               className="flex items-center gap-4"
-              style={{ color: colorPalette }}
+              style={{ color: primaryColor }}
             >
               <span className="flex items-center gap-2">
                 {" "}
@@ -111,7 +111,7 @@ const CVPreviewOne = () => {
           {currentExperience?.length > 0 && (
             <section>
               <h2
-                style={{ color: colorPalette }}
+                style={{ color: primaryColor }}
                 className="text-xs font-semibold  uppercase tracking-wider mb-6 pb-3 border-b border-gray-200"
               >
                 Work Experience
@@ -142,7 +142,7 @@ const CVPreviewOne = () => {
           {currentEducations?.length > 0 && (
             <section>
               <h2
-                style={{ color: colorPalette }}
+                style={{ color: primaryColor }}
                 className="text-xs font-semibold  uppercase tracking-wider mb-6 pb-3 border-b border-gray-200"
               >
                 Education
@@ -170,7 +170,7 @@ const CVPreviewOne = () => {
           {currentProjects?.length > 0 && (
             <section>
               <h2
-                style={{ color: colorPalette }}
+                style={{ color: primaryColor }}
                 className="text-xs font-semibold  uppercase tracking-wider mb-6 pb-3 border-b border-gray-200"
               >
                 Projects
@@ -189,7 +189,7 @@ const CVPreviewOne = () => {
                           target="_blank"
                           rel="noopener noreferrer"
                           className="text-sm hover:opacity-80 transition-opacity"
-                          style={{ color: colorPalette }}
+                          style={{ color: primaryColor }}
                         >
                           {project.url}
                         </a>
@@ -209,7 +209,7 @@ const CVPreviewOne = () => {
           {currentCourses?.length > 0 && (
             <section>
               <h2
-                style={{ color: colorPalette }}
+                style={{ color: primaryColor }}
                 className="text-xs font-semibold  uppercase tracking-wider mb-6 pb-3 border-b border-gray-200"
               >
                 Courses
@@ -227,7 +227,7 @@ const CVPreviewOne = () => {
                           target="_blank"
                           rel="noopener noreferrer"
                           className="text-sm hover:opacity-80 transition-opacity"
-                          style={{ color: colorPalette }}
+                          style={{ color: primaryColor }}
                         >
                           View Course →
                         </a>
@@ -247,7 +247,7 @@ const CVPreviewOne = () => {
           {currentCertificates?.length > 0 && (
             <section>
               <h2
-                style={{ color: colorPalette }}
+                style={{ color: primaryColor }}
                 className="text-xs font-semibold uppercase tracking-wider mb-6 pb-3 border-b border-gray-200"
               >
                 Certificates
@@ -266,7 +266,7 @@ const CVPreviewOne = () => {
                           target="_blank"
                           rel="noopener noreferrer"
                           className="text-sm hover:opacity-80 transition-opacity"
-                          style={{ color: colorPalette }}
+                          style={{ color: primaryColor }}
                         >
                           View Certificate →
                         </a>
@@ -289,7 +289,7 @@ const CVPreviewOne = () => {
           {currentSkills?.length > 0 && (
             <section>
               <h2
-                style={{ color: colorPalette }}
+                style={{ color: primaryColor }}
                 className="text-xs font-semibold  uppercase tracking-wider mb-6 pb-3 border-b border-gray-200"
               >
                 Skills
@@ -313,7 +313,7 @@ const CVPreviewOne = () => {
           {currentLanguages?.length > 0 && (
             <section>
               <h2
-                style={{ color: colorPalette }}
+                style={{ color: primaryColor }}
                 className="text-xs font-semibold  uppercase tracking-wider mb-6 pb-3 border-b border-gray-200"
               >
                 Languages
@@ -337,7 +337,7 @@ const CVPreviewOne = () => {
           {currentSocials?.length > 0 && (
             <section>
               <h2
-                style={{ color: colorPalette }}
+                style={{ color: primaryColor }}
                 className="text-xs font-semibold  uppercase tracking-wider mb-6 pb-3 border-b border-gray-200"
               >
                 Social Links
@@ -354,7 +354,7 @@ const CVPreviewOne = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="hover:opacity-80 block transition-opacity"
-                    style={{ color: colorPalette }}
+                    style={{ color: primaryColor }}
                   >
                     {social.name}
                   </a>
@@ -366,7 +366,7 @@ const CVPreviewOne = () => {
           {hobbies?.length > 0 && (
             <section>
               <h2
-                style={{ color: colorPalette }}
+                style={{ color: primaryColor }}
                 className="text-xs font-semibold  uppercase tracking-wider mb-6 pb-3 border-b border-gray-200"
               >
                 Hobbies

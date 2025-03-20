@@ -19,7 +19,7 @@ const CVPreviewTwo = () => {
     showPersonalInfo,
     showCompanyInfo,
     companyLogo,
-    colorPalette,
+    primaryColor,
     firstName,
     lastName,
     email,
@@ -27,10 +27,10 @@ const CVPreviewTwo = () => {
   } = useApplicant();
 
   return (
-    <div className="w-full h-auto mx-auto bg-white shadow-md rounded-xl overflow-hidden font-['Plus_Jakarta_Sans']">
+    <div className="w-full h-auto mx-auto bg-white shadow-md rounded-xl overflow-hidden">
       {/* Header */}
 
-      <div className="p-8 text-white" style={{ backgroundColor: colorPalette }}>
+      <div className="p-8 text-white" style={{ backgroundColor: primaryColor }}>
         {showCompanyInfo ? (
           <div className="flex items-center gap-4 mb-0">
             <Image
@@ -47,14 +47,14 @@ const CVPreviewTwo = () => {
         )}
       </div>
 
-      <div className="grid grid-cols-[1.8fr,1fr] ">
+      <div className="grid grid-cols-[3fr,1fr] ">
         {/* Left Column */}
         <div className="p-8 space-y-8">
           {showPersonalInfo ? (
             <div
               className="p-8 text-white rounded-lg"
               style={{
-                backgroundColor: colorPalette
+                backgroundColor: primaryColor
                   .replace("rgb", "rgba")
                   .replace(")", ", 0.1)"),
               }}
@@ -63,7 +63,7 @@ const CVPreviewTwo = () => {
                 <h1 className="text-2xl font-semibold text-gray-900">
                   {firstName} {lastName}
                 </h1>
-                <div className="" style={{ color: colorPalette }}>
+                <div className="" style={{ color: primaryColor }}>
                   <span className="flex items-center gap-2">
                     {" "}
                     <svg
@@ -117,10 +117,10 @@ const CVPreviewTwo = () => {
               <div className="flex items-center gap-2 mb-4">
                 <div
                   className="w-5 h-0.5"
-                  style={{ backgroundColor: colorPalette }}
+                  style={{ backgroundColor: primaryColor }}
                 ></div>
                 <h2
-                  style={{ color: colorPalette }}
+                  style={{ color: primaryColor }}
                   className="text-sm font-semibold  uppercase"
                 >
                   Work Experience
@@ -128,25 +128,25 @@ const CVPreviewTwo = () => {
               </div>
               <div className="space-y-6">
                 {currentExperience.map((exp, index) => (
-                  <div key={index} className="flex gap-4 items-start">
-                    <div
-                      className="w-1.5 h-1.5 rounded-full mt-3 opacity-30"
-                      style={{ backgroundColor: colorPalette }}
-                    ></div>
-                    <div>
-                      <h3 className="text-lg font-semibold text-gray-900">
-                        {exp.position}
-                      </h3>
-                      <p className="text-base text-gray-600">{exp.company}</p>
-                      <span className="text-xs text-gray-400 font-medium block mt-1">
-                        {exp.startDate ? exp.startDate : ""}
-                        {exp.startDate && " - "}
-                        {exp.endDate ? exp.endDate : "Present"}
-                      </span>
-                      <p className="text-base text-gray-600 mt-2 leading-relaxed">
-                        {exp.description}
-                      </p>
-                    </div>
+                  <div
+                    key={index}
+                    className="relative pl-5 before:content-[''] before:absolute before:left-0 before:top-2 before:w-1.5 before:h-1.5 before:rounded-full before:opacity-30 before:bg-[var(--before-bg)]"
+                    style={
+                      { "--before-bg": primaryColor } as Record<string, string>
+                    }
+                  >
+                    <h3 className="text-lg font-semibold text-gray-900">
+                      {exp.position}
+                    </h3>
+                    <p className="text-base text-gray-600">{exp.company}</p>
+                    <span className="text-xs text-gray-400 font-medium block mt-1">
+                      {exp.startDate ? exp.startDate : ""}
+                      {exp.startDate && " - "}
+                      {exp.endDate ? exp.endDate : "Present"}
+                    </span>
+                    <p className="text-base text-gray-600 mt-2 leading-relaxed">
+                      {exp.description}
+                    </p>
                   </div>
                 ))}
               </div>
@@ -157,10 +157,10 @@ const CVPreviewTwo = () => {
               <div className="flex items-center gap-2 mb-4">
                 <div
                   className="w-5 h-0.5"
-                  style={{ backgroundColor: colorPalette }}
+                  style={{ backgroundColor: primaryColor }}
                 ></div>
                 <h2
-                  style={{ color: colorPalette }}
+                  style={{ color: primaryColor }}
                   className="text-sm font-semibold  uppercase"
                 >
                   Education
@@ -168,24 +168,22 @@ const CVPreviewTwo = () => {
               </div>
               <div className="space-y-6">
                 {currentEducations.map((edu, index) => (
-                  <div key={index} className="flex items-start gap-4">
-                    <div
-                      className="w-1.5 h-1.5 rounded-full mt-3 opacity-30"
-                      style={{ backgroundColor: colorPalette }}
-                    ></div>
-                    <div>
-                      <h3 className="text-lg font-semibold text-gray-900">
-                        {edu.degree} in {edu.field}
-                      </h3>
-                      <p className="text-base text-gray-600">
-                        {edu.institution}
-                      </p>
-                      <span className="text-xs text-gray-400 font-medium block mt-1">
-                        {edu.startDate ? edu.startDate : ""}
-                        {edu.startDate && " - "}
-                        {edu.endDate ? edu.endDate : "Present"}
-                      </span>
-                    </div>
+                  <div
+                    key={index}
+                    className="relative pl-5 before:content-[''] before:absolute before:left-0 before:top-2 before:w-1.5 before:h-1.5 before:rounded-full before:opacity-30 before:bg-[var(--before-bg)]"
+                    style={
+                      { "--before-bg": primaryColor } as Record<string, string>
+                    }
+                  >
+                    <h3 className="text-lg font-semibold text-gray-900">
+                      {edu.degree} in {edu.field}
+                    </h3>
+                    <p className="text-base text-gray-600">{edu.institution}</p>
+                    <span className="text-xs text-gray-400 font-medium block mt-1">
+                      {edu.startDate ? edu.startDate : ""}
+                      {edu.startDate && " - "}
+                      {edu.endDate ? edu.endDate : "Present"}
+                    </span>
                   </div>
                 ))}
               </div>
@@ -196,10 +194,10 @@ const CVPreviewTwo = () => {
               <div className="flex items-center gap-2 mb-4">
                 <div
                   className="w-5 h-0.5"
-                  style={{ backgroundColor: colorPalette }}
+                  style={{ backgroundColor: primaryColor }}
                 ></div>
                 <h2
-                  style={{ color: colorPalette }}
+                  style={{ color: primaryColor }}
                   className="text-sm font-semibold  uppercase"
                 >
                   Projects
@@ -207,36 +205,35 @@ const CVPreviewTwo = () => {
               </div>
               <div className="space-y-6">
                 {currentProjects.map((project, index) => (
-                  <div key={index} className="flex items-center gap-2 mb-4">
-                    <div
-                      className="w-1.5 h-1.5 rounded-full mt-3 opacity-30"
-                      style={{ backgroundColor: colorPalette }}
-                    ></div>
-                    <div>
-                      {" "}
-                      <h3 className="text-lg font-semibold text-gray-900">
-                        {project.name}
-                      </h3>
-                      <p className="text-base text-gray-600">
-                        {project.description}
-                      </p>
-                      {project.url && (
-                        <a
-                          href={project.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          style={{ color: colorPalette }}
-                          className="hover:opacity-80 text-sm mt-1 block"
-                        >
-                          View Project →
-                        </a>
-                      )}
-                      <span className="text-xs text-gray-400 font-medium block mt-1">
-                        {project.startDate ? project.startDate : ""}
-                        {project.startDate && " - "}
-                        {project.endDate ? project.endDate : "Present"}
-                      </span>
-                    </div>
+                  <div
+                    key={index}
+                    className="relative pl-5 before:content-[''] before:absolute before:left-0 before:top-2 before:w-1.5 before:h-1.5 before:rounded-full before:opacity-30 before:bg-[var(--before-bg)]"
+                    style={
+                      { "--before-bg": primaryColor } as Record<string, string>
+                    }
+                  >
+                    <h3 className="text-lg font-semibold text-gray-900">
+                      {project.name}
+                    </h3>
+                    <p className="text-base text-gray-600">
+                      {project.description}
+                    </p>
+                    {project.url && (
+                      <a
+                        href={project.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{ color: primaryColor }}
+                        className="hover:opacity-80 text-sm mt-1 block"
+                      >
+                        View Project →
+                      </a>
+                    )}
+                    <span className="text-xs text-gray-400 font-medium block mt-1">
+                      {project.startDate ? project.startDate : ""}
+                      {project.startDate && " - "}
+                      {project.endDate ? project.endDate : "Present"}
+                    </span>
                   </div>
                 ))}
               </div>
@@ -248,10 +245,10 @@ const CVPreviewTwo = () => {
               <div className="flex items-center gap-2 mb-4">
                 <div
                   className="w-5 h-0.5"
-                  style={{ backgroundColor: colorPalette }}
+                  style={{ backgroundColor: primaryColor }}
                 ></div>
                 <h2
-                  style={{ color: colorPalette }}
+                  style={{ color: primaryColor }}
                   className="text-sm font-semibold  uppercase"
                 >
                   Courses
@@ -259,32 +256,32 @@ const CVPreviewTwo = () => {
               </div>
               <div className="space-y-6">
                 {currentCourses.map((course, index) => (
-                  <div key={index} className="flex items-start gap-4">
-                    <div
-                      className="w-1.5 h-1.5 rounded-full mt-3 opacity-30"
-                      style={{ backgroundColor: colorPalette }}
-                    ></div>
-                    <div>
-                      <h3 className="text-lg font-semibold text-gray-900">
-                        {course.name}
-                      </h3>
-                      {course.url && (
-                        <a
-                          href={course.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          style={{ color: colorPalette }}
-                          className=" hover:opacity-80 text-sm mt-1 block"
-                        >
-                          View Course →
-                        </a>
-                      )}
-                      <span className="text-xs text-gray-400 font-medium block mt-1">
-                        {course.startDate ? course.startDate : ""}
-                        {course.startDate && " - "}
-                        {course.endDate ? course.endDate : "Present"}
-                      </span>
-                    </div>
+                  <div
+                    key={index}
+                    className="relative pl-5 before:content-[''] before:absolute before:left-0 before:top-2 before:w-1.5 before:h-1.5 before:rounded-full before:opacity-30 before:bg-[var(--before-bg)]"
+                    style={
+                      { "--before-bg": primaryColor } as Record<string, string>
+                    }
+                  >
+                    <h3 className="text-lg font-semibold text-gray-900">
+                      {course.name}
+                    </h3>
+                    {course.url && (
+                      <a
+                        href={course.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{ color: primaryColor }}
+                        className=" hover:opacity-80 text-sm mt-1 block"
+                      >
+                        View Course →
+                      </a>
+                    )}
+                    <span className="text-xs text-gray-400 font-medium block mt-1">
+                      {course.startDate ? course.startDate : ""}
+                      {course.startDate && " - "}
+                      {course.endDate ? course.endDate : "Present"}
+                    </span>
                   </div>
                 ))}
               </div>
@@ -296,10 +293,10 @@ const CVPreviewTwo = () => {
               <div className="flex items-center gap-2 mb-4">
                 <div
                   className="w-5 h-0.5"
-                  style={{ backgroundColor: colorPalette }}
+                  style={{ backgroundColor: primaryColor }}
                 ></div>
                 <h2
-                  style={{ color: colorPalette }}
+                  style={{ color: primaryColor }}
                   className="text-sm font-semibold  uppercase"
                 >
                   Certificates
@@ -307,33 +304,33 @@ const CVPreviewTwo = () => {
               </div>
               <div className="space-y-6">
                 {currentCertificates.map((cert, index) => (
-                  <div key={index} className="flex items-center gap-4">
-                    <div
-                      className="w-1.5 h-1.5 rounded-full mt-3 opacity-30"
-                      style={{ backgroundColor: colorPalette }}
-                    ></div>
-                    <div>
-                      <h3 className="text-lg font-semibold text-gray-900">
-                        {cert.name}
-                      </h3>
-                      <p className="text-base text-gray-600">{cert.issuer}</p>
-                      {cert.url && (
-                        <a
-                          href={cert.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          style={{ color: colorPalette }}
-                          className="hover:hover:opacity-80 text-sm mt-1 block"
-                        >
-                          View Certificate →
-                        </a>
-                      )}
-                      <span className="text-xs text-gray-400 font-medium block mt-1">
-                        {cert.issueDate ? cert.issueDate : ""}
-                        {cert.issueDate && " - "}
-                        {cert.expirationDate ? cert.expirationDate : "Present"}
-                      </span>
-                    </div>
+                  <div
+                    key={index}
+                    className="relative pl-5 before:content-[''] before:absolute before:left-0 before:top-2 before:w-1.5 before:h-1.5 before:rounded-full before:opacity-30 before:bg-[var(--before-bg)]"
+                    style={
+                      { "--before-bg": primaryColor } as Record<string, string>
+                    }
+                  >
+                    <h3 className="text-lg font-semibold text-gray-900">
+                      {cert.name}
+                    </h3>
+                    <p className="text-base text-gray-600">{cert.issuer}</p>
+                    {cert.url && (
+                      <a
+                        href={cert.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{ color: primaryColor }}
+                        className="hover:hover:opacity-80 text-sm mt-1 block"
+                      >
+                        View Certificate →
+                      </a>
+                    )}
+                    <span className="text-xs text-gray-400 font-medium block mt-1">
+                      {cert.issueDate ? cert.issueDate : ""}
+                      {cert.issueDate && " - "}
+                      {cert.expirationDate ? cert.expirationDate : "Present"}
+                    </span>
                   </div>
                 ))}
               </div>
@@ -344,7 +341,7 @@ const CVPreviewTwo = () => {
         <div
           className="p-8 space-y-8 h-full"
           style={{
-            backgroundColor: colorPalette
+            backgroundColor: primaryColor
               .replace("rgb", "rgba")
               .replace(")", ", 0.1)"),
           }}
@@ -354,10 +351,10 @@ const CVPreviewTwo = () => {
               <div className="flex items-center gap-2 mb-4">
                 <div
                   className="w-5 h-0.5"
-                  style={{ backgroundColor: colorPalette }}
+                  style={{ backgroundColor: primaryColor }}
                 ></div>
                 <h2
-                  style={{ color: colorPalette }}
+                  style={{ color: primaryColor }}
                   className="text-sm font-semibold  uppercase"
                 >
                   Skills
@@ -372,7 +369,7 @@ const CVPreviewTwo = () => {
                     <span className="text-gray-900">{skill.name}</span>
                     <span
                       className="text-sm font-semibold"
-                      style={{ color: colorPalette }}
+                      style={{ color: primaryColor }}
                     >
                       {skill.efficiency}
                     </span>
@@ -387,10 +384,10 @@ const CVPreviewTwo = () => {
               <div className="flex items-center gap-2 mb-4">
                 <div
                   className="w-5 h-0.5"
-                  style={{ backgroundColor: colorPalette }}
+                  style={{ backgroundColor: primaryColor }}
                 ></div>
                 <h2
-                  style={{ color: colorPalette }}
+                  style={{ color: primaryColor }}
                   className="text-sm font-semibold  uppercase"
                 >
                   Languages
@@ -405,7 +402,7 @@ const CVPreviewTwo = () => {
                     <span className="text-gray-900">{lang.name}</span>
                     <span
                       className="text-sm  font-semibold"
-                      style={{ color: colorPalette }}
+                      style={{ color: primaryColor }}
                     >
                       {lang.efficiency}
                     </span>
@@ -420,10 +417,10 @@ const CVPreviewTwo = () => {
               <div className="flex items-center gap-2 mb-4">
                 <div
                   className="w-5 h-0.5"
-                  style={{ backgroundColor: colorPalette }}
+                  style={{ backgroundColor: primaryColor }}
                 ></div>
                 <h2
-                  style={{ color: colorPalette }}
+                  style={{ color: primaryColor }}
                   className="text-sm font-semibold  uppercase"
                 >
                   Social Links
@@ -440,7 +437,7 @@ const CVPreviewTwo = () => {
                     }
                     target="_blank"
                     rel="noopener noreferrer"
-                    style={{ color: colorPalette }}
+                    style={{ color: primaryColor }}
                     className="bg-white p-3 px-4 rounded-lg block  font-medium text-sm hover:-translate-y-0.5 transition-transform hover:shadow-md"
                   >
                     {social.name}
@@ -455,10 +452,10 @@ const CVPreviewTwo = () => {
               <div className="flex items-center gap-2 mb-4">
                 <div
                   className="w-5 h-0.5"
-                  style={{ backgroundColor: colorPalette }}
+                  style={{ backgroundColor: primaryColor }}
                 ></div>
                 <h2
-                  style={{ color: colorPalette }}
+                  style={{ color: primaryColor }}
                   className="text-sm font-semibold  uppercase"
                 >
                   Hobbies
