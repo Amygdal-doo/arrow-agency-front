@@ -37,7 +37,9 @@ type CVFormProps = {
 };
 
 const CVForm = ({ onClose }: CVFormProps) => {
-  const { profile } = useProfile();
+  const { profile, fetchProfile } = useProfile();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
   const [fileName, setFileName] = useState<string | null>(null);
   const [technologies, setTechnologies] = useState<string[]>([]);
   const [techInput, setTechInput] = useState("");
@@ -59,6 +61,7 @@ const CVForm = ({ onClose }: CVFormProps) => {
     setValue,
     setError,
     clearErrors,
+    reset,
     formState: { errors },
   } = useForm<UserFormInputs>({
     resolver: zodResolver(userFormSchema),
@@ -74,8 +77,32 @@ const CVForm = ({ onClose }: CVFormProps) => {
     },
   });
 
+  const handleLogoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !(file instanceof File)) return;
+
+    try {
+      setIsUploading(true);
+      const formData = new FormData();
+      formData.append("file", file);
+
+      await apiService.put("user/profile/company-logos", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      // Refresh profile data to get updated logos
+      await fetchProfile();
+    } catch (error) {
+      console.error("Error uploading logo:", error);
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
   const onSubmit = async (data: UserFormInputs) => {
-    console.log("Form Data:", data);
+    setIsSubmitting(true);
     try {
       const formData = new FormData();
       formData.append("showPersonalInfo", JSON.stringify(true));
@@ -115,11 +142,14 @@ const CVForm = ({ onClose }: CVFormProps) => {
 
       console.log("CV Saved Successfully:", response.data);
       onClose();
+      reset();
       fetchApplicants();
       return response.data;
     } catch (error) {
       console.error("Error saving CV:", error);
       throw error;
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -239,80 +269,11 @@ const CVForm = ({ onClose }: CVFormProps) => {
           )}
         </div>
 
-        {/* Company Logo Selection */}
         <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 shadow-lg relative z-10">
-          <label className="block text-sm font-medium text-gray-300 mb-4">
-            Company Logo
-          </label>
-          <div className="relative">
-            <div
-              onClick={() => setIsLogoDropdownOpen(!isLogoDropdownOpen)}
-              className="bg-gray-700/50 border border-gray-600/50 rounded-lg p-4 text-gray-300 cursor-pointer flex items-center justify-between"
-            >
-              <div className="flex items-center gap-3">
-                {selectedLogo ? (
-                  <>
-                    <Image
-                      src={selectedLogo.url}
-                      alt={selectedLogo.name}
-                      width={40}
-                      height={40}
-                      className="rounded-md"
-                    />
-                    <span>{selectedLogo.name}</span>
-                  </>
-                ) : (
-                  <span className="text-gray-500">Select Company Logo</span>
-                )}
-              </div>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className={`h-5 w-5 transition-transform ${
-                  isLogoDropdownOpen ? "rotate-180" : ""
-                }`}
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M19 9l-7 7-7-7"
-                />
-              </svg>
-            </div>
-
-            {isLogoDropdownOpen && profile?.companyLogos && (
-              <div className="absolute z-50 w-full mt-2 bg-gray-800 backdrop-blur-sm border border-gray-700 rounded-lg shadow-xl">
-                {profile.companyLogos.map((logo) => (
-                  <div
-                    key={logo.id}
-                    onClick={() => {
-                      setSelectedLogo(logo);
-                      setIsLogoDropdownOpen(false);
-                      setValue("logoId", logo.id);
-                    }}
-                    className="flex items-center gap-3 p-4 cursor-pointer hover:bg-gray-700 transition-colors"
-                  >
-                    <Image
-                      src={logo.url}
-                      alt={logo.name}
-                      width={40}
-                      height={40}
-                      className="rounded-md"
-                    />
-                    <span className="text-gray-300">{logo.name}</span>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Basic Information */}
-        <div className="bg-gray-800/50 backdrop-blur-sm relative z-0 rounded-xl p-6 border border-gray-700/50 shadow-lg">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <h3 className="text-lg font-medium text-white mb-6">
+            Company Information
+          </h3>
+          <div className="space-y-4">
             <div>
               <input
                 {...register("companyName")}
@@ -326,6 +287,145 @@ const CVForm = ({ onClose }: CVFormProps) => {
               )}
             </div>
 
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-4">
+                Company Logo
+              </label>
+              {profile?.companyLogos && profile.companyLogos.length > 0 ? (
+                <div className="relative">
+                  <div
+                    onClick={() => setIsLogoDropdownOpen(!isLogoDropdownOpen)}
+                    className="bg-gray-700/50 border border-gray-600/50 rounded-lg p-4 text-gray-300 cursor-pointer flex items-center justify-between"
+                  >
+                    <div className="flex items-center gap-3">
+                      {selectedLogo ? (
+                        <>
+                          <Image
+                            src={selectedLogo.url}
+                            alt={selectedLogo.name}
+                            width={40}
+                            height={40}
+                            className="rounded-md"
+                          />
+                          <span>{selectedLogo.name}</span>
+                        </>
+                      ) : (
+                        <span className="text-gray-500">
+                          Select Company Logo
+                        </span>
+                      )}
+                    </div>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className={`h-5 w-5 transition-transform ${
+                        isLogoDropdownOpen ? "rotate-180" : ""
+                      }`}
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19 9l-7 7-7-7"
+                      />
+                    </svg>
+                  </div>
+
+                  {isLogoDropdownOpen && (
+                    <div className="absolute z-50 w-full mt-2 bg-gray-800 backdrop-blur-sm border border-gray-700 rounded-lg shadow-xl">
+                      {profile.companyLogos.map((logo) => (
+                        <div
+                          key={logo.id}
+                          onClick={() => {
+                            setSelectedLogo(logo);
+                            setIsLogoDropdownOpen(false);
+                            setValue("logoId", logo.id);
+                          }}
+                          className="flex items-center gap-3 p-4 cursor-pointer hover:bg-gray-700 transition-colors"
+                        >
+                          <Image
+                            src={logo.url}
+                            alt={logo.name}
+                            width={40}
+                            height={40}
+                            className="rounded-md"
+                          />
+                          <span className="text-gray-300">{logo.name}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <label className="relative cursor-pointer w-full">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleLogoUpload}
+                    className="hidden"
+                    disabled={isUploading}
+                  />
+                  <span className="w-full bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 flex items-center justify-center gap-2 hover:bg-gray-600/50 transition-all cursor-pointer">
+                    {isUploading ? (
+                      <>
+                        <svg
+                          className="animate-spin h-5 w-5 mr-2"
+                          viewBox="0 0 24 24"
+                        >
+                          <circle
+                            className="opacity-25"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            strokeWidth="4"
+                          />
+                          <path
+                            className="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                          />
+                        </svg>
+                        Uploading...
+                      </>
+                    ) : (
+                      <>
+                        <svg
+                          className="w-5 h-5"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M12 4v16m8-8H4"
+                          />
+                        </svg>
+                        Add Company Logo
+                      </>
+                    )}
+                  </span>
+                </label>
+              )}
+              {errors.logoId && (
+                <p className="mt-1 text-red-400 text-sm">
+                  {errors.logoId.message}
+                </p>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Personal Information Section */}
+        <div className="bg-gray-800/50 backdrop-blur-sm relative z-0 rounded-xl p-6 border border-gray-700/50 shadow-lg">
+          <h3 className="text-lg font-medium text-white mb-6">
+            Personal Information
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <input
                 {...register("name")}
@@ -475,9 +575,40 @@ const CVForm = ({ onClose }: CVFormProps) => {
 
         <button
           type="submit"
-          className="w-full bg-gradient-to-r from-orange-600 to-orange-700 text-white p-3 rounded-lg font-medium hover:from-orange-700 hover:to-orange-800 transition-all duration-200 shadow-lg"
+          disabled={isSubmitting}
+          className={`w-full bg-gradient-to-r ${
+            isSubmitting
+              ? "from-gray-500 to-gray-600 cursor-not-allowed"
+              : "from-orange-600 to-orange-700 hover:from-orange-700 hover:to-orange-800"
+          } text-white p-3 rounded-lg font-medium transition-all duration-200 shadow-lg flex items-center justify-center`}
         >
-          Create CV
+          {isSubmitting ? (
+            <>
+              <svg
+                className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                />
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                />
+              </svg>
+              Creating CV...
+            </>
+          ) : (
+            "Create CV"
+          )}
         </button>
       </form>
     </div>

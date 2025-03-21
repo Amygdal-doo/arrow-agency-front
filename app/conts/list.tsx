@@ -72,7 +72,6 @@ export const skillsList = [
   "Backend",
   "Backlink Strategy",
   "Bamboo",
-  "BambooHR",
   "Bard",
   "Bash",
   "Behavior Change Coaching",
@@ -157,5 +156,5 @@ export const skillsList = [
   "Data Engineering",
   "Data Entry",
   "Data Mining",
-  "Data Preprocessing"
-]
+  "Data Preprocessing",
+];

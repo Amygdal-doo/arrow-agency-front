@@ -324,39 +324,42 @@ export const ApplicantProvider = ({
   const updateApplicant = async () => {
     try {
       setLoading(true);
-      await apiService.put(`/cv/${applicant?.cvId}?templateId=${templateId}`, {
-        showPersonalInfo,
-        showCompanyInfo,
-        companyName,
-        companyLogoId: companyLogo.id,
-        primaryColor,
-        secondaryColor,
-        tertiaryColor,
-        lastName,
-        email,
-        phone,
-        summary,
-        skills: skills || [],
-        hobbies,
-        experience,
-        projects,
-        educations,
-        certificates,
-        courses,
-        socials,
-        languages,
-        delete: {
-          expirience: deleteItems.experience,
-          education: deleteItems.education,
-          projects: deleteItems.projects,
-          courses: deleteItems.courses,
-          certificates: deleteItems.certificates,
-          languages: deleteItems.languages,
-          socials: deleteItems.socials,
-          skills: deleteItems.skills,
-        },
-      });
-      fetchApplicant();
+      if (applicant) {
+        await apiService.put(`/cv/${applicant.cvId}?templateId=${templateId}`, {
+          showPersonalInfo,
+          showCompanyInfo,
+          companyName,
+          companyLogoId: companyLogo.id,
+          primaryColor,
+          secondaryColor,
+          tertiaryColor,
+          firstName,
+          lastName,
+          email,
+          phone,
+          summary,
+          skills: skills || [],
+          hobbies,
+          experience,
+          projects,
+          educations,
+          certificates,
+          courses,
+          socials,
+          languages,
+          delete: {
+            expirience: deleteItems.experience,
+            education: deleteItems.education,
+            projects: deleteItems.projects,
+            courses: deleteItems.courses,
+            certificates: deleteItems.certificates,
+            languages: deleteItems.languages,
+            socials: deleteItems.socials,
+            skills: deleteItems.skills,
+          },
+        });
+        fetchApplicant();
+      }
     } catch (err) {
       setError((err as Error).message);
     } finally {
