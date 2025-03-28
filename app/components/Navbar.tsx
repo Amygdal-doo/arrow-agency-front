@@ -27,7 +27,7 @@ const Navbar = () => {
 
   const NavLinks = () => (
     <>
-      <Link href="/for-talent">
+      <Link href="/jobs">
         <li className="text-white hover:underline font-medium text-lg lg:text-xl md:font-medium hover:text-orange-500 transition-colors">
           Jobs
         </li>

@@ -1,173 +1,301 @@
 "use client";
 
-import { motion } from "framer-motion";
-// import Image from "next/image";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  AnimatePresence,
+} from "framer-motion";
+import Link from "next/link";
+import { useSession } from "next-auth/react";
+import { BsPeople } from "react-icons/bs";
+import { FiSearch } from "react-icons/fi";
+import { RiAirplayLine } from "react-icons/ri";
 import { useState } from "react";
-// import HeroBackground from "../../public/hero.jpg";
-import { jobListings } from "../conts/jobList";
+import Modal from "../components/Modal";
+import CVForm from "../components/CVForm";
+import LoginForm from "../components/LoginForm";
+import RegistrationForm from "../components/RegistrationForm";
+import { useJobs } from "@/providers/AllJobsProvider";
+import { useRouter } from "next/navigation";
 
-export default function Home() {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [isRemoteOnly, setIsRemoteOnly] = useState(false);
+const fadeInUp = {
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.6 },
+};
 
-  const filteredJobs = Array.from(
-    new Set(
-      jobListings
-        .filter((job) => {
-          const matchesSearch =
-            job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            job.technologies.some((tech) =>
-              tech.toLowerCase().includes(searchTerm.toLowerCase())
-            );
+const staggerContainer = {
+  animate: {
+    transition: {
+      staggerChildren: 0.2,
+    },
+  },
+};
 
-          const matchesRemote = isRemoteOnly ? job.isRemote : true;
+export default function ForTalentPage() {
+  const router = useRouter();
+  const { data: session, status } = useSession();
+  const { jobs } = useJobs();
+  const { scrollYProgress } = useScroll();
+  const opacity = useTransform(scrollYProgress, [0, 0.2], [1, 0.8]);
+  const scale = useTransform(scrollYProgress, [0, 0.2], [1, 0.98]);
 
-          return matchesSearch && matchesRemote;
-        })
-        .map((job) => job.id)
-    )
-  ).map((id) => jobListings.find((job) => job.id === id));
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [showLoginForm, setShowLoginForm] = useState(false);
+  const [showCVModal, setShowCVModal] = useState(false);
+
+  const toggleLoginForm = () => {
+    setShowLoginForm(!showLoginForm);
+  };
+
+  const handleGetStarted = () => {
+    if (status === "authenticated" && session?.user?.accessToken) {
+      setShowCVModal(true);
+    } else {
+      setShowLoginModal(true);
+    }
+  };
 
   return (
-    <motion.section
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-      className="relative min-h-screen w-full bg-[#01070a] pt-40"
-    >
-      {/* <Image
-        src={HeroBackground}
-        alt="Hero Background"
-        className="w-full h-[90vh] object-fill absolute"
-      /> */}
-      <div className="container mx-auto h-full flex flex-col justify-evenly relative z-10">
-        <div className="flex-col px-8 space-y-8 text-white">
-          <p className="text-6xl font-bold max-w-lg">
-            Turn AI research into real-world impact
-          </p>
-          <p className="text-3xl font-medium">
-            Looking to post a job or explore AI-powered CV generation?
-          </p>
-        </div>
-
-        <motion.div
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="rounded-lg p-8 mt-8"
+    <AnimatePresence>
+      <main className="min-h-screen bg-gradient-to-b from-[#01070a] to-gray-900">
+        <motion.section
+          style={{ opacity, scale }}
+          className="container mx-auto px-4 pt-40 pb-20"
         >
-          <div className="mb-8 flex flex-col space-y-4">
-            <input
-              type="text"
-              placeholder="Search by job title or technology..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-700 focus:outline-none focus:border-orange-600"
-            />
-            <div className="flex items-center space-x-2 text-white">
-              <input
-                type="checkbox"
-                id="remoteOnly"
-                checked={isRemoteOnly}
-                onChange={(e) => setIsRemoteOnly(e.target.checked)}
-                className="w-4 h-4 rounded border-gray-700 text-orange-600 focus:ring-orange-600 bg-gray-800"
-              />
-              <label htmlFor="remoteOnly">Show remote positions only</label>
-            </div>
-          </div>
-
-          <h2 className="text-3xl font-bold mb-6 text-white">
-            Available Positions
-          </h2>
           <motion.div
-            layout
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="max-w-4xl"
           >
-            {filteredJobs.map((job) => (
-              <motion.div
-                key={job?.id}
-                layout
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                whileHover={{ scale: 1.05 }}
-                transition={{ duration: 0.2 }}
-                className="bg-gray-800 rounded-lg p-6 shadow-md hover:shadow-lg transition-shadow border border-gray-700"
-              >
-                <div className="flex justify-between items-start mb-4">
-                  <div>
-                    <h3 className="text-xl font-bold text-white">
-                      {job?.title}
-                    </h3>
-                    <p className="text-gray-400">{job?.companyName}</p>
-                  </div>
-                  <span
-                    className={`px-3 py-1 rounded-full text-sm font-medium ${
-                      job?.seniority === "senior"
-                        ? "bg-purple-900 text-purple-200"
-                        : job?.seniority === "mid"
-                        ? "bg-blue-900 text-blue-200"
-                        : "bg-green-900 text-green-200"
-                    }`}
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2, duration: 0.8 }}
+              className="text-5xl md:text-6xl font-bold text-white mb-6 bg-clip-text text-transparent bg-gradient-to-r from-orange-500 to-orange-300"
+            >
+              Accelerate Your Career in AI
+            </motion.h1>
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.4, duration: 0.8 }}
+              className="text-xl text-gray-400 mb-8"
+            >
+              Join our platform to discover exciting opportunities, create an
+              AI-powered CV, and connect with leading tech companies.
+            </motion.p>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6, duration: 0.8 }}
+              className="flex gap-4"
+            >
+              {status === "authenticated" ? (
+                <>
+                  <Link
+                    href="/profile"
+                    className="bg-gradient-to-r from-orange-600 to-orange-500 hover:from-orange-500 hover:to-orange-400 text-white px-8 py-4 rounded-xl font-semibold transition-all duration-200"
                   >
-                    {job?.seniority}
-                  </span>
-                </div>
-
-                <div className="mb-4">
-                  <p className="text-gray-300 mb-2">{job?.description}</p>
-                  <div className="flex flex-wrap gap-2">
-                    {job?.technologies.map((tech, index) => (
-                      <span
-                        key={`${job?.id}-${tech}-${index}`}
-                        className="bg-gray-700 px-2 py-1 rounded-md text-sm text-gray-300 border border-gray-600"
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="flex items-center justify-between text-sm text-gray-400">
-                  <div className="flex items-center gap-2">
-                    <svg
-                      className="w-4 h-4"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                      />
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                      />
-                    </svg>
-                    <span>{job?.location}</span>
-                  </div>
-                  {job?.isRemote && (
-                    <span className="bg-gray-700 text-gray-300 px-2 py-1 rounded-full text-xs">
-                      Remote
-                    </span>
-                  )}
-                </div>
-
-                <a
-                  href={`/for-talent/${job?.id}`}
-                  className="mt-4 block w-full text-center bg-orange-600 hover:bg-orange-400 text-white py-2 rounded-md transition-colors"
+                    Update Your Profile
+                  </Link>
+                  <button
+                    onClick={() => setShowCVModal(true)}
+                    className="bg-gray-800 hover:bg-gray-700 text-white px-8 py-4 rounded-xl font-semibold transition-all duration-200"
+                  >
+                    Create CV
+                  </button>
+                </>
+              ) : (
+                <button
+                  onClick={handleGetStarted}
+                  className="bg-gradient-to-r from-orange-600 to-orange-500 hover:from-orange-500 hover:to-orange-400 text-white px-8 py-4 rounded-xl font-semibold transition-all duration-200"
                 >
-                  View Details
-                </a>
+                  Create CV
+                </button>
+              )}
+            </motion.div>
+          </motion.div>
+        </motion.section>
+
+        <section className="container mx-auto px-4 py-20">
+          <motion.div
+            variants={staggerContainer}
+            initial="initial"
+            whileInView="animate"
+            viewport={{ once: true }}
+            className="grid grid-cols-1 md:grid-cols-3 gap-8"
+          >
+            {[
+              {
+                icon: <RiAirplayLine className="w-8 h-8" />,
+                title: "AI-Powered CV Builder",
+                description:
+                  "Create a standout CV with our AI-powered tools that highlight your skills and experience effectively.",
+              },
+              {
+                icon: <FiSearch className="w-8 h-8" />,
+                title: "Smart Job Matching",
+                description:
+                  "Get matched with relevant positions based on your skills, experience, and career preferences.",
+              },
+              {
+                icon: <BsPeople className="w-8 h-8" />,
+                title: "Company Network",
+                description:
+                  "Connect with leading AI companies and startups looking for talent like you.",
+              },
+            ].map((feature, index) => (
+              <motion.div
+                key={index}
+                variants={fadeInUp}
+                whileHover={{
+                  scale: 1.05,
+                  boxShadow: "0 0 20px rgba(251, 146, 60, 0.2)",
+                }}
+                className="backdrop-blur-xl bg-white/5 rounded-2xl p-8 border border-gray-700/50"
+              >
+                <div className="text-orange-500 mb-4">{feature.icon}</div>
+                <h3 className="text-xl font-bold text-white mb-2">
+                  {feature.title}
+                </h3>
+                <p className="text-gray-400">{feature.description}</p>
               </motion.div>
             ))}
           </motion.div>
-        </motion.div>
-      </div>
-    </motion.section>
+        </section>
+
+        <section className="bg-gray-900/50 py-20">
+          <div className="container mx-auto px-4">
+            <motion.div
+              variants={staggerContainer}
+              initial="initial"
+              whileInView="animate"
+              viewport={{ once: true }}
+              className="grid grid-cols-2 md:grid-cols-4 gap-8"
+            >
+              {[
+                { number: "1000+", label: "Available Jobs" },
+                { number: "500+", label: "Partner Companies" },
+                { number: "95%", label: "Success Rate" },
+                { number: "24h", label: "Average Response" },
+              ].map((stat, index) => (
+                <motion.div
+                  key={index}
+                  variants={fadeInUp}
+                  whileHover={{ y: -5 }}
+                  className="text-left"
+                >
+                  <motion.p
+                    initial={{ scale: 0 }}
+                    whileInView={{ scale: 1 }}
+                    transition={{ delay: index * 0.1, duration: 0.5 }}
+                    className="text-4xl font-bold text-orange-500 mb-2"
+                  >
+                    {stat.number}
+                  </motion.p>
+                  <p className="text-gray-400">{stat.label}</p>
+                </motion.div>
+              ))}
+            </motion.div>
+          </div>
+        </section>
+
+        <section className="container mx-auto px-4 py-20">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="grid md:grid-cols-2 gap-12 items-center"
+          >
+            <div>
+              <h2 className="text-4xl font-bold text-white mb-6">
+                Find Your Dream AI Role
+              </h2>
+              <p className="text-xl text-gray-400 mb-8">
+                Browse through our curated selection of AI positions. From
+                startups to industry leaders, find opportunities that match your
+                expertise and career goals.
+              </p>
+              <div className="grid grid-cols-2 gap-4 mb-8">
+                <div className="bg-white/5 p-4 rounded-lg">
+                  <h4 className="text-orange-500 font-semibold mb-2">
+                    Remote First
+                  </h4>
+                  <p className="text-gray-400">Global opportunities</p>
+                </div>
+                <div className="bg-white/5 p-4 rounded-lg">
+                  <h4 className="text-orange-500 font-semibold mb-2">
+                    Top Salary
+                  </h4>
+                  <p className="text-gray-400">Market-leading packages</p>
+                </div>
+                <div className="bg-white/5 p-4 rounded-lg">
+                  <h4 className="text-orange-500 font-semibold mb-2">
+                    Fast Track
+                  </h4>
+                  <p className="text-gray-400">Streamlined hiring</p>
+                </div>
+                <div className="bg-white/5 p-4 rounded-lg">
+                  <h4 className="text-orange-500 font-semibold mb-2">
+                    AI Focus
+                  </h4>
+                  <p className="text-gray-400">Cutting-edge projects</p>
+                </div>
+              </div>
+              <Link
+                href="/jobs"
+                className="bg-gradient-to-r from-orange-600 to-orange-500 hover:from-orange-500 hover:to-orange-400 text-white px-8 py-4 rounded-xl font-semibold transition-all duration-200 inline-block"
+              >
+                View All Positions
+              </Link>
+            </div>
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="bg-white/5 rounded-2xl p-8 border border-gray-700/50"
+            >
+              <div className="space-y-4">
+                {jobs.map((job, index) => (
+                  <motion.div
+                    key={index}
+                    whileHover={{ x: 10 }}
+                    onClick={() => router.push(`/jobs/${job.id}`)}
+                    className="flex items-center justify-between p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-all duration-200 cursor-pointer"
+                  >
+                    <span className="text-white font-medium">{job.name}</span>
+                    <span className="text-orange-500">→</span>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+          </motion.div>
+        </section>
+
+        <Modal isOpen={showCVModal} onClose={() => setShowCVModal(false)}>
+          <CVForm onClose={() => setShowCVModal(false)} />
+        </Modal>
+
+        <Modal
+          isOpen={showLoginModal}
+          onClose={() => {
+            setShowLoginModal(false);
+            setShowLoginForm(false);
+          }}
+        >
+          {!showLoginForm ? (
+            <LoginForm
+              toggleContent={toggleLoginForm}
+              onClose={() => setShowLoginModal(false)}
+            />
+          ) : (
+            <RegistrationForm toggleContent={toggleLoginForm} />
+          )}
+        </Modal>
+      </main>
+    </AnimatePresence>
   );
 }

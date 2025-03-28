@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { CompanyFormData } from "./CompanyForm";
 import { JobFormData } from "./JobForm";
 import Image from "next/image";
-import { useJob } from "@/providers/JobProvider";
+import { useCreateJob } from "@/providers/CreateJobProvider";
 
 interface PreviewProps {
   jobData: JobFormData;
@@ -10,7 +10,7 @@ interface PreviewProps {
 }
 
 const Preview = ({ jobData, companyData }: PreviewProps) => {
-  const { selectedSkills } = useJob();
+  const { selectedSkills } = useCreateJob();
   const [activeView, setActiveView] = useState<"combined" | "job" | "company">(
     "combined"
   );

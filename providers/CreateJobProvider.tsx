@@ -26,6 +26,7 @@ export interface OrganizationResponse {
   createdBy: string;
   culture: string | null;
   email: string;
+  file: null | any;
 }
 
 export interface ICategory {
@@ -44,7 +45,7 @@ export interface ISkill {
   updatedAt: string;
 }
 
-interface IJobContextProps {
+interface ICreateJobContextProps {
   categories: ICategory[];
   skills: ISkill[];
   selectedSkills: ISkill[];
@@ -54,7 +55,7 @@ interface IJobContextProps {
   fetchSkills: () => Promise<void>;
 }
 
-export const JobContext = createContext<IJobContextProps>({
+export const CreateJobContext = createContext<ICreateJobContextProps>({
   categories: [],
   skills: [],
   selectedSkills: [],
@@ -64,7 +65,7 @@ export const JobContext = createContext<IJobContextProps>({
   fetchSkills: async () => {},
 });
 
-export const JobProvider: FC<PropsWithChildren> = ({ children }) => {
+export const CreateJobProvider: FC<PropsWithChildren> = ({ children }) => {
   //   const router = useRouter();
   //   const { data: session, status } = useSession();
   const [categories, setCategories] = useState<ICategory[]>([]);
@@ -104,7 +105,7 @@ export const JobProvider: FC<PropsWithChildren> = ({ children }) => {
   }, []);
 
   return (
-    <JobContext.Provider
+    <CreateJobContext.Provider
       value={{
         categories,
         skills,
@@ -116,8 +117,8 @@ export const JobProvider: FC<PropsWithChildren> = ({ children }) => {
       }}
     >
       {children}
-    </JobContext.Provider>
+    </CreateJobContext.Provider>
   );
 };
 
-export const useJob = () => useContext(JobContext);
+export const useCreateJob = () => useContext(CreateJobContext);

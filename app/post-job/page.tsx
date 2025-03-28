@@ -12,7 +12,9 @@ import CompanyForm, {
 } from "../components/post-job/CompanyForm";
 import { apiService } from "@/core/services/apiService";
 import Preview from "../components/post-job/Preview";
-import { OrganizationResponse } from "@/providers/JobProvider";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { OrganizationResponse } from "@/providers/CreateJobProvider";
 
 const steps = [
   { id: 1, name: "Job Details" },
@@ -22,11 +24,9 @@ const steps = [
 ];
 
 export default function PostJob() {
+  const router = useRouter();
+  const { data: session } = useSession();
   const [currentStep, setCurrentStep] = useState(1);
-
-  // const [previewLogo] = useState<string | null>(null);
-
-  // const [organizationId, setOrganizationId] = useState<string>("");
 
   const jobMethods = useForm<JobFormData>({
     resolver: zodResolver(jobSchema),
@@ -35,6 +35,50 @@ export default function PostJob() {
   const companyMethods = useForm<CompanyFormData>({
     resolver: zodResolver(companySchema),
   });
+
+  const handleOrganizationCreate = async (formData: FormData) => {
+    const endpoint = session?.user?.accessToken
+      ? "organization/create-logged-in"
+      : "organization/create";
+
+    const response = await apiService.post<OrganizationResponse>(
+      endpoint,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          ...(session?.user?.accessToken && {
+            Authorization: `Bearer ${session.user.accessToken}`,
+          }),
+        },
+      }
+    );
+
+    return response;
+  };
+
+  const handleJobCreate = async (jobData: JobFormData) => {
+    const endpoint = session?.user?.accessToken
+      ? "jobs/create-logged-in"
+      : "jobs/create";
+
+    const response = await apiService.post(
+      endpoint,
+      {
+        ...jobData,
+        typeOfApplication: "EMAIL",
+      },
+      {
+        headers: {
+          ...(session?.user?.accessToken && {
+            Authorization: `Bearer ${session.user.accessToken}`,
+          }),
+        },
+      }
+    );
+
+    return response;
+  };
 
   const handleNext = async () => {
     if (currentStep === 1) {
@@ -62,8 +106,6 @@ export default function PostJob() {
           const data = companyMethods.getValues();
           const formData = new FormData();
 
-          // setCurrentStep(3);
-
           formData.append("name", data.name);
           formData.append("about", data.about);
           formData.append("location", data.location);
@@ -80,16 +122,7 @@ export default function PostJob() {
           console.log("company", data);
           // setOrganizationId(data.id);
 
-          // Make a request to backend API
-          const response = await apiService.post<OrganizationResponse>(
-            `organization/create`,
-            formData,
-            {
-              headers: {
-                "Content-Type": "multipart/form-data",
-              },
-            }
-          );
+          const response = await handleOrganizationCreate(formData);
 
           if (response) {
             console.log("response company", response);
@@ -110,18 +143,14 @@ export default function PostJob() {
 
   const onSubmit = async () => {
     const jobData = jobMethods.getValues();
-    const companyData = companyMethods.getValues();
-    console.log("job data", jobData);
-    console.log("company data", companyData);
     try {
       // Make a request to backend API
-      const response = await apiService.post(`jobs/create`, {
-        ...jobData,
-        typeOfApplication: "EMAIL",
-      });
-
+      const response = await handleJobCreate(jobData);
       if (response) {
+        jobMethods.reset();
+        companyMethods.reset();
         alert("Job created successfully!");
+        router.push("/");
       }
     } catch (error) {
       console.error("Error creating job:", error);

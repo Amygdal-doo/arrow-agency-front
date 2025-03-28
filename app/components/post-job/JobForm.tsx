@@ -1,5 +1,5 @@
 "use client";
-import { ICategory, ISkill, useJob } from "@/providers/JobProvider";
+import { ICategory, ISkill, useCreateJob } from "@/providers/CreateJobProvider";
 import React, { useState } from "react";
 import { FormProvider, UseFormReturn } from "react-hook-form";
 import { z } from "zod";
@@ -46,7 +46,8 @@ interface JobFormProps {
   jobMethods: UseFormReturn<JobFormData>;
 }
 const JobForm = ({ jobMethods }: JobFormProps) => {
-  const { skills, categories, setSelectedSkills, selectedSkills } = useJob();
+  const { skills, categories, setSelectedSkills, selectedSkills } =
+    useCreateJob();
   const [availableSkills, setAvailableSkills] = useState<ISkill[]>(skills);
   // const [selectedSkills, setSelectedSkills] = useState<ISkill[]>([]);
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
