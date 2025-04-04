@@ -192,7 +192,7 @@ export default function JobDetailsPage() {
                     Job Description
                   </h2>
                   <div className="prose prose-invert max-w-none">
-                    <p className="text-gray-300 whitespace-pre-wrap">
+                    <p className="text-gray-300 whitespace-pre-wrap break-words">
                       {job.description}
                     </p>
                   </div>
@@ -234,7 +234,9 @@ export default function JobDetailsPage() {
                   <h3 className="text-lg font-semibold text-white mb-2">
                     Overview
                   </h3>
-                  <p className="text-gray-300">{job.organization.about}</p>
+                  <p className="text-gray-300 break-words">
+                    {job.organization.about}
+                  </p>
                 </div>
                 {job.organization.culture && (
                   <div>

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useJobs } from "@/providers/AllJobsProvider";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
+import TabButton from "../components/TabButton";
 
 export default function JobsPage() {
   const { status } = useSession();
@@ -63,7 +64,7 @@ export default function JobsPage() {
             animate={{ opacity: 1, y: 0 }}
             className="text-5xl md:text-6xl font-bold text-white mb-6 bg-clip-text text-transparent bg-gradient-to-r from-orange-500 to-orange-300"
           >
-            Find Your Next Opportunity
+            {showMyJobs ? "My Job Listings" : "Find Your Next Opportunity"}
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -71,86 +72,67 @@ export default function JobsPage() {
             transition={{ delay: 0.2 }}
             className="text-xl text-gray-400"
           >
-            Discover cutting-edge positions in AI and technology
+            {showMyJobs
+              ? "Manage and track your posted positions"
+              : "Discover cutting-edge positions in AI and technology"}
           </motion.p>
         </div>
 
-        {/* Search and Filter Section */}
+        {/* Tabs and Search Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="mx-auto mb-12"
+          className="mx-auto mb-12 space-y-6"
         >
-          <div className="backdrop-blur-xl bg-white/5 rounded-2xl p-6 space-y-4">
-            <div className="flex gap-4 items-center mb-4">
-              <input
-                type="text"
-                placeholder="Search by job title, category, or skills..."
-                value={currentSearch}
-                onChange={(e) => setCurrentSearch(e.target.value)}
-                className="flex-1 p-4 rounded-xl bg-gray-800/50 text-white border border-gray-700/50 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
-              />
-              {status === "authenticated" && (
-                <button
-                  onClick={() => setShowMyJobs(!showMyJobs)}
-                  className={`px-6 py-4 rounded-xl font-medium transition-all ${
-                    showMyJobs
-                      ? "bg-orange-500 text-white"
-                      : "bg-gray-800/50 text-gray-400 hover:bg-gray-700/50"
-                  }`}
-                >
-                  {showMyJobs ? "My Jobs" : "All Jobs"}
-                </button>
-              )}
+          {status === "authenticated" && (
+            <div className="flex space-x-4">
+              <TabButton
+                isActive={!showMyJobs}
+                onClick={() => setShowMyJobs(false)}
+              >
+                All Jobs
+              </TabButton>
+              <TabButton
+                isActive={showMyJobs}
+                onClick={() => setShowMyJobs(true)}
+              >
+                My Jobs
+              </TabButton>
             </div>
-            {/* Updated Remote Filter */}
-            <div className="flex gap-4">
-              <div className="flex items-center gap-4">
-                <label className="flex items-center gap-2 cursor-pointer">
-                  <div className="relative inline-flex items-center">
-                    <input
-                      type="checkbox"
-                      id="remoteOnly"
-                      checked={isRemoteOnly}
-                      onChange={(e) => setIsRemoteOnly(e.target.checked)}
-                      className="sr-only peer"
-                    />
-                    <div className="w-5 h-5 rounded-full border border-gray-600/50 bg-gray-800/50 peer-checked:bg-orange-500 transition-all cursor-pointer"></div>
-                    <svg
-                      className="absolute w-3 h-3 top-1 left-1 text-white opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth={3}
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
-                  </div>
-                  <span className="text-sm font-medium text-gray-300 select-none">
-                    Remote positions only
-                  </span>
-                </label>
+          )}
+
+          <div className="backdrop-blur-xl bg-white/5 rounded-2xl p-6">
+            <div className="flex flex-col space-y-4">
+              <div className="flex gap-4 items-center">
+                <input
+                  type="text"
+                  placeholder={`Search ${showMyJobs ? "my" : "all"} jobs...`}
+                  value={currentSearch}
+                  onChange={(e) => setCurrentSearch(e.target.value)}
+                  className="flex-1 p-4 rounded-xl bg-gray-800/50 text-white border border-gray-700/50 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+                />
+                {showMyJobs && (
+                  <Link href="/post-job">
+                    <button className="px-6 py-4 rounded-xl font-medium bg-gradient-to-r from-orange-600 to-orange-500 hover:from-orange-500 hover:to-orange-400 text-white transition-all">
+                      Post New Job
+                    </button>
+                  </Link>
+                )}
               </div>
 
-              {/* Updated Worldwide Filter */}
-              <div className="flex items-center gap-4">
+              {/* Filters */}
+              <div className="flex gap-4">
                 <label className="flex items-center gap-2 cursor-pointer">
-                  <div className="relative inline-flex items-center">
-                    <input
-                      type="checkbox"
-                      id="remoteOnly"
-                      checked={isWorldwide}
-                      onChange={(e) => setIsWorldwide(e.target.checked)}
-                      className="sr-only peer"
-                    />
-                    <div className="w-5 h-5 rounded-full border border-gray-600/50 bg-gray-800/50 peer-checked:bg-orange-500 transition-all cursor-pointer"></div>
+                  <input
+                    type="checkbox"
+                    checked={isRemoteOnly}
+                    onChange={(e) => setIsRemoteOnly(e.target.checked)}
+                    className="sr-only peer"
+                  />
+                  <div className="w-5 h-5 rounded-full border border-gray-600/50 bg-gray-800/50 peer-checked:bg-orange-500 relative">
                     <svg
-                      className="absolute w-3 h-3 top-1 left-1 text-white opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none"
+                      className="absolute w-3 h-3 top-1 left-1 text-white opacity-0 peer-checked:opacity-100"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -163,7 +145,34 @@ export default function JobsPage() {
                       />
                     </svg>
                   </div>
-                  <span className="text-sm font-medium text-gray-300 select-none">
+                  <span className="text-sm font-medium text-gray-300">
+                    Remote Only
+                  </span>
+                </label>
+
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={isWorldwide}
+                    onChange={(e) => setIsWorldwide(e.target.checked)}
+                    className="sr-only peer"
+                  />
+                  <div className="w-5 h-5 rounded-full border border-gray-600/50 bg-gray-800/50 peer-checked:bg-orange-500 relative">
+                    <svg
+                      className="absolute w-3 h-3 top-1 left-1 text-white opacity-0 peer-checked:opacity-100"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={3}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M5 13l4 4L19 7"
+                      />
+                    </svg>
+                  </div>
+                  <span className="text-sm font-medium text-gray-300">
                     Worldwide
                   </span>
                 </label>
@@ -171,6 +180,34 @@ export default function JobsPage() {
             </div>
           </div>
         </motion.div>
+
+        {/* Loading State */}
+        {loading && (
+          <div className="flex justify-center items-center h-64">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange-500"></div>
+          </div>
+        )}
+
+        {/* Empty State */}
+        {!loading && currentJobs.length === 0 && (
+          <div className="text-center py-12">
+            <h3 className="text-2xl font-semibold text-white mb-4">
+              {showMyJobs ? "You haven't posted any jobs yet" : "No jobs found"}
+            </h3>
+            <p className="text-gray-400 mb-8">
+              {showMyJobs
+                ? "Start by posting your first job"
+                : "Try adjusting your search criteria"}
+            </p>
+            {showMyJobs && (
+              <Link href="/post-job">
+                <button className="px-8 py-3 rounded-xl font-medium bg-gradient-to-r from-orange-600 to-orange-500 hover:from-orange-500 hover:to-orange-400 text-white transition-all">
+                  Post a Job
+                </button>
+              </Link>
+            )}
+          </div>
+        )}
 
         {/* Jobs Grid */}
         <motion.div

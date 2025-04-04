@@ -259,7 +259,7 @@ export default function ForTalentPage() {
               className="bg-white/5 rounded-2xl p-8 border border-gray-700/50"
             >
               <div className="space-y-4">
-                {jobs.map((job, index) => (
+                {jobs.slice(0, 3).map((job, index) => (
                   <motion.div
                     key={index}
                     whileHover={{ x: 10 }}

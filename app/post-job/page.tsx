@@ -13,32 +13,14 @@ import CompanyForm, {
 import { apiService } from "@/core/services/apiService";
 import Preview from "../components/post-job/Preview";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import { OrganizationResponse } from "@/providers/CreateJobProvider";
-import CustomerDetailsForm, {
+import {
   CustomerDetailsFormData,
   customerDetailsSchema,
 } from "../components/post-job/CustomerDetailsForm";
-import axios from "axios";
-import Script from "next/script";
 
-// Update the types at the top
-declare global {
-  interface Window {
-    Monri: {
-      new (config: { authenticity_token: string }): {
-        lightbox: (options: {
-          amount: string;
-          currency: string;
-          order_info: { order_number: string };
-          transaction: { digest: string };
-          onSuccess: (result: any) => void;
-          onError: (error: any) => void;
-        }) => void;
-      };
-    };
-  }
-}
+import Script from "next/script";
 
 const steps = [
   { id: 1, name: "Job Details" },
@@ -59,7 +41,7 @@ interface JobResponse {
 }
 
 export default function PostJob() {
-  const router = useRouter();
+  // const router = useRouter();
   const { data: session } = useSession();
   const [jobId, setJobId] = useState("");
   const [amount, setAmount] = useState("");

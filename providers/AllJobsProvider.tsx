@@ -150,7 +150,7 @@ export const AllJobsProvider: FC<PropsWithChildren> = ({ children }) => {
 
   // My Jobs state
   const [myJobsPage, setMyJobsPage] = useState(1);
-  const [myJobsLimit, setMyJobsLimit] = useState(1);
+  const [myJobsLimit, setMyJobsLimit] = useState(10);
   const [myJobsType, setMyJobsType] = useState("asc");
   const [myJobsSearch, setMyJobsSearch] = useState("");
   const [myJobsPages, setMyJobsPages] = useState(1);

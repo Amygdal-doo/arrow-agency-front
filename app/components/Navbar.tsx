@@ -44,6 +44,13 @@ const Navbar = () => {
           </li>
         </Link>
       )}
+      {status === "authenticated" && session?.user?.accessToken && (
+        <Link href="/companies">
+          <li className="text-white hover:underline font-medium text-lg lg:text-xl md:font-medium hover:text-orange-500 transition-colors">
+            Companies
+          </li>
+        </Link>
+      )}
     </>
   );
 
