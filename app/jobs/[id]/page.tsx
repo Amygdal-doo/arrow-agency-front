@@ -181,7 +181,7 @@ export default function JobDetailsPage() {
                         className="px-4 py-2 rounded-xl text-sm font-medium bg-orange-500/10 text-orange-400 flex items-center gap-2"
                       >
                         <GiSkills className="w-4 h-4" />
-                        {skill.name}
+                        {skill.skill?.name}
                       </span>
                     ))}
                   </div>

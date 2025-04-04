@@ -1,6 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useJobs } from "@/providers/AllJobsProvider";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
@@ -22,6 +22,8 @@ export default function JobsPage() {
     setSearch,
     myJobsSearch,
     setMyJobsSearch,
+    fetchJobs,
+    fetchMyJobs,
   } = useJobs();
   const [isRemoteOnly, setIsRemoteOnly] = useState(false);
   const [isWorldwide, setIsWorldwide] = useState(false);
@@ -41,6 +43,15 @@ export default function JobsPage() {
       year: "numeric",
     });
   };
+
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      fetchJobs();
+    } else {
+      fetchMyJobs();
+      fetchJobs();
+    }
+  }, [status]);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#01070a] to-gray-900">

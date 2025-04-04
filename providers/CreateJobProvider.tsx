@@ -43,6 +43,13 @@ export interface ISkill {
   description: string | null;
   createdAt: string;
   updatedAt: string;
+  skill?: {
+    id: string;
+    name: string;
+    description: string | null;
+    createdAt: string;
+    updatedAt: string;
+  };
 }
 
 interface ICreateJobContextProps {

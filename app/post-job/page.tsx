@@ -1,6 +1,6 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import JobForm, {
   JobFormData,
@@ -15,6 +15,30 @@ import Preview from "../components/post-job/Preview";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { OrganizationResponse } from "@/providers/CreateJobProvider";
+import CustomerDetailsForm, {
+  CustomerDetailsFormData,
+  customerDetailsSchema,
+} from "../components/post-job/CustomerDetailsForm";
+import axios from "axios";
+import Script from "next/script";
+
+// Update the types at the top
+declare global {
+  interface Window {
+    Monri: {
+      new (config: { authenticity_token: string }): {
+        lightbox: (options: {
+          amount: string;
+          currency: string;
+          order_info: { order_number: string };
+          transaction: { digest: string };
+          onSuccess: (result: any) => void;
+          onError: (error: any) => void;
+        }) => void;
+      };
+    };
+  }
+}
 
 const steps = [
   { id: 1, name: "Job Details" },
@@ -23,10 +47,39 @@ const steps = [
   { id: 4, name: "Purchase" },
 ];
 
+interface PaymentResponse {
+  amount: string;
+  currency: string;
+  digest: string;
+  orderNumber: string;
+}
+
+interface JobResponse {
+  id: string;
+}
+
 export default function PostJob() {
   const router = useRouter();
   const { data: session } = useSession();
+  const [jobId, setJobId] = useState("");
+  const [amount, setAmount] = useState("");
+  const [digest, setDigest] = useState("");
+  const [currency, setCurrency] = useState("");
+  const [orderNumber, setOrderNumber] = useState("");
   const [currentStep, setCurrentStep] = useState(1);
+
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (!document.querySelector(".lightbox-button")) {
+      const script = document.createElement("script");
+      script.src = "https://ipgtest.monri.com/dist/lightbox.js";
+      script.className = "lightbox-button"; // Required class name
+      script.async = true;
+      script.onload = () => console.log("Monri SDK Loaded");
+      document.body.appendChild(script);
+    }
+  }, []);
 
   const jobMethods = useForm<JobFormData>({
     resolver: zodResolver(jobSchema),
@@ -34,6 +87,10 @@ export default function PostJob() {
 
   const companyMethods = useForm<CompanyFormData>({
     resolver: zodResolver(companySchema),
+  });
+
+  const customerDetailsMethods = useForm<CustomerDetailsFormData>({
+    resolver: zodResolver(customerDetailsSchema),
   });
 
   const handleOrganizationCreate = async (formData: FormData) => {
@@ -62,7 +119,7 @@ export default function PostJob() {
       ? "jobs/create-logged-in"
       : "jobs/create";
 
-    const response = await apiService.post(
+    const response = await apiService.post<JobResponse>(
       endpoint,
       {
         ...jobData,
@@ -76,6 +133,19 @@ export default function PostJob() {
         },
       }
     );
+
+    return response;
+  };
+
+  const handlePaymentInitialize = async (jobId: string) => {
+    const endpoint = session?.user?.accessToken
+      ? "payment/initialize"
+      : "payment/initialize/not-logged";
+
+    const response = await apiService.post<PaymentResponse>(endpoint, {
+      jobId,
+      currency: "USD",
+    });
 
     return response;
   };
@@ -137,23 +207,83 @@ export default function PostJob() {
         }
       }
     } else if (currentStep === 3) {
-      setCurrentStep(4);
+      const jobData = jobMethods.getValues();
+      try {
+        // Make a request to backend API
+        const response = await handleJobCreate(jobData);
+        if (response?.data) {
+          console.log("response company", response);
+          setJobId(response.data.id);
+          setCurrentStep(4);
+        }
+      } catch (error) {
+        console.error("Error creating job:", error);
+      }
     }
   };
 
   const onSubmit = async () => {
-    const jobData = jobMethods.getValues();
     try {
-      // Make a request to backend API
-      const response = await handleJobCreate(jobData);
-      if (response) {
-        jobMethods.reset();
-        companyMethods.reset();
-        alert("Job created successfully!");
-        router.push("/");
+      setLoading(true);
+      const customerDetailsData = customerDetailsMethods.getValues();
+      const response = await handlePaymentInitialize(jobId);
+
+      if (response?.data) {
+        // const { amount, currency, digest, orderNumber } = response.data;
+        setAmount(response.data.amount);
+        setDigest(response.data.digest);
+        setOrderNumber(response.data.orderNumber);
+        setCurrency(response.data.currency);
+        console.log("customer details data", customerDetailsData);
+        const formData = new FormData();
+
+        formData.append(
+          "merchantKey",
+          process.env.NEXT_PUBLIC_MERCHANT_KEY ?? ""
+        );
+        formData.append(
+          "authenticityToken",
+          process.env.NEXT_PUBLIC_MONRI_AUTHENTICITY_TOKEN ?? ""
+        );
+
+        formData.append("amount", response.data.amount);
+        formData.append("digest", response.data.digest);
+        formData.append("currency", response.data.currency);
+        formData.append("orderNumber", response.data.orderNumber);
+
+        formData.append("orderInfo", customerDetailsData.orderInfo);
+        formData.append("chFullName", customerDetailsData.chFullName);
+        formData.append("chAddress", customerDetailsData.chAddress);
+        formData.append("chCity", customerDetailsData.chCity);
+        formData.append("chZip", customerDetailsData.chZip);
+        formData.append("chCountry", customerDetailsData.chCountry);
+        formData.append("chPhone", customerDetailsData.chPhone);
+        formData.append("chEmail", customerDetailsData.chEmail);
+        formData.append(
+          "chTransactionType",
+          customerDetailsData.transactionType
+        );
+
+        const customerDetailsResponse = apiService.post(
+          "payment/callback",
+          formData
+        );
+
+        // const customerDetailsResponse = axios.post(
+        //   "https://ipgtest.monri.com/dist/lightbox.js",
+        //   formData
+        // );
+        if (customerDetailsResponse) {
+          console.log(
+            "customer details response 11111",
+            customerDetailsResponse
+          );
+        }
       }
     } catch (error) {
-      console.error("Error creating job:", error);
+      console.error("Error initializing payment:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -196,14 +326,13 @@ export default function PostJob() {
 
           {/* Form */}
           {/* Scrollable form content */}
+
           <div className="flex-1 overflow-y-auto">
             <div className="space-y-6 overflow-x-auto max-h-[80vh]">
               {currentStep === 1 && <JobForm jobMethods={jobMethods} />}
-
               {currentStep === 2 && (
                 <CompanyForm companyMethods={companyMethods} />
               )}
-
               {currentStep === 3 && (
                 <div className="space-y-6">
                   <Preview
@@ -215,13 +344,40 @@ export default function PostJob() {
 
               {currentStep === 4 && (
                 <div className="space-y-6">
-                  <h2 className="text-3xl font-bold text-white mb-8">
-                    Purchase Details
-                  </h2>
-                  <p className="text-gray-300">Coming soon...</p>
+                  <form
+                    action={`${process.env.NEXT_PUBLIC_BACKEND_API_URL}payment/callback`}
+                    method="POST"
+                  >
+                    <Script
+                      src="https://ipgtest.monri.com/dist/lightbox.js"
+                      strategy="afterInteractive"
+                    />
+                    <script
+                      className="lightbox-button"
+                      data-authenticity-token={
+                        process.env.NEXT_PUBLIC_MONRI_AUTHENTICITY_TOKEN
+                      }
+                      data-amount={amount}
+                      data-currency={currency}
+                      data-order-number={orderNumber}
+                      data-order-info="Lightbox example"
+                      data-digest={digest}
+                      data-transaction-type="purchase"
+                      data-ch-full-name="John Doe"
+                      data-ch-zip="71000"
+                      data-ch-phone="+38761123456"
+                      data-ch-email="john@example.com"
+                      data-ch-address="Some Street 123"
+                      data-ch-city="Sarajevo"
+                      data-ch-country="BA"
+                      data-language="en"
+                    />
+                  </form>
+                  {/* <CustomerDetailsForm
+                    customerDetailsMethods={customerDetailsMethods}
+                  /> */}
                 </div>
               )}
-
               {/* Navigation Buttons */}
               <div className="flex justify-between pt-8">
                 {currentStep > 1 && (
@@ -244,9 +400,16 @@ export default function PostJob() {
                 ) : (
                   <button
                     onClick={onSubmit}
-                    className="ml-auto bg-gradient-to-r from-orange-600 to-orange-700 text-white px-6 py-3 rounded-lg font-medium hover:from-orange-700 hover:to-orange-800 transition-all duration-200 shadow-lg"
+                    disabled={loading}
+                    className={`ml-auto bg-gradient-to-r from-orange-600 to-orange-700 text-white px-6 py-3 rounded-lg font-medium 
+                    ${
+                      loading
+                        ? "opacity-50 cursor-not-allowed"
+                        : "hover:from-orange-700 hover:to-orange-800"
+                    } 
+                    transition-all duration-200 shadow-lg`}
                   >
-                    Submit
+                    {loading ? "Processing..." : "Submit"}
                   </button>
                 )}
               </div>
