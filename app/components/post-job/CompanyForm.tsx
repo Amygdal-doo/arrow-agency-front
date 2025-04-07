@@ -1,4 +1,5 @@
 "use client";
+import { IOrganization, useCompanies } from "@/providers/AllCompaniesProvider";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { FormProvider, UseFormReturn } from "react-hook-form";
@@ -45,8 +46,47 @@ interface CompanyFormProps {
 }
 
 const CompanyForm = ({ companyMethods }: CompanyFormProps) => {
+  const { myCompanies } = useCompanies();
+
+  const [isCompanyOpen, setIsCompanyOpen] = useState(false);
+  const [selectedCompany, setSelectedCompany] = useState<IOrganization | null>(
+    null
+  );
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
   const [isUploading] = useState(false);
+
+  const handleCompanySelect = (company: IOrganization) => {
+    setSelectedCompany(company);
+    setIsCompanyOpen(false);
+
+    // Fill form with selected company data
+    companyMethods.reset({
+      name: company.name,
+      email: company.email,
+      about: company.about,
+      location: company.location,
+      culture: company.culture || "",
+      benefits: company.benefits || "",
+    });
+
+    // Set logo preview if exists
+    if (company.logo?.url) {
+      setLogoPreview(company.logo.url);
+    }
+  };
+
+  const handleAddNewCompany = () => {
+    setSelectedCompany(null);
+    setLogoPreview(null);
+    companyMethods.reset({
+      name: "",
+      email: "",
+      about: "",
+      location: "",
+      culture: "",
+      benefits: "",
+    });
+  };
 
   const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -86,7 +126,94 @@ const CompanyForm = ({ companyMethods }: CompanyFormProps) => {
           <div className="h-px flex-1 bg-gray-700 mx-4" />
         </div>
 
-        <div className="grid grid-cols-3 gap-6">
+        {myCompanies.length > 0 && (
+          <div className="flex items-center justify-between gap-4 relative z-20">
+            <div className="bg-gray-800/50 backdrop-blur-sm flex-1 rounded-xl p-6 border border-gray-700/50 shadow-lg">
+              <label className="block text-sm font-medium text-gray-300 mb-2">
+                Select Existing Company
+              </label>
+              <div className="flex justify-between space-x-4">
+                <div className="relative w-full">
+                  <button
+                    type="button"
+                    onClick={() => setIsCompanyOpen(!isCompanyOpen)}
+                    className={`w-full bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-left text-gray-300 hover:bg-gray-600/50 transition-all flex justify-between items-center ${
+                      isCompanyOpen ? "ring-2 ring-orange-500" : ""
+                    }`}
+                  >
+                    <span>{selectedCompany?.name || "Select a company"}</span>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className={`h-5 w-5 transition-transform ${
+                        isCompanyOpen ? "rotate-180" : ""
+                      }`}
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19 9l-7 7-7-7"
+                      />
+                    </svg>
+                  </button>
+
+                  {isCompanyOpen && (
+                    <div className="absolute z-50 w-full mt-2 bg-gray-800 backdrop-blur-sm border border-gray-700 rounded-lg shadow-xl max-h-60 overflow-y-auto">
+                      {myCompanies.map((company) => (
+                        <button
+                          key={company.id}
+                          type="button"
+                          onClick={() => handleCompanySelect(company)}
+                          className="w-full px-4 py-3 text-left hover:bg-gray-700 text-gray-300 first:rounded-t-lg last:rounded-b-lg flex items-center gap-3 group transition-all"
+                        >
+                          {company.logo?.url && (
+                            <div className="relative w-8 h-8 rounded overflow-hidden flex-shrink-0">
+                              <Image
+                                src={company.logo.url}
+                                alt={company.name}
+                                fill
+                                className="object-cover"
+                              />
+                            </div>
+                          )}
+                          <span className="group-hover:text-orange-400 transition-colors">
+                            {company.name}
+                          </span>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+                <button
+                  type="button"
+                  onClick={handleAddNewCompany}
+                  className="px-6 w-[250px] py-3 bg-gradient-to-r from-orange-600 to-orange-700 text-white rounded-lg font-medium hover:from-orange-700 hover:to-orange-800 transition-all duration-200 shadow-lg flex items-center gap-2"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M12 4v16m8-8H4"
+                    />
+                  </svg>
+                  Add New Company
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        <div className="grid grid-cols-3 gap-6 relative z-10">
           {/* First Column - 2/3 of the width */}
           <div className="col-span-2 space-y-6">
             <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 shadow-lg">
@@ -124,7 +251,7 @@ const CompanyForm = ({ companyMethods }: CompanyFormProps) => {
           </div>
 
           {/* Second Column - 1/3 of the width (Full Height) */}
-          <div className="col-span-1">
+          <div className="col-span-1 relative z-10">
             <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 shadow-lg h-full flex flex-col justify-center ">
               <div className="flex justify-between items-center  mb-4">
                 <label className="block text-sm font-medium text-gray-300">

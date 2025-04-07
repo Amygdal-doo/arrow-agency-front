@@ -20,7 +20,7 @@ import {
   customerDetailsSchema,
 } from "../components/post-job/CustomerDetailsForm";
 
-import Script from "next/script";
+import { useCompanies } from "@/providers/AllCompaniesProvider";
 
 const steps = [
   { id: 1, name: "Job Details" },
@@ -30,10 +30,7 @@ const steps = [
 ];
 
 interface PaymentResponse {
-  amount: string;
-  currency: string;
-  digest: string;
-  orderNumber: string;
+  paymentUrl: string;
 }
 
 interface JobResponse {
@@ -42,26 +39,14 @@ interface JobResponse {
 
 export default function PostJob() {
   // const router = useRouter();
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
+
+  const { fetchMyCompanies } = useCompanies();
   const [jobId, setJobId] = useState("");
-  const [amount, setAmount] = useState("");
-  const [digest, setDigest] = useState("");
-  const [currency, setCurrency] = useState("");
-  const [orderNumber, setOrderNumber] = useState("");
+  // const [callbackUrl, setCallbackUrl] = useState("");
   const [currentStep, setCurrentStep] = useState(1);
 
   const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    if (!document.querySelector(".lightbox-button")) {
-      const script = document.createElement("script");
-      script.src = "https://ipgtest.monri.com/dist/lightbox.js";
-      script.className = "lightbox-button"; // Required class name
-      script.async = true;
-      script.onload = () => console.log("Monri SDK Loaded");
-      document.body.appendChild(script);
-    }
-  }, []);
 
   const jobMethods = useForm<JobFormData>({
     resolver: zodResolver(jobSchema),
@@ -121,12 +106,11 @@ export default function PostJob() {
 
   const handlePaymentInitialize = async (jobId: string) => {
     const endpoint = session?.user?.accessToken
-      ? "payment/initialize"
-      : "payment/initialize/not-logged";
+      ? "payment/pay-by-link"
+      : "payment/pay-by-link/not-logged";
 
     const response = await apiService.post<PaymentResponse>(endpoint, {
       jobId,
-      currency: "USD",
     });
 
     return response;
@@ -210,57 +194,11 @@ export default function PostJob() {
       const customerDetailsData = customerDetailsMethods.getValues();
       const response = await handlePaymentInitialize(jobId);
 
-      if (response?.data) {
-        // const { amount, currency, digest, orderNumber } = response.data;
-        setAmount(response.data.amount);
-        setDigest(response.data.digest);
-        setOrderNumber(response.data.orderNumber);
-        setCurrency(response.data.currency);
+      if (response?.data?.paymentUrl) {
+        window.open(response.data.paymentUrl, "_blank", "noopener,noreferrer");
+        // setCallbackUrl(response.data?.paymentUrl);
+
         console.log("customer details data", customerDetailsData);
-        const formData = new FormData();
-
-        formData.append(
-          "merchantKey",
-          process.env.NEXT_PUBLIC_MERCHANT_KEY ?? ""
-        );
-        formData.append(
-          "authenticityToken",
-          process.env.NEXT_PUBLIC_MONRI_AUTHENTICITY_TOKEN ?? ""
-        );
-
-        formData.append("amount", response.data.amount);
-        formData.append("digest", response.data.digest);
-        formData.append("currency", response.data.currency);
-        formData.append("orderNumber", response.data.orderNumber);
-
-        formData.append("orderInfo", customerDetailsData.orderInfo);
-        formData.append("chFullName", customerDetailsData.chFullName);
-        formData.append("chAddress", customerDetailsData.chAddress);
-        formData.append("chCity", customerDetailsData.chCity);
-        formData.append("chZip", customerDetailsData.chZip);
-        formData.append("chCountry", customerDetailsData.chCountry);
-        formData.append("chPhone", customerDetailsData.chPhone);
-        formData.append("chEmail", customerDetailsData.chEmail);
-        formData.append(
-          "chTransactionType",
-          customerDetailsData.transactionType
-        );
-
-        const customerDetailsResponse = apiService.post(
-          "payment/callback",
-          formData
-        );
-
-        // const customerDetailsResponse = axios.post(
-        //   "https://ipgtest.monri.com/dist/lightbox.js",
-        //   formData
-        // );
-        if (customerDetailsResponse) {
-          console.log(
-            "customer details response 11111",
-            customerDetailsResponse
-          );
-        }
       }
     } catch (error) {
       console.error("Error initializing payment:", error);
@@ -268,6 +206,12 @@ export default function PostJob() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (status === "authenticated") {
+      fetchMyCompanies();
+    }
+  }, [status]);
 
   return (
     <div className="h-[92vh] py-12 px-4 sm:px-6 lg:px-8 bg-[#01070a]">
@@ -306,6 +250,8 @@ export default function PostJob() {
             </div>
           </div>
 
+          {/* <pre className="text-white">callback url{callbackUrl}</pre> */}
+
           {/* Form */}
           {/* Scrollable form content */}
 
@@ -326,40 +272,18 @@ export default function PostJob() {
 
               {currentStep === 4 && (
                 <div className="space-y-6">
-                  <form
-                    action={`${process.env.NEXT_PUBLIC_BACKEND_API_URL}payment/callback`}
-                    method="POST"
-                  >
-                    <Script
-                      src="https://ipgtest.monri.com/dist/lightbox.js"
-                      strategy="afterInteractive"
-                    />
-                    <script
-                      className="lightbox-button"
-                      data-authenticity-token={
-                        process.env.NEXT_PUBLIC_MONRI_AUTHENTICITY_TOKEN
-                      }
-                      data-amount={amount}
-                      data-currency={currency}
-                      data-order-number={orderNumber}
-                      data-order-info="Lightbox example"
-                      data-digest={digest}
-                      data-transaction-type="purchase"
-                      data-ch-full-name="John Doe"
-                      data-ch-zip="71000"
-                      data-ch-phone="+38761123456"
-                      data-ch-email="john@example.com"
-                      data-ch-address="Some Street 123"
-                      data-ch-city="Sarajevo"
-                      data-ch-country="BA"
-                      data-language="en"
-                    />
-                  </form>
-                  {/* <CustomerDetailsForm
-                    customerDetailsMethods={customerDetailsMethods}
-                  /> */}
+                  <div className="flex items-center justify-center min-h-[400px]">
+                    <div className="text-center space-y-4">
+                      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange-500 mx-auto"></div>
+                      <p className="text-gray-400">Initializing payment...</p>
+                      <p className="text-gray-400">
+                        Payment window will open in a new tab
+                      </p>
+                    </div>
+                  </div>
                 </div>
               )}
+
               {/* Navigation Buttons */}
               <div className="flex justify-between pt-8">
                 {currentStep > 1 && (
