@@ -7,10 +7,11 @@ import Modal from "./Modal";
 import RegistrationForm from "./RegistrationForm";
 import { signOut, useSession } from "next-auth/react";
 import { useProfile } from "@/providers/ProfileInfoProvider";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 const Navbar = () => {
   const router = useRouter();
+  const pathname = usePathname();
   const { data: session, status } = useSession();
   const { profile } = useProfile();
   const [showLoginModal, setShowLoginModal] = useState(false);
@@ -25,28 +26,54 @@ const Navbar = () => {
     return `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
   };
 
+  console.log("pathname", pathname);
+
   const NavLinks = () => (
     <>
       <Link href="/jobs">
-        <li className="text-white hover:underline font-medium text-lg lg:text-xl md:font-medium hover:text-orange-500 transition-colors">
+        <li
+          className={`font-medium text-lg lg:text-xl transition-colors ${
+            pathname === "/jobs"
+              ? "text-orange-500 font-semibold"
+              : "text-white hover:text-orange-500"
+          }`}
+        >
           Jobs
         </li>
       </Link>
       <Link href="/for-talent">
-        <li className="text-white hover:underline font-medium text-lg lg:text-xl md:font-medium hover:text-orange-500 transition-colors">
+        <li
+          className={`font-medium text-lg lg:text-xl transition-colors ${
+            pathname === "/for-talent"
+              ? "text-orange-500 font-semibold"
+              : "text-white hover:text-orange-500"
+          }`}
+        >
           For Talent
         </li>
       </Link>
       {status === "authenticated" && session?.user?.accessToken && (
         <Link href="/applicant">
-          <li className="text-white hover:underline font-medium text-lg lg:text-xl md:font-medium hover:text-orange-500 transition-colors">
+          <li
+            className={`font-medium text-lg lg:text-xl transition-colors ${
+              pathname === "/applicant"
+                ? "text-orange-500 font-semibold"
+                : "text-white hover:text-orange-500"
+            }`}
+          >
             Applicants
           </li>
         </Link>
       )}
       {status === "authenticated" && session?.user?.accessToken && (
         <Link href="/companies">
-          <li className="text-white hover:underline font-medium text-lg lg:text-xl md:font-medium hover:text-orange-500 transition-colors">
+          <li
+            className={`font-medium text-lg lg:text-xl transition-colors ${
+              pathname === "/companies"
+                ? "text-orange-500 font-semibold"
+                : "text-white hover:text-orange-500"
+            }`}
+          >
             Companies
           </li>
         </Link>
@@ -77,7 +104,7 @@ const Navbar = () => {
             setShowLoginModal(true);
           }
         }}
-        className="w-full md:w-auto bg-white/10 backdrop-blur-sm px-6 py-3 md:px-3 lg:px-6 md:py-2 rounded-xl md:rounded-md text-white font-bold hover:bg-white/20 transition-all"
+        className="w-full md:w-auto bg-white/10 px-6 py-3 md:px-3 lg:px-6 md:py-2 rounded-xl md:rounded-md text-white font-bold hover:bg-white/20 transition-all"
       >
         {status === "authenticated" && session?.user?.accessToken
           ? "Log out"
@@ -149,7 +176,7 @@ const Navbar = () => {
       {/* Mobile Menu Modal */}
       {isMenuOpen && (
         <div className="md:hidden fixed inset-0 z-50">
-          <div className="absolute inset-0 bg-gradient-to-b from-black/95 to-gray-900/95 backdrop-blur-lg">
+          <div className="absolute inset-0 bg-gradient-to-b from-black/95 to-gray-900/95">
             <div className="flex flex-col h-full pt-28 px-6">
               <ul className="space-y-8 mb-12">
                 <NavLinks />
@@ -162,7 +189,7 @@ const Navbar = () => {
 
               <button
                 onClick={() => setIsMenuOpen(false)}
-                className="absolute top-7 right-4 text-white p-2 rounded-full bg-white/10 backdrop-blur-sm"
+                className="absolute top-7 right-4 text-white p-2 rounded-full bg-white/10"
               >
                 <svg
                   className="w-6 h-6"

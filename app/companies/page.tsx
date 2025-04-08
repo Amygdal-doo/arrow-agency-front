@@ -94,7 +94,7 @@ export default function CompaniesPage() {
             </div>
           )}
 
-          <div className="backdrop-blur-xl bg-white/5 rounded-2xl p-6">
+          <div className=" bg-white/5 rounded-2xl p-6">
             <div className="flex gap-4 items-center">
               <input
                 type="text"
@@ -152,7 +152,7 @@ export default function CompaniesPage() {
               animate={{ opacity: 1, scale: 1 }}
               whileHover={{ y: -5 }}
               transition={{ duration: 0.2 }}
-              className="group relative backdrop-blur-xl bg-white/5 rounded-2xl p-6 border border-gray-700/50 hover:border-orange-500/50 transition-all"
+              className="group relative  bg-white/5 rounded-2xl p-6 border border-gray-700/50 hover:border-orange-500/50 transition-all"
             >
               <div className="space-y-4 h-full flex flex-col justify-between">
                 <div className="space-y-4">

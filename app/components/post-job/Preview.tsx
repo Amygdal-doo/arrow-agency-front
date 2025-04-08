@@ -26,7 +26,7 @@ const Preview = ({ jobData, companyData }: PreviewProps) => {
   const CombinedView = () => (
     <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
       {/* Job Details - Left Side (3 columns) */}
-      <div className="lg:col-span-3 space-y-6 bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 shadow-lg">
+      <div className="lg:col-span-3 space-y-6 bg-gray-800/50 rounded-xl p-6 border border-gray-700/50 shadow-lg">
         <div>
           <h3 className="text-2xl font-bold text-white mb-4">{jobData.name}</h3>
           <div className="flex flex-wrap gap-4 mb-6">
@@ -82,7 +82,7 @@ const Preview = ({ jobData, companyData }: PreviewProps) => {
 
       {/* Company Details - Right Side (2 columns) */}
       <div className="lg:col-span-1 space-y-6 h-full">
-        <div className="bg-gray-800/50 backdrop-blur-sm h-full rounded-xl p-6 border border-gray-700/50 shadow-lg">
+        <div className="bg-gray-800/50  h-full rounded-xl p-6 border border-gray-700/50 shadow-lg">
           <div className="flex flex-col items-center gap-4 mb-6">
             {companyData.file && (
               <div className="relative w-32 h-32 rounded-lg overflow-hidden">
@@ -126,7 +126,7 @@ const Preview = ({ jobData, companyData }: PreviewProps) => {
         ← Back to Preview
       </button>
 
-      <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 shadow-lg">
+      <div className="bg-gray-800/50 rounded-xl p-6 border border-gray-700/50 shadow-lg">
         <div className="flex items-center gap-6 mb-8">
           {companyData.file && (
             <div className="relative w-32 h-32 rounded-lg overflow-hidden">

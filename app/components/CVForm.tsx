@@ -210,7 +210,7 @@ const CVForm = ({ onClose }: CVFormProps) => {
         onSubmit={handleSubmit(onSubmit)}
         className="space-y-6 overflow-x-auto max-h-[80vh]"
       >
-        <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 shadow-lg relative z-20">
+        <div className="bg-gray-800/50 rounded-xl p-6 border border-gray-700/50 shadow-lg relative z-20">
           <label className="block text-sm font-medium text-gray-300 mb-4">
             CV Template
           </label>
@@ -245,7 +245,7 @@ const CVForm = ({ onClose }: CVFormProps) => {
             </div>
 
             {isTemplateDropdownOpen && (
-              <div className="absolute z-50 w-full mt-2 bg-gray-800 backdrop-blur-sm border border-gray-700 rounded-lg shadow-xl">
+              <div className="absolute z-50 w-full mt-2 bg-gray-800 border border-gray-700 rounded-lg shadow-xl">
                 {templates.map((template) => (
                   <div
                     key={template.id}
@@ -269,7 +269,7 @@ const CVForm = ({ onClose }: CVFormProps) => {
           )}
         </div>
 
-        <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 shadow-lg relative z-10">
+        <div className="bg-gray-800/50 rounded-xl p-6 border border-gray-700/50 shadow-lg relative z-10">
           <h3 className="text-lg font-medium text-white mb-6">
             Company Information
           </h3>
@@ -334,7 +334,7 @@ const CVForm = ({ onClose }: CVFormProps) => {
                   </div>
 
                   {isLogoDropdownOpen && (
-                    <div className="absolute z-50 w-full mt-2 bg-gray-800 backdrop-blur-sm border border-gray-700 rounded-lg shadow-xl">
+                    <div className="absolute z-50 w-full mt-2 bg-gray-800 border border-gray-700 rounded-lg shadow-xl">
                       {profile.companyLogos.map((logo) => (
                         <div
                           key={logo.id}
@@ -421,7 +421,7 @@ const CVForm = ({ onClose }: CVFormProps) => {
         </div>
 
         {/* Personal Information Section */}
-        <div className="bg-gray-800/50 backdrop-blur-sm relative z-0 rounded-xl p-6 border border-gray-700/50 shadow-lg">
+        <div className="bg-gray-800/50 relative z-0 rounded-xl p-6 border border-gray-700/50 shadow-lg">
           <h3 className="text-lg font-medium text-white mb-6">
             Personal Information
           </h3>
@@ -482,7 +482,7 @@ const CVForm = ({ onClose }: CVFormProps) => {
         </div>
 
         {/* File Upload */}
-        <div className="bg-gray-800/50  relative z-0 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 shadow-lg">
+        <div className="bg-gray-800/50  relative z-0 rounded-xl p-6 border border-gray-700/50 shadow-lg">
           <input
             type="file"
             accept=".pdf"
@@ -533,7 +533,7 @@ const CVForm = ({ onClose }: CVFormProps) => {
         </div>
 
         {/* Technologies */}
-        <div className="bg-gray-800/50 relative z-0 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 shadow-lg">
+        <div className="bg-gray-800/50 relative z-0 rounded-xl p-6 border border-gray-700/50 shadow-lg">
           <label className="block text-sm font-medium text-gray-300 mb-4">
             Technologies
           </label>

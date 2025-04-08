@@ -59,7 +59,7 @@ export default function CompanyDetailsPage() {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="backdrop-blur-xl bg-white/5 rounded-2xl p-8 border border-gray-700/50"
+              className=" bg-white/5 rounded-2xl p-8 border border-gray-700/50"
             >
               <div className="flex flex-col md:flex-row gap-6 items-start">
                 {company.logo && (
@@ -94,7 +94,7 @@ export default function CompanyDetailsPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="backdrop-blur-xl bg-white/5 rounded-2xl p-8 border border-gray-700/50"
+              className=" bg-white/5 rounded-2xl p-8 border border-gray-700/50"
             >
               <div className="space-y-8">
                 <div>
@@ -137,7 +137,7 @@ export default function CompanyDetailsPage() {
             className="space-y-8"
           >
             {/* Contact Info */}
-            <div className="backdrop-blur-xl bg-white/5 rounded-2xl p-8 border border-gray-700/50">
+            <div className=" bg-white/5 rounded-2xl p-8 border border-gray-700/50">
               <h3 className="text-xl font-bold text-white mb-6">
                 Contact Information
               </h3>

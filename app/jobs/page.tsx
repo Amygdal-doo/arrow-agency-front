@@ -102,7 +102,7 @@ export default function JobsPage() {
             </div>
           )}
 
-          <div className="backdrop-blur-xl bg-white/5 rounded-2xl p-6">
+          <div className=" bg-white/5 rounded-2xl p-6">
             <div className="flex flex-col space-y-4">
               <div className="flex gap-4 items-center">
                 <input
@@ -222,7 +222,7 @@ export default function JobsPage() {
               animate={{ opacity: 1, scale: 1 }}
               whileHover={{ y: -5 }}
               transition={{ duration: 0.2 }}
-              className="group relative backdrop-blur-xl bg-white/5 rounded-2xl p-6 border border-gray-700/50 hover:border-orange-500/50 transition-all"
+              className="group relative  bg-white/5 rounded-2xl p-6 border border-gray-700/50 hover:border-orange-500/50 transition-all"
             >
               <div className="space-y-4">
                 {/* Header */}

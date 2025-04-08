@@ -83,7 +83,7 @@ export default function JobDetailsPage() {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="backdrop-blur-xl bg-white/5 rounded-2xl p-8 border border-gray-700/50"
+              className=" bg-white/5 rounded-2xl p-8 border border-gray-700/50"
             >
               <div className="flex flex-col md:flex-row gap-4 justify-between items-start mb-6">
                 <div>
@@ -108,28 +108,28 @@ export default function JobDetailsPage() {
                 </div>
               </div>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div className="backdrop-blur-md bg-white/5 rounded-xl p-4">
+                <div className=" bg-white/5 rounded-xl p-4">
                   <div className="flex items-center gap-2 text-gray-400 text-sm mb-1">
                     <HiOutlineLocationMarker className="w-4 h-4" />
                     <p>Location</p>
                   </div>
                   <p className="text-white">{job.organization.location}</p>
                 </div>
-                <div className="backdrop-blur-md bg-white/5 rounded-xl p-4">
+                <div className=" bg-white/5 rounded-xl p-4">
                   <div className="flex items-center gap-2 text-gray-400 text-sm mb-1">
                     <BsBriefcase className="w-4 h-4" />
                     <p>Job Type</p>
                   </div>
                   <p className="text-white">{job.jobType.replace("_", " ")}</p>
                 </div>
-                <div className="backdrop-blur-md bg-white/5 rounded-xl p-4">
+                <div className=" bg-white/5 rounded-xl p-4">
                   <div className="flex items-center gap-2 text-gray-400 text-sm mb-1">
                     <RiMoneyDollarCircleLine className="w-4 h-4" />
                     <p>Salary</p>
                   </div>
                   <p className="text-orange-400 font-medium">{job.salary}</p>
                 </div>
-                <div className="backdrop-blur-md bg-white/5 rounded-xl p-4">
+                <div className=" bg-white/5 rounded-xl p-4">
                   <div className="flex items-center gap-2 text-gray-400 text-sm mb-1">
                     <BsPeople className="w-4 h-4" />
                     <p>Vacancies</p>
@@ -144,7 +144,7 @@ export default function JobDetailsPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="backdrop-blur-xl bg-white/5 rounded-2xl p-8 border border-gray-700/50"
+              className=" bg-white/5 rounded-2xl p-8 border border-gray-700/50"
             >
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                 <div className="flex items-center gap-3">
@@ -209,7 +209,7 @@ export default function JobDetailsPage() {
             className="space-y-8"
           >
             {/* Company Info */}
-            <div className="backdrop-blur-xl bg-white/5 rounded-2xl p-8 border border-gray-700/50">
+            <div className=" bg-white/5 rounded-2xl p-8 border border-gray-700/50">
               <div className="space-y-6">
                 <div className="flex flex-col items-start gap-4 mb-6">
                   {job.organization.file && (

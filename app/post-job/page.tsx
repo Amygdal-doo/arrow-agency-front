@@ -13,14 +13,15 @@ import CompanyForm, {
 import { apiService } from "@/core/services/apiService";
 import Preview from "../components/post-job/Preview";
 import { useSession } from "next-auth/react";
-// import { useRouter } from "next/navigation";
-import { OrganizationResponse } from "@/providers/CreateJobProvider";
 import {
-  CustomerDetailsFormData,
-  customerDetailsSchema,
-} from "../components/post-job/CustomerDetailsForm";
+  OrganizationResponse,
+  useCreateJob,
+} from "@/providers/CreateJobProvider";
 
 import { useCompanies } from "@/providers/AllCompaniesProvider";
+import { usePackages } from "@/providers/PackagesProvider";
+import Packages from "../components/post-job/Packages";
+import { useRouter } from "next/navigation";
 
 const steps = [
   { id: 1, name: "Job Details" },
@@ -38,12 +39,13 @@ interface JobResponse {
 }
 
 export default function PostJob() {
-  // const router = useRouter();
+  const router = useRouter();
   const { data: session, status } = useSession();
 
-  const { fetchMyCompanies } = useCompanies();
+  const { fetchCategories, fetchSkills, setSelectedSkills } = useCreateJob();
+  const { fetchMyCompanies, selectedCompany } = useCompanies();
+  const { fetchPackages, packageId } = usePackages();
   const [jobId, setJobId] = useState("");
-  // const [callbackUrl, setCallbackUrl] = useState("");
   const [currentStep, setCurrentStep] = useState(1);
 
   const [loading, setLoading] = useState(false);
@@ -54,10 +56,6 @@ export default function PostJob() {
 
   const companyMethods = useForm<CompanyFormData>({
     resolver: zodResolver(companySchema),
-  });
-
-  const customerDetailsMethods = useForm<CustomerDetailsFormData>({
-    resolver: zodResolver(customerDetailsSchema),
   });
 
   const handleOrganizationCreate = async (formData: FormData) => {
@@ -111,6 +109,7 @@ export default function PostJob() {
 
     const response = await apiService.post<PaymentResponse>(endpoint, {
       jobId,
+      packageId,
     });
 
     return response;
@@ -140,29 +139,38 @@ export default function PostJob() {
       if (isValid) {
         try {
           const data = companyMethods.getValues();
-          const formData = new FormData();
 
-          formData.append("name", data.name);
-          formData.append("about", data.about);
-          formData.append("location", data.location);
-          if (data.culture) {
-            formData.append("culture", data.culture);
-          }
-          if (data.benefits) {
-            formData.append("benefits", data.benefits);
-          }
-          formData.append("email", data.email);
-          if (data.file) {
-            formData.append("file", data.file);
-          }
-          console.log("company", data);
-          // setOrganizationId(data.id);
+          if (!selectedCompany) {
+            const formData = new FormData();
 
-          const response = await handleOrganizationCreate(formData);
+            formData.append("name", data.name);
+            formData.append("about", data.about);
+            formData.append("location", data.location);
+            if (data.culture) {
+              formData.append("culture", data.culture);
+            }
+            if (data.benefits) {
+              formData.append("benefits", data.benefits);
+            }
+            formData.append("email", data.email);
+            if (data.file) {
+              formData.append("file", data.file);
+            }
+            console.log("company", data);
+            // setOrganizationId(data.id);
 
-          if (response) {
-            console.log("response company", response);
-            jobMethods.setValue("organization", response.data.id, {
+            const response = await handleOrganizationCreate(formData);
+
+            if (response) {
+              console.log("response company", response);
+              jobMethods.setValue("organization", response.data.id, {
+                shouldValidate: true,
+                shouldDirty: true,
+              });
+              setCurrentStep(3);
+            }
+          } else {
+            jobMethods.setValue("organization", selectedCompany.id, {
               shouldValidate: true,
               shouldDirty: true,
             });
@@ -191,14 +199,16 @@ export default function PostJob() {
   const onSubmit = async () => {
     try {
       setLoading(true);
-      const customerDetailsData = customerDetailsMethods.getValues();
+
       const response = await handlePaymentInitialize(jobId);
 
       if (response?.data?.paymentUrl) {
         window.open(response.data.paymentUrl, "_blank", "noopener,noreferrer");
-        // setCallbackUrl(response.data?.paymentUrl);
-
-        console.log("customer details data", customerDetailsData);
+        jobMethods.reset();
+        companyMethods.reset();
+        setCurrentStep(1);
+        setSelectedSkills([]);
+        router.push("/jobs");
       }
     } catch (error) {
       console.error("Error initializing payment:", error);
@@ -208,6 +218,9 @@ export default function PostJob() {
   };
 
   useEffect(() => {
+    fetchPackages();
+    fetchCategories();
+    fetchSkills();
     if (status === "authenticated") {
       fetchMyCompanies();
     }
@@ -270,19 +283,7 @@ export default function PostJob() {
                 </div>
               )}
 
-              {currentStep === 4 && (
-                <div className="space-y-6">
-                  <div className="flex items-center justify-center min-h-[400px]">
-                    <div className="text-center space-y-4">
-                      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange-500 mx-auto"></div>
-                      <p className="text-gray-400">Initializing payment...</p>
-                      <p className="text-gray-400">
-                        Payment window will open in a new tab
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              )}
+              {currentStep === 4 && <Packages />}
 
               {/* Navigation Buttons */}
               <div className="flex justify-between pt-8">
@@ -306,7 +307,7 @@ export default function PostJob() {
                 ) : (
                   <button
                     onClick={onSubmit}
-                    disabled={loading}
+                    disabled={loading || !packageId}
                     className={`ml-auto bg-gradient-to-r from-orange-600 to-orange-700 text-white px-6 py-3 rounded-lg font-medium 
                     ${
                       loading

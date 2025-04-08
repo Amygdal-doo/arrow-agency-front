@@ -155,7 +155,7 @@ export default function ForTalentPage() {
                   scale: 1.05,
                   boxShadow: "0 0 20px rgba(251, 146, 60, 0.2)",
                 }}
-                className="backdrop-blur-xl bg-white/5 rounded-2xl p-8 border border-gray-700/50"
+                className=" bg-white/5 rounded-2xl p-8 border border-gray-700/50"
               >
                 <div className="text-orange-500 mb-4">{feature.icon}</div>
                 <h3 className="text-xl font-bold text-white mb-2">

@@ -99,7 +99,7 @@ const ApplicantDetails = () => {
               </label>
             </div>
 
-            <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 shadow-lg">
+            <div className="bg-gray-800/50 rounded-xl p-6 border border-gray-700/50 shadow-lg">
               <div className="grid grid-cols-2 gap-4 mb-4">
                 <input
                   type="text"
@@ -155,7 +155,7 @@ const ApplicantDetails = () => {
               </label>
             </div>
 
-            <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 shadow-lg">
+            <div className="bg-gray-800/50  rounded-xl p-6 border border-gray-700/50 shadow-lg">
               <div className="grid grid-cols-2 gap-4">
                 <input
                   type="text"
@@ -207,7 +207,7 @@ const ApplicantDetails = () => {
                   </div>
 
                   {isLogoDropdownOpen && profile?.companyLogos && (
-                    <div className="absolute z-50 w-full mt-2 bg-gray-800 backdrop-blur-sm border border-gray-700 rounded-lg shadow-xl">
+                    <div className="absolute z-50 w-full mt-2 bg-gray-800  border border-gray-700 rounded-lg shadow-xl">
                       {profile.companyLogos.map((logo) => (
                         <div
                           key={logo.id}
@@ -246,7 +246,7 @@ const ApplicantDetails = () => {
                   <div className="h-px flex-1 bg-gray-700 mx-4" />
                 </div>
 
-                <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 shadow-lg">
+                <div className="bg-gray-800/50 rounded-xl p-6 border border-gray-700/50 shadow-lg">
                   <textarea
                     rows={10}
                     placeholder="Write your CV summary here..."
@@ -281,7 +281,7 @@ const ApplicantDetails = () => {
                   <div className="h-px flex-1 bg-gray-700 mx-4" />
                 </div>
 
-                <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 shadow-lg">
+                <div className="bg-gray-800/50  rounded-xl p-6 border border-gray-700/50 shadow-lg">
                   <div className="space-y-3">
                     {applicant.file && (
                       <div

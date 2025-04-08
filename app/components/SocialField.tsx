@@ -128,7 +128,7 @@ const SocialField = () => {
       </div>
 
       {/* Add New Social Form */}
-      <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 shadow-lg">
+      <div className="bg-gray-800/50 rounded-xl p-6 border border-gray-700/50 shadow-lg">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <input
             type="text"
@@ -171,7 +171,7 @@ const SocialField = () => {
           currentSocials.map((social) => (
             <div
               key={social.id}
-              className="group bg-gray-800/30 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 shadow-lg hover:bg-gray-800/50 transition-all duration-200"
+              className="group bg-gray-800/30 rounded-xl p-6 border border-gray-700/50 shadow-lg hover:bg-gray-800/50 transition-all duration-200"
             >
               <div className="flex justify-between items-start mb-4">
                 <div>

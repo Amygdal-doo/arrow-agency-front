@@ -7,8 +7,6 @@ import React, {
   useState,
   useEffect,
 } from "react";
-// import { useRouter } from "next/navigation";
-// import { useSession } from "next-auth/react";
 import { AxiosResponse } from "axios";
 import { apiService } from "@/core/services/apiService";
 
@@ -55,6 +53,8 @@ export interface ISkill {
 interface ICreateJobContextProps {
   categories: ICategory[];
   skills: ISkill[];
+  availableSkills: ISkill[];
+  setAvailableSkills: React.Dispatch<React.SetStateAction<ISkill[]>>;
   selectedSkills: ISkill[];
   setSelectedSkills: React.Dispatch<React.SetStateAction<ISkill[]>>;
   loading: boolean;
@@ -65,6 +65,8 @@ interface ICreateJobContextProps {
 export const CreateJobContext = createContext<ICreateJobContextProps>({
   categories: [],
   skills: [],
+  availableSkills: [],
+  setAvailableSkills: () => {},
   selectedSkills: [],
   loading: false,
   setSelectedSkills: () => {},
@@ -73,10 +75,10 @@ export const CreateJobContext = createContext<ICreateJobContextProps>({
 });
 
 export const CreateJobProvider: FC<PropsWithChildren> = ({ children }) => {
-  //   const router = useRouter();
-  //   const { data: session, status } = useSession();
   const [categories, setCategories] = useState<ICategory[]>([]);
   const [skills, setSkills] = useState<ISkill[]>([]);
+
+  const [availableSkills, setAvailableSkills] = useState<ISkill[]>(skills);
   const [selectedSkills, setSelectedSkills] = useState<ISkill[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -99,6 +101,7 @@ export const CreateJobProvider: FC<PropsWithChildren> = ({ children }) => {
       const response: AxiosResponse<{ results: ISkill[] }> =
         await apiService.get("skill/search?page=1&limit=158&type=asc");
       setSkills(response.data.results);
+      setAvailableSkills(response.data.results);
     } catch (error) {
       console.error("Error fetching skills:", error);
     } finally {
@@ -116,6 +119,8 @@ export const CreateJobProvider: FC<PropsWithChildren> = ({ children }) => {
       value={{
         categories,
         skills,
+        availableSkills,
+        setAvailableSkills,
         loading,
         selectedSkills,
         setSelectedSkills,

@@ -46,10 +46,13 @@ interface JobFormProps {
   jobMethods: UseFormReturn<JobFormData>;
 }
 const JobForm = ({ jobMethods }: JobFormProps) => {
-  const { skills, categories, setSelectedSkills, selectedSkills } =
-    useCreateJob();
-  const [availableSkills, setAvailableSkills] = useState<ISkill[]>(skills);
-  // const [selectedSkills, setSelectedSkills] = useState<ISkill[]>([]);
+  const {
+    categories,
+    setSelectedSkills,
+    selectedSkills,
+    availableSkills,
+    setAvailableSkills,
+  } = useCreateJob();
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
   const [isSkillsOpen, setIsSkillsOpen] = useState(false);
   const [skillSearch, setSkillSearch] = useState("");
@@ -113,7 +116,7 @@ const JobForm = ({ jobMethods }: JobFormProps) => {
   return (
     <FormProvider {...jobMethods}>
       <form className="space-y-6">
-        <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 shadow-lg">
+        <div className="bg-gray-800/50  rounded-xl p-6 border border-gray-700/50 shadow-lg">
           <label className="block text-sm font-medium text-gray-300 mb-2">
             Job Title *
           </label>
@@ -131,7 +134,7 @@ const JobForm = ({ jobMethods }: JobFormProps) => {
         {/* Category and Skills */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 relative z-20">
           {/* Category */}
-          <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 shadow-lg">
+          <div className="bg-gray-800/50  rounded-xl p-6 border border-gray-700/50 shadow-lg">
             <label className="block text-sm font-medium text-gray-300 mb-2">
               Category *
             </label>
@@ -169,7 +172,7 @@ const JobForm = ({ jobMethods }: JobFormProps) => {
                 </svg>
               </div>
               {isCategoryOpen && (
-                <div className="absolute z-50 w-full mt-2 bg-gray-800 backdrop-blur-sm border border-gray-700 rounded-lg shadow-xl max-h-60 overflow-y-auto">
+                <div className="absolute z-50 w-full mt-2 bg-gray-800  border border-gray-700 rounded-lg shadow-xl max-h-60 overflow-y-auto">
                   {categories.map((category) => (
                     <div
                       key={category.id}
@@ -193,11 +196,14 @@ const JobForm = ({ jobMethods }: JobFormProps) => {
             )}
           </div>
           {/* {Skills } */}
-          <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 shadow-lg">
+          <div className="bg-gray-800/50  rounded-xl p-6 border border-gray-700/50 shadow-lg">
             <label className="block text-sm font-medium text-gray-300 mb-2">
               Required Skills *
             </label>
-            <div className="relative">
+            <div
+              className="relative"
+              onClick={() => setIsSkillsOpen(!isSkillsOpen)}
+            >
               <div className="relative flex items-center">
                 <input
                   type="text"
@@ -225,7 +231,7 @@ const JobForm = ({ jobMethods }: JobFormProps) => {
                 </svg>
               </div>
               {isSkillsOpen && (
-                <div className="absolute z-50 w-full mt-2 bg-gray-800 backdrop-blur-sm border border-gray-700 rounded-lg shadow-xl max-h-60 overflow-y-auto">
+                <div className="absolute z-50 w-full mt-2 bg-gray-800  border border-gray-700 rounded-lg shadow-xl max-h-60 overflow-y-auto">
                   {availableSkills
                     .filter((skill) =>
                       skill.name
@@ -271,7 +277,7 @@ const JobForm = ({ jobMethods }: JobFormProps) => {
         </div>
         {/* Job Type and Worldwide sections */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 relative z-10">
-          <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 shadow-lg">
+          <div className="bg-gray-800/50 rounded-xl p-6 border border-gray-700/50 shadow-lg">
             <label className="block text-sm font-medium text-gray-300 mb-4">
               Is This Role Open Worldwide? *
             </label>
@@ -339,7 +345,7 @@ const JobForm = ({ jobMethods }: JobFormProps) => {
             </div>
           </div>
 
-          <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 shadow-lg">
+          <div className="bg-gray-800/50 rounded-xl p-6 border border-gray-700/50 shadow-lg">
             <label className="block text-sm font-medium text-gray-300 mb-4">
               Is This Role Remote? *
             </label>
@@ -408,7 +414,7 @@ const JobForm = ({ jobMethods }: JobFormProps) => {
           </div>
 
           {/* Application Link */}
-          <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 shadow-lg relative z-10">
+          <div className="bg-gray-800/50 rounded-xl p-6 border border-gray-700/50 shadow-lg relative z-10">
             <label className="block text-sm font-medium text-gray-300 mb-2">
               Application Link or Email *
             </label>
@@ -425,7 +431,7 @@ const JobForm = ({ jobMethods }: JobFormProps) => {
             )}
           </div>
 
-          <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 shadow-lg relative z-10">
+          <div className="bg-gray-800/50 rounded-xl p-6 border border-gray-700/50 shadow-lg relative z-10">
             <label className="block text-sm font-medium text-gray-300 mb-2">
               Salary *
             </label>
@@ -443,7 +449,7 @@ const JobForm = ({ jobMethods }: JobFormProps) => {
           </div>
         </div>
 
-        <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 shadow-lg relative z-[80]">
+        <div className="bg-gray-800/50 rounded-xl p-6 border border-gray-700/50 shadow-lg relative z-[80]">
           <label className="block text-sm font-medium text-gray-300 mb-4">
             Job Type *
           </label>
@@ -522,7 +528,7 @@ const JobForm = ({ jobMethods }: JobFormProps) => {
             </label>
           </div>
         </div>
-        <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 shadow-lg relative z-10">
+        <div className="bg-gray-800/50 rounded-xl p-6 border border-gray-700/50 shadow-lg relative z-10">
           <label className="block text-sm font-medium text-gray-300 mb-2">
             Job Description *
           </label>
@@ -540,7 +546,7 @@ const JobForm = ({ jobMethods }: JobFormProps) => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 relative z-10">
-          <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 shadow-lg">
+          <div className="bg-gray-800/50 rounded-xl p-6 border border-gray-700/50 shadow-lg">
             <label className="block text-sm font-medium text-gray-300 mb-2">
               Number of Vacancies *
             </label>
@@ -560,7 +566,7 @@ const JobForm = ({ jobMethods }: JobFormProps) => {
             )}
           </div>
 
-          <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 shadow-lg">
+          <div className="bg-gray-800/50 rounded-xl p-6 border border-gray-700/50 shadow-lg">
             <label className="block text-sm font-medium text-gray-300 mb-2">
               Apply Before Date *
             </label>

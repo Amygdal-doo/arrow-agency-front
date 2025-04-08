@@ -234,7 +234,7 @@ const CVPreview = () => {
           <h3 className="text-lg font-semibold text-gray-300">Color Theme</h3>
           <div className="h-px flex-1 bg-gray-700" />
         </div>
-        <div className="flex space-x-4 justify-evenly scrollbar-hide overflow-x-auto bg-gray-800 backdrop-blur-sm rounded-xl p-3 border border-gray-700/50 shadow-lg">
+        <div className="flex space-x-4 justify-evenly scrollbar-hide overflow-x-auto bg-gray-800 rounded-xl p-3 border border-gray-700/50 shadow-lg">
           {templateColors.map((color) => (
             <div
               key={color.id}

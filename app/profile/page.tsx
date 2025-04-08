@@ -106,13 +106,13 @@ export default function Profile() {
           </label>
         </div>
 
-        <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 shadow-lg my-8">
+        <div className="bg-gray-800/50 rounded-xl p-6 border border-gray-700/50 shadow-lg my-8">
           {profile?.companyLogos && profile.companyLogos.length > 0 ? (
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {profile.companyLogos.map((logo) => (
                 <div
                   key={logo.id}
-                  className="group relative bg-gray-800/30 backdrop-blur-sm rounded-lg p-4 border border-gray-700/50 hover:bg-gray-800/50 transition-all duration-200"
+                  className="group relative bg-gray-800/30 rounded-lg p-4 border border-gray-700/50 hover:bg-gray-800/50 transition-all duration-200"
                 >
                   {/* <pre>{JSON.stringify(logo, null, 2)}</pre> */}
                   <Image

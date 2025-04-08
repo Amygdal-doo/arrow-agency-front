@@ -58,6 +58,8 @@ interface CompaniesResponse {
 
 interface ICompaniesContextProps {
   companies: IOrganization[];
+  selectedCompany: IOrganization | null;
+  setSelectedCompany: (company: IOrganization | null) => void;
   loading: boolean;
   error: string | null;
   page: number;
@@ -87,6 +89,8 @@ interface ICompaniesContextProps {
 
 export const CompaniesContext = createContext<ICompaniesContextProps>({
   companies: [],
+  selectedCompany: null,
+  setSelectedCompany: () => {},
   loading: false,
   error: null,
   page: 1,
@@ -116,6 +120,9 @@ export const CompaniesContext = createContext<ICompaniesContextProps>({
 
 export const AllCompaniesProvider: FC<PropsWithChildren> = ({ children }) => {
   const { data: session, status } = useSession();
+  const [selectedCompany, setSelectedCompany] = useState<IOrganization | null>(
+    null
+  );
   const [companies, setCompanies] = useState<IOrganization[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -220,6 +227,8 @@ export const AllCompaniesProvider: FC<PropsWithChildren> = ({ children }) => {
     <CompaniesContext.Provider
       value={{
         companies,
+        selectedCompany,
+        setSelectedCompany,
         loading,
         error,
         page,

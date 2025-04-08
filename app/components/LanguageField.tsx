@@ -145,7 +145,7 @@ const LanguageField = () => {
       </div>
 
       {/* Add New Language Form */}
-      <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 shadow-lg relative z-10">
+      <div className="bg-gray-800/50  rounded-xl p-6 border border-gray-700/50 shadow-lg relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <input
             type="text"
@@ -185,7 +185,7 @@ const LanguageField = () => {
               </svg>
             </div>
             {isDropdownOpen && (
-              <div className="absolute z-50 w-full mt-2 bg-gray-800 backdrop-blur-sm border border-gray-700 rounded-lg shadow-xl">
+              <div className="absolute z-50 w-full mt-2 bg-gray-800  border border-gray-700 rounded-lg shadow-xl">
                 {efficiencyLevels.map((level) => (
                   <div
                     key={level.value}
@@ -223,7 +223,7 @@ const LanguageField = () => {
           currentLanguages.map((lang) => (
             <div
               key={lang.id}
-              className="group bg-gray-800/30 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 shadow-lg hover:bg-gray-800/50 transition-all duration-200"
+              className="group bg-gray-800/30  rounded-xl p-6 border border-gray-700/50 shadow-lg hover:bg-gray-800/50 transition-all duration-200"
             >
               <div className="flex justify-between items-start mb-4">
                 <div>

@@ -60,7 +60,7 @@ const ProfileForm = () => {
 
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 shadow-lg"
+        className="bg-gray-800/50 rounded-xl p-6 border border-gray-700/50 shadow-lg"
       >
         {/* First & Last Name */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
@@ -128,7 +128,7 @@ const ProfileForm = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
           <div>
             {profile && (
-              <div className="group bg-gray-800/30 backdrop-blur-sm rounded-lg p-3 border border-gray-700/50">
+              <div className="group bg-gray-800/30  rounded-lg p-3 border border-gray-700/50">
                 <div className="text-sm text-gray-400">Created At</div>
                 <div className="text-gray-300">
                   {new Date(profile.user?.createdAt).toLocaleDateString()}
@@ -139,7 +139,7 @@ const ProfileForm = () => {
 
           <div>
             {profile && (
-              <div className="group bg-gray-800/30 backdrop-blur-sm rounded-lg p-3 border border-gray-700/50">
+              <div className="group bg-gray-800/30 rounded-lg p-3 border border-gray-700/50">
                 <div className="text-sm text-gray-400">Updated At</div>
                 <div className="text-gray-300">
                   {new Date(profile.user?.updatedAt).toLocaleDateString()}
