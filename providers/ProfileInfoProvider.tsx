@@ -82,10 +82,10 @@ export const ProfileProvider: FC<PropsWithChildren> = ({ children }) => {
   };
 
   useEffect(() => {
-    if (status === "unauthenticated") {
-      router.replace("/");
-      return;
-    }
+    // if (status === "unauthenticated") {
+    //   router.replace("/");
+    //   return;
+    // }
     if (status === "authenticated") {
       fetchProfile();
     }
