@@ -153,7 +153,7 @@ const ProfileForm = () => {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full bg-gradient-to-r from-orange-600 to-orange-700 text-white p-3 rounded-lg font-medium hover:from-orange-700 hover:to-orange-800 transition-all duration-200 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full bg-orange-600 hover:bg-orange-700 hover:shadow-orange-500/25 text-white p-3 rounded-lg font-medium  transition-all duration-200 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isSubmitting ? "Updating..." : "Update Profile"}
         </button>

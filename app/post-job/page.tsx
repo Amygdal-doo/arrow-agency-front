@@ -234,7 +234,7 @@ export default function PostJob() {
           {/* Progress bar and header */}
 
           {/* Fixed header with steps - will stay at top */}
-          <div className="py-8 sticky top-0 z-20">
+          <div className="py-8 top-0 z-20">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-2xl font-bold text-white">Post a New Job</h2>
               <div className="h-px flex-1 bg-gray-700 mx-4" />
@@ -300,7 +300,7 @@ export default function PostJob() {
                   <button
                     type="button"
                     onClick={handleNext}
-                    className="ml-auto bg-gradient-to-r from-orange-600 to-orange-700 text-white px-6 py-3 rounded-lg font-medium hover:from-orange-700 hover:to-orange-800 transition-all duration-200 shadow-lg"
+                    className="ml-auto bg-orange-600 hover:bg-orange-700 hover:shadow-orange-500/25 text-white px-6 py-3 rounded-lg font-medium  transition-all duration-200 shadow-lg"
                   >
                     Next
                   </button>
@@ -308,11 +308,11 @@ export default function PostJob() {
                   <button
                     onClick={onSubmit}
                     disabled={loading || !packageId}
-                    className={`ml-auto bg-gradient-to-r from-orange-600 to-orange-700 text-white px-6 py-3 rounded-lg font-medium 
+                    className={`ml-auto bg-orange-600 hover:bg-orange-700 hover:shadow-orange-500/25 text-white px-6 py-3 rounded-lg font-medium 
                     ${
                       loading
                         ? "opacity-50 cursor-not-allowed"
-                        : "hover:from-orange-700 hover:to-orange-800"
+                        : "hover:shadow-orange-500/25"
                     } 
                     transition-all duration-200 shadow-lg`}
                   >

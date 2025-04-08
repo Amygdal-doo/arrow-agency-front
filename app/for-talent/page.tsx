@@ -25,14 +25,6 @@ const fadeInUp = {
   transition: { duration: 0.6 },
 };
 
-const staggerContainer = {
-  animate: {
-    transition: {
-      staggerChildren: 0.2,
-    },
-  },
-};
-
 export default function ForTalentPage() {
   const router = useRouter();
   const { data: session, status } = useSession();
@@ -97,7 +89,7 @@ export default function ForTalentPage() {
                 <>
                   <Link
                     href="/profile"
-                    className="bg-gradient-to-r from-orange-600 to-orange-500 hover:from-orange-500 hover:to-orange-400 text-white px-8 py-4 rounded-xl font-semibold transition-all duration-200"
+                    className="bg-orange-600 hover:bg-orange-700 hover:shadow-orange-500/25 text-white px-8 py-4 rounded-xl font-semibold transition-all duration-200"
                   >
                     Update Your Profile
                   </Link>
@@ -111,7 +103,7 @@ export default function ForTalentPage() {
               ) : (
                 <button
                   onClick={handleGetStarted}
-                  className="bg-gradient-to-r from-orange-600 to-orange-500 hover:from-orange-500 hover:to-orange-400 text-white px-8 py-4 rounded-xl font-semibold transition-all duration-200"
+                  className="bg-orange-600 hover:bg-orange-700 hover:shadow-orange-500/25 text-white px-8 py-4 rounded-xl font-semibold transition-all duration-200"
                 >
                   Create CV
                 </button>
@@ -121,13 +113,7 @@ export default function ForTalentPage() {
         </motion.section>
 
         <section className="container mx-auto px-4 py-20">
-          <motion.div
-            variants={staggerContainer}
-            initial="initial"
-            whileInView="animate"
-            viewport={{ once: true }}
-            className="grid grid-cols-1 md:grid-cols-3 gap-8"
-          >
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
               {
                 icon: <RiAirplayLine className="w-8 h-8" />,
@@ -164,18 +150,17 @@ export default function ForTalentPage() {
                 <p className="text-gray-400">{feature.description}</p>
               </motion.div>
             ))}
-          </motion.div>
+          </div>
         </section>
 
         <section className="bg-gray-900/50 py-20">
-          <div className="container mx-auto px-4">
-            <motion.div
-              variants={staggerContainer}
-              initial="initial"
-              whileInView="animate"
-              viewport={{ once: true }}
-              className="grid grid-cols-2 md:grid-cols-4 gap-8"
-            >
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="container mx-auto px-4"
+          >
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
               {[
                 { number: "1000+", label: "Available Jobs" },
                 { number: "500+", label: "Partner Companies" },
@@ -188,19 +173,14 @@ export default function ForTalentPage() {
                   whileHover={{ y: -5 }}
                   className="text-left"
                 >
-                  <motion.p
-                    initial={{ scale: 0 }}
-                    whileInView={{ scale: 1 }}
-                    transition={{ delay: index * 0.1, duration: 0.5 }}
-                    className="text-4xl font-bold text-orange-500 mb-2"
-                  >
+                  <p className="text-4xl font-bold text-orange-500 mb-2">
                     {stat.number}
-                  </motion.p>
+                  </p>
                   <p className="text-gray-400">{stat.label}</p>
                 </motion.div>
               ))}
-            </motion.div>
-          </div>
+            </div>
+          </motion.div>
         </section>
 
         <section className="container mx-auto px-4 py-20">
@@ -247,7 +227,7 @@ export default function ForTalentPage() {
               </div>
               <Link
                 href="/jobs"
-                className="bg-gradient-to-r from-orange-600 to-orange-500 hover:from-orange-500 hover:to-orange-400 text-white px-8 py-4 rounded-xl font-semibold transition-all duration-200 inline-block"
+                className="bg-orange-600 hover:bg-orange-700 hover:shadow-orange-500/250 text-white px-8 py-4 rounded-xl font-semibold transition-all duration-200 inline-block"
               >
                 View All Positions
               </Link>

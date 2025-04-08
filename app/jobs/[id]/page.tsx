@@ -1,6 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { apiService } from "@/core/services/apiService";
 import Image from "next/image";
@@ -38,6 +38,7 @@ interface JobDetails {
 }
 
 export default function JobDetailsPage() {
+  const router = useRouter();
   const formatDate = (dateString: string) => {
     return new Intl.DateTimeFormat("en-US", {
       year: "numeric",
@@ -66,7 +67,7 @@ export default function JobDetailsPage() {
   if (loading || !job) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-[#01070a] to-gray-900 flex items-center justify-center">
-        <div className="text-white">Loading...</div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange-500"></div>
       </div>
     );
   }
@@ -74,6 +75,12 @@ export default function JobDetailsPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#01070a] to-gray-900">
       <div className="container mx-auto px-4 py-24 md:pt-40">
+        <button
+          onClick={() => router.back()}
+          className="text-orange-500 hover:text-orange-600 transition-all mb-10"
+        >
+          ← Back to All Jobs
+        </button>
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Main Content */}
 

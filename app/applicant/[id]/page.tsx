@@ -19,6 +19,7 @@ import React, { useState } from "react";
 const ApplicantDetails = () => {
   const {
     error,
+    loading,
     firstName,
     setFirstName,
     lastName,
@@ -59,9 +60,13 @@ const ApplicantDetails = () => {
   //   console.log("Saved Applicant:");
   // };
 
-  // if (loading) {
-  //   return <div className="text-white text-center py-12">Loading...</div>;
-  // }
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-[#01070a] to-gray-900 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange-500"></div>
+      </div>
+    );
+  }
 
   if (error) {
     return <div className="text-red-500 text-center py-12">{error}</div>;
@@ -106,14 +111,14 @@ const ApplicantDetails = () => {
                   placeholder="First name"
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
-                  className="bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 placeholder-gray-500 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+                  className="bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 placeholder-gray-500 outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
                 />
                 <input
                   type="text"
                   placeholder="Last Name"
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
-                  className="bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 placeholder-gray-500 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+                  className="bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 placeholder-gray-500 outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
                 />
               </div>
               <div className="grid grid-cols-2 gap-4">
@@ -122,14 +127,14 @@ const ApplicantDetails = () => {
                   placeholder="Email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 placeholder-gray-500 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+                  className="bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 placeholder-gray-500 outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
                 />
                 <input
                   type="text"
                   placeholder="Phone Number"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
-                  className="bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 placeholder-gray-500 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+                  className="bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 placeholder-gray-500 outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
                 />
               </div>
             </div>
@@ -162,13 +167,15 @@ const ApplicantDetails = () => {
                   placeholder="Company name"
                   value={companyName}
                   onChange={(e) => setCompanyName(e.target.value)}
-                  className="bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 placeholder-gray-500 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+                  className="bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 placeholder-gray-500 outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
                 />
 
                 <div className="relative">
                   <div
                     onClick={() => setIsLogoDropdownOpen(!isLogoDropdownOpen)}
-                    className="bg-gray-700/50 border border-gray-600/50 rounded-lg p-4 text-gray-300 cursor-pointer flex items-center justify-between"
+                    className={` bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 cursor-pointer flex justify-between items-center ${
+                      isLogoDropdownOpen ? "ring-2 ring-orange-500" : ""
+                    }`}
                   >
                     <div className="flex items-center gap-3">
                       {companyLogo ? (
@@ -252,7 +259,7 @@ const ApplicantDetails = () => {
                     placeholder="Write your CV summary here..."
                     value={summary || ""}
                     onChange={(e) => setSummary(e.target.value)}
-                    className="w-full bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 placeholder-gray-500 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all resize-none"
+                    className="w-full bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 placeholder-gray-500 outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
                   />
                 </div>
               </div>

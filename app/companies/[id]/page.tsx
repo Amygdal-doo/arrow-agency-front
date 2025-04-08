@@ -52,6 +52,12 @@ export default function CompanyDetailsPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#01070a] to-gray-900">
       <div className="container mx-auto px-4 py-24 md:pt-40">
+        <button
+          onClick={() => router.back()}
+          className="text-orange-500 hover:text-orange-600 transition-all mb-10"
+        >
+          ← Back to All Companies
+        </button>
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-8">

@@ -82,7 +82,7 @@ export default function Profile() {
               className="hidden"
               disabled={isUploading}
             />
-            <span className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-orange-600 to-orange-700 text-white rounded-lg font-medium hover:from-orange-700 hover:to-orange-800 transition-all duration-200 shadow-lg disabled:opacity-50">
+            <span className="inline-flex items-center px-4 py-2 bg-orange-600 hover:bg-orange-700 hover:shadow-orange-500/25 text-white rounded-lg font-medium  transition-all duration-200 shadow-lg disabled:opacity-50">
               {isUploading ? (
                 <svg className="animate-spin h-5 w-5 mr-2" viewBox="0 0 24 24">
                   <circle
@@ -137,7 +137,7 @@ export default function Profile() {
               ))}
             </div>
           ) : (
-            <div className="text-center py-8 text-gray-400">
+            <div className="text-center py-8 text-gray-400 ">
               No company logos uploaded yet
             </div>
           )}
@@ -150,7 +150,7 @@ export default function Profile() {
           <div className="h-px flex-1 bg-gray-700 mx-4" />
           <button
             onClick={() => setShowCVModal(true)}
-            className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-orange-600 to-orange-700 text-white rounded-lg font-medium hover:from-orange-700 hover:to-orange-800 transition-all duration-200 shadow-lg disabled:opacity-50"
+            className="inline-flex items-center px-4 py-2 bg-orange-600 hover:bg-orange-700 hover:shadow-orange-500/25 text-white rounded-lg font-medium  transition-all duration-200 shadow-lg disabled:opacity-50"
           >
             Add New Applicant
           </button>
@@ -185,7 +185,7 @@ export default function Profile() {
 
                 <a
                   href={`/applicant/${applicant?.id}`}
-                  className="mt-4 block font-bold w-full text-center bg-orange-600 hover:bg-orange-400 text-white py-2 rounded-md transition-colors"
+                  className="mt-4 block font-semibold w-full text-center bg-orange-600 hover:bg-orange-700 hover:shadow-orange-500/25 text-white py-2 rounded-md transition-colors"
                 >
                   View Details
                 </a>
@@ -193,16 +193,22 @@ export default function Profile() {
             ))}
           </div>
         ) : (
-          <p className="text-xl">No applicant added</p>
+          <div className="text-center py-14 text-gray-400 bg-gray-800/50 rounded-xl border border-gray-700/50 shadow-lg my-8">
+            No applicant added
+          </div>
         )}
-        <div className="flex w-full justify-end py-8">
-          <button
-            onClick={() => router.push("/applicant")}
-            className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-orange-600 to-orange-700 text-white rounded-lg font-medium hover:from-orange-700 hover:to-orange-800 transition-all duration-200 shadow-lg disabled:opacity-50"
-          >
-            View all
-          </button>
-        </div>
+        {applicants?.length > 0 ? (
+          <div className="flex w-full justify-end py-8">
+            <button
+              onClick={() => router.push("/applicant")}
+              className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-orange-600 to-orange-700 text-white rounded-lg font-medium hover:from-orange-700 hover:to-orange-800 transition-all duration-200 shadow-lg disabled:opacity-50"
+            >
+              View all
+            </button>
+          </div>
+        ) : (
+          <></>
+        )}
       </div>
 
       <Modal isOpen={showCVModal} onClose={() => setShowCVModal(false)}>

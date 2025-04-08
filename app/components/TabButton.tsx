@@ -13,7 +13,7 @@ const TabButton = ({
     onClick={onClick}
     className={`px-4 sm:px-8 py-3 rounded-xl font-medium transition-all ${
       isActive
-        ? "bg-orange-500 text-white shadow-lg shadow-orange-500/20"
+        ? "bg-orange-600 hover:bg-orange-700 hover:shadow-orange-500/25 text-white shadow-lg "
         : "bg-gray-800/50 text-gray-400 hover:bg-gray-700/50"
     }`}
   >

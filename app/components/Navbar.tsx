@@ -33,7 +33,7 @@ const Navbar = () => {
       <Link href="/jobs">
         <li
           className={`font-medium text-lg lg:text-xl transition-colors ${
-            pathname === "/jobs"
+            pathname === "/jobs" || pathname.startsWith("/jobs/")
               ? "text-orange-500 font-semibold"
               : "text-white hover:text-orange-500"
           }`}
@@ -56,7 +56,7 @@ const Navbar = () => {
         <Link href="/applicant">
           <li
             className={`font-medium text-lg lg:text-xl transition-colors ${
-              pathname === "/applicant"
+              pathname === "/applicant" || pathname.startsWith("/applicant/")
                 ? "text-orange-500 font-semibold"
                 : "text-white hover:text-orange-500"
             }`}
@@ -69,7 +69,7 @@ const Navbar = () => {
         <Link href="/companies">
           <li
             className={`font-medium text-lg lg:text-xl transition-colors ${
-              pathname === "/companies"
+              pathname === "/companies" || pathname.startsWith("/companies/")
                 ? "text-orange-500 font-semibold"
                 : "text-white hover:text-orange-500"
             }`}
@@ -111,7 +111,7 @@ const Navbar = () => {
           : "Login"}
       </button>
       <Link href="/post-job" className="w-full md:w-auto">
-        <button className="w-full bg-gradient-to-r from-orange-600 to-orange-500 hover:from-orange-500 hover:to-orange-400 px-6 md:px-3 lg:px-6 py-3 md:py-2 rounded-xl md:rounded-md text-white font-bold transition-all">
+        <button className="w-full bg-orange-600 hover:bg-orange-700 hover:shadow-orange-500/25 px-6 md:px-3 lg:px-6 py-3 md:py-2 rounded-xl md:rounded-md text-white font-bold transition-all">
           Post a Job
         </button>
       </Link>
@@ -119,7 +119,7 @@ const Navbar = () => {
   );
 
   return (
-    <nav className="w-full bg-black p-1 fixed top-0 left-0 right-0 h-24 z-50 shadow-lg">
+    <nav className="w-full bg-black p-1 fixed top-0 left-0 right-0 h-24 z-[999] shadow-lg">
       <div className="container mx-auto flex items-center justify-between h-full px-4">
         <div className="flex items-center md:space-x-16">
           <Link href="/">

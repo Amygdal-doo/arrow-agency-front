@@ -42,10 +42,13 @@ export default function Home() {
           ].map((step, index) => (
             <motion.div
               key={index}
-              whileHover={{ scale: 1.05 }}
-              className="bg-gray-800 p-8 rounded-lg text-center"
+              whileHover={{
+                scale: 1.05,
+                boxShadow: "0 0 20px rgba(251, 146, 60, 0.2)",
+              }}
+              className="bg-white/5 rounded-2xl p-8 border border-gray-700/50"
             >
-              <div className="text-4xl mb-4">{step.icon}</div>
+              <div className="text-orange-500 mb-4 text-4xl">{step.icon}</div>
               <h3 className="text-xl font-bold text-white mb-2">
                 {step.title}
               </h3>
@@ -60,7 +63,7 @@ export default function Home() {
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
-        className="py-32 bg-gray-900"
+        className="py-20 bg-gray-900/50"
       >
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-8 text-center">
@@ -102,15 +105,11 @@ export default function Home() {
             ].map((stat, index) => (
               <motion.div
                 key={index}
-                initial={{ scale: 0.9, opacity: 0 }}
-                whileInView={{ scale: 1, opacity: 1 }}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                whileHover={{
-                  scale: 1.05,
-                  backgroundColor: "#1f2937",
-                  transition: { duration: 0.2 },
-                }}
-                className="p-8 bg-gray-800 rounded-xl hover:bg-gray-700 transition-all shadow-lg hover:shadow-2xl border border-gray-700/50"
+                whileHover={{ y: -5 }}
+                className="bg-white/5 p-8 rounded-2xl border border-gray-700/50"
               >
                 <h3 className="text-4xl font-bold text-orange-500 mb-2">
                   {stat.number}
@@ -174,11 +173,9 @@ export default function Home() {
               transition={{ duration: 0.5, delay: index * 0.1 }}
               whileHover={{
                 scale: 1.05,
-                boxShadow: "0 0 30px rgba(249, 115, 22, 0.5)",
-                backgroundColor: "rgba(31, 41, 55, 0.95)",
-                transition: { duration: 0.3 },
+                boxShadow: "0 0 20px rgba(251, 146, 60, 0.2)",
               }}
-              className="bg-gray-800/90 p-8 rounded-lg  border border-gray-700/50 hover:border-orange-500/50 transition-all shadow-lg hover:shadow-2xl"
+              className="bg-white/5 rounded-2xl p-8 border border-gray-700/50"
             >
               <div className="text-4xl mb-4">{feature.icon}</div>
               <h3 className="text-2xl font-bold text-white mb-3 bg-gradient-to-r from-white to-orange-400 bg-clip-text text-transparent">
@@ -197,7 +194,7 @@ export default function Home() {
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         transition={{ duration: 0.8 }}
-        className="py-24 bg-gradient-to-r from-orange-600 via-orange-500 to-orange-600 relative overflow-hidden"
+        className="py-24 bg-orange-700 relative overflow-hidden"
       >
         <div className="absolute inset-0 bg-[url('/hero.jpg')] opacity-10 mix-blend-overlay"></div>
         <div className="container mx-auto px-4 text-center relative z-10">
@@ -208,7 +205,7 @@ export default function Home() {
             className="text-5xl font-bold text-white mb-8 leading-tight"
           >
             Ready to Transform Your <br />
-            <span className="bg-gradient-to-r from-white to-orange-200 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r text-white bg-clip-text text-transparent">
               Career Journey?
             </span>
           </motion.h2>
@@ -275,8 +272,11 @@ export default function Home() {
           ].map((story, index) => (
             <motion.div
               key={index}
-              whileHover={{ scale: 1.05 }}
-              className="bg-gray-800 p-8 rounded-lg text-center"
+              whileHover={{
+                scale: 1.05,
+                boxShadow: "0 0 20px rgba(251, 146, 60, 0.2)",
+              }}
+              className="bg-white/5 rounded-2xl p-8 border border-gray-700/50"
             >
               {/* <Image
                 width={3000}
@@ -303,7 +303,7 @@ export default function Home() {
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="py-20 bg-gray-900"
+        className="py-20 bg-gray-900/50"
       >
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-4xl font-bold text-white mb-6">

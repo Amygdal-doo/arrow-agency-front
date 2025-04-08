@@ -10,6 +10,7 @@ import "./globals.css";
 import { AllJobsProvider } from "@/providers/AllJobsProvider";
 import { AllCompaniesProvider } from "@/providers/AllCompaniesProvider";
 import { PackagesProvider } from "@/providers/PackagesProvider";
+import Footer from "./components/Footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -46,25 +47,7 @@ export default function RootLayout({
                       <div className="flex flex-col min-h-screen bg-[#0a0a23]">
                         <Navbar />
                         <main className="w-full">{children}</main>
-                        <footer className="w-full bg-[#01070a] py-6 border-t border-gray-800">
-                          <div className="container mx-auto px-8 flex justify-between">
-                            <div></div>
-                            <div>
-                              <a
-                                href="mailto:info@digital-arrow.agency"
-                                className="text-gray-400 hover:text-orange-600 transition-colors text-sm"
-                              >
-                                info@digital-arrow.agency
-                              </a>
-                            </div>
-                            <div>
-                              <ul className="text-gray-400 flex space-x-4">
-                                <li>Terms and Conditions</li>
-                                <li>Privacy Policy</li>
-                              </ul>
-                            </div>
-                          </div>
-                        </footer>
+                        <Footer />
                       </div>
                     </PackagesProvider>
                   </CreateJobProvider>

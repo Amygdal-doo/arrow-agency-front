@@ -201,14 +201,14 @@ const CVPreview = () => {
               onClick={() =>
                 handleDownload(applicant.file.url, applicant.file.name)
               }
-              className="mt-4 font-bold text-center bg-orange-600 hover:bg-orange-400 text-white py-2 px-8 rounded-md transition-colors"
+              className="mt-4 font-bold text-center bg-orange-600 hover:bg-orange-700 hover:shadow-orange-500/25 text-white py-2 px-8 rounded-md transition-colors"
             >
               Download PDF
             </button>
           )}
           <button
             onClick={handleSave}
-            className="md:mt-4 font-bold text-center bg-orange-600 hover:bg-orange-400 text-white py-2 px-8 rounded-md transition-colors"
+            className="md:mt-4 font-bold text-center bg-orange-600 hover:bg-orange-700 hover:shadow-orange-500/25 text-white py-2 px-8 rounded-md transition-colors"
           >
             {loading ? "Saving..." : "Save"}
           </button>
@@ -221,7 +221,7 @@ const CVPreview = () => {
             onClick={() => handleTemplateChange(template.id)}
             className={`px-4 py-2 rounded-md transition-all ${
               templateId === template.id
-                ? "bg-orange-600 text-white"
+                ? "bg-orange-600 hover:bg-orange-700 hover:shadow-orange-500/25 text-white"
                 : "bg-gray-700 text-gray-300 hover:bg-gray-600"
             }`}
           >

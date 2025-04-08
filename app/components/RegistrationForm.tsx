@@ -149,7 +149,7 @@ const RegistrationForm = ({ toggleContent }: RegistrationFormProps) => {
       </p>
       <button
         type="submit"
-        className="w-full bg-gradient-to-r from-orange-600 to-orange-700 text-white p-3 rounded-lg font-bold hover:from-orange-700 hover:to-orange-800 transition-all duration-200 shadow-lg"
+        className="w-full  bg-orange-600 hover:bg-orange-700 hover:shadow-orange-500/25 text-white p-3 rounded-lg font-bold  transition-all duration-200 shadow-lg"
         disabled={loading}
       >
         {loading ? "Registering..." : "Register"}

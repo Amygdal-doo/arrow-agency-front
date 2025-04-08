@@ -114,7 +114,7 @@ export default function JobsPage() {
                 />
                 {showMyJobs && (
                   <Link href="/post-job">
-                    <button className="px-6 py-4 rounded-xl font-medium bg-gradient-to-r from-orange-600 to-orange-500 hover:from-orange-500 hover:to-orange-400 text-white transition-all">
+                    <button className="px-6 py-4 rounded-xl font-medium  bg-orange-600 hover:bg-orange-700 hover:shadow-orange-500/25 text-white transition-all">
                       Post New Job
                     </button>
                   </Link>
@@ -283,7 +283,7 @@ export default function JobsPage() {
 
                 <Link
                   href={`/jobs/${job.id}`}
-                  className="mt-4 block w-full text-center bg-gradient-to-r from-orange-600 to-orange-500 hover:from-orange-500 hover:to-orange-400 text-white py-3 rounded-xl transition-all duration-200 font-semibold"
+                  className="mt-4 block w-full text-center  bg-orange-600 hover:bg-orange-700 hover:shadow-orange-500/25 text-white py-3 rounded-xl transition-all duration-200 font-semibold"
                 >
                   View Details
                 </Link>
