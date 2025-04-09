@@ -26,9 +26,11 @@ export default function FailedPage() {
 
             <div className="flex items-center justify-between gap-2 mb-4">
               {steps.map((step) => (
-                <div key={step.id} className="flex-1 text-center">
+                <div key={step.id} className="flex-1 text-center h-10">
                   <div className="h-1 rounded-full bg-red-900 transition-all" />
-                  <p className="text-red-500">{step.name}</p>
+                  <p className="text-red-500 text-xs sm:text-[14px] md:text-lg">
+                    {step.name}
+                  </p>
                 </div>
               ))}
             </div>

@@ -53,7 +53,7 @@ export default function CompanyDetailsPage() {
     <div className="min-h-screen bg-gradient-to-b from-[#01070a] to-gray-900">
       <div className="container mx-auto px-4 py-24 md:pt-40">
         <button
-          onClick={() => router.back()}
+          onClick={() => router.push("/companies")}
           className="text-orange-500 hover:text-orange-600 transition-all mb-10"
         >
           ← Back to All Companies
@@ -65,7 +65,7 @@ export default function CompanyDetailsPage() {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className=" bg-white/5 rounded-2xl p-8 border border-gray-700/50"
+              className=" bg-white/5 rounded-2xl p-4 md:p-8 border border-gray-700/50"
             >
               <div className="flex flex-col md:flex-row gap-6 items-start">
                 {company.logo && (
@@ -100,7 +100,7 @@ export default function CompanyDetailsPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className=" bg-white/5 rounded-2xl p-8 border border-gray-700/50"
+              className=" bg-white/5 rounded-2xl p-4 md:p-8 border border-gray-700/50"
             >
               <div className="space-y-8">
                 <div>
@@ -143,7 +143,7 @@ export default function CompanyDetailsPage() {
             className="space-y-8"
           >
             {/* Contact Info */}
-            <div className=" bg-white/5 rounded-2xl p-8 border border-gray-700/50">
+            <div className=" bg-white/5 rounded-2xl p-4 md:p-8 border border-gray-700/50">
               <h3 className="text-xl font-bold text-white mb-6">
                 Contact Information
               </h3>

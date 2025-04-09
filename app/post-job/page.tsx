@@ -89,7 +89,7 @@ export default function PostJob() {
       endpoint,
       {
         ...jobData,
-        typeOfApplication: "EMAIL",
+        // typeOfApplication: "EMAIL",
       },
       {
         headers: {
@@ -245,14 +245,14 @@ export default function PostJob() {
             {/* Progress Steps */}
             <div className="flex items-center justify-between gap-2 mb-4">
               {steps.map((step) => (
-                <div key={step.id} className="flex-1 text-center">
+                <div key={step.id} className="flex-1 text-center h-10">
                   <div
                     className={` h-1 rounded-full transition-all ${
                       currentStep >= step.id ? "bg-orange-600" : "bg-gray-700"
                     }`}
                   />
                   <p
-                    className={` ${
+                    className={`text-xs sm:text-[14px] md:text-lg ${
                       currentStep === step.id
                         ? "text-orange-500"
                         : "text-gray-500"

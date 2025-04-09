@@ -2,8 +2,10 @@
 
 import { motion } from "framer-motion";
 import HeroSection from "./components/HeroSection";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const router = useRouter();
   return (
     <main className="bg-[#01070a]">
       <HeroSection />
@@ -225,6 +227,7 @@ export default function Home() {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             transition={{ duration: 0.4 }}
+            onClick={() => router.push("/for-talent")}
             className="bg-white text-orange-600 px-12 py-4 rounded-lg font-bold text-lg hover:bg-orange-50 transition-colors relative group overflow-hidden"
           >
             <span className="relative z-10">Launch Your Career</span>
@@ -313,9 +316,12 @@ export default function Home() {
             Talk to one of our solutions architects and start innovating with
             AI-powered talent.
           </p>
-          <button className="bg-orange-600 text-white px-8 py-3 rounded-md font-bold hover:bg-orange-700 transition-colors">
+          <a
+            href="mailto:info@digital-arrow.agency"
+            className="bg-orange-600 text-white px-10 py-5 rounded-lg font-bold hover:bg-orange-700 transition-colors"
+          >
             Get Started
-          </button>
+          </a>
         </div>
       </motion.section>
     </main>

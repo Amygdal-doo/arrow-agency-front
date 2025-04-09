@@ -77,7 +77,7 @@ export default function JobDetailsPage() {
       <div className="container mx-auto px-4 py-24 md:pt-40">
         <button
           onClick={() => {
-            router.back();
+            router.push("/jobs");
           }}
           className="text-orange-500 hover:text-orange-600 transition-all mb-10"
         >

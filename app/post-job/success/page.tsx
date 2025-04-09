@@ -28,9 +28,11 @@ export default function SuccessPage() {
             {/* Completed Progress Steps */}
             <div className="flex items-center justify-between gap-2 mb-4">
               {steps.map((step) => (
-                <div key={step.id} className="flex-1 text-center">
+                <div key={step.id} className="flex-1 text-center h-10">
                   <div className="h-1 rounded-full bg-green-500 transition-all" />
-                  <p className="text-green-500">{step.name}</p>
+                  <p className="text-green-500 text-xs sm:text-[14px] md:text-lg">
+                    {step.name}
+                  </p>
                 </div>
               ))}
             </div>
@@ -70,15 +72,15 @@ export default function SuccessPage() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button
                 onClick={() => router.push("/post-job")}
-                className="w-1/2 md:w-auto bg-white/10  px-6 py-3 rounded-lg text-white font-semibold hover:bg-white/20 transition-all"
+                className="px-6 py-3 bg-white/10 text-white rounded-xl font-semibold hover:bg-slate-600 transition-all"
               >
                 Post Another Job
               </button>
               <button
-                onClick={() => router.push("/")}
-                className="bg-gradient-to-r from-orange-600 to-orange-700 text-white px-6 py-3 rounded-lg font-semibold hover:from-orange-700 hover:to-orange-800 transition-all duration-200 shadow-lg"
+                onClick={() => router.push("/jobs")}
+                className="px-6 py-3 bg-orange-600 hover:bg-orange-700 font-semibold text-white rounded-xl hover:from-red-700 hover:to-red-800 transition-all"
               >
-                Go to Home
+                Go to Jobs
               </button>
             </div>
           </div>

@@ -130,8 +130,8 @@ const CompanyForm = ({ companyMethods }: CompanyFormProps) => {
               <label className="block text-sm font-medium text-gray-300 mb-2">
                 Select Existing Company
               </label>
-              <div className="flex justify-between">
-                <div className="relative w-2/3">
+              <div className="flex flex-col md:flex-row space-y-6 md:space-y-0 justify-between">
+                <div className="relative w-full md:w-2/3">
                   <button
                     type="button"
                     onClick={() => setIsCompanyOpen(!isCompanyOpen)}
@@ -185,11 +185,11 @@ const CompanyForm = ({ companyMethods }: CompanyFormProps) => {
                     </div>
                   )}
                 </div>
-                <div className="w-1/3 flex justify-center pl-6">
+                <div className="w-full md:w-1/3 flex justify-center md:pl-6">
                   <button
                     type="button"
                     onClick={handleAddNewCompany}
-                    className="px-6 w-full flex justify-center py-3 bg-gradient-to-r from-orange-600 to-orange-700 text-white rounded-lg font-medium hover:from-orange-700 hover:to-orange-800 transition-all duration-200 shadow-lg items-center gap-2"
+                    className="px-0 lg:px-6 w-full flex justify-center py-3 bg-gradient-to-r from-orange-600 to-orange-700 text-white rounded-lg font-medium hover:from-orange-700 hover:to-orange-800 transition-all duration-200 shadow-lg items-center gap-2"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -217,7 +217,7 @@ const CompanyForm = ({ companyMethods }: CompanyFormProps) => {
           <div className="flex flex-col space-y-6">
             <div className="grid grid-cols-3 gap-6 relative z-10">
               {/* First Column - 2/3 of the width */}
-              <div className="col-span-2 space-y-6">
+              <div className="col-span-3 md:col-span-2 space-y-6">
                 <div className="bg-gray-800/50 rounded-xl p-6 border border-gray-700/50 shadow-lg">
                   <label className="block text-sm font-medium text-gray-300 mb-2">
                     Company Name *
@@ -253,7 +253,7 @@ const CompanyForm = ({ companyMethods }: CompanyFormProps) => {
               </div>
 
               {/* Second Column - 1/3 of the width (Full Height) */}
-              <div className="col-span-1 relative z-10">
+              <div className="col-span-3 md:col-span-1 relative z-10">
                 <div className="bg-gray-800/50 rounded-xl p-6 border border-gray-700/50 shadow-lg h-full flex flex-col justify-center ">
                   <div className="flex justify-between items-center  mb-4">
                     <label className="block text-sm font-medium text-gray-300">
@@ -281,7 +281,7 @@ const CompanyForm = ({ companyMethods }: CompanyFormProps) => {
                     )}
                   </div>
 
-                  <label className="relative w-full h-full cursor-pointer flex flex-col items-center justify-center border-2 border-dashed border-gray-600/50 rounded-lg hover:border-orange-500 hover:bg-gray-600/50 transition-all group">
+                  <label className="relative py-2 w-full h-full cursor-pointer flex flex-col items-center justify-center border-2 border-dashed border-gray-600/50 rounded-lg hover:border-orange-500 hover:bg-gray-600/50 transition-all group">
                     <input
                       type="file"
                       accept="image/*"
@@ -292,18 +292,18 @@ const CompanyForm = ({ companyMethods }: CompanyFormProps) => {
 
                     {logoPreview ? (
                       // If image is uploaded, display it full height
-                      <div className="relative w-full h-full flex items-center justify-center">
+                      <div className="relative h-[190px] w-full md:h-full md:w-full  flex items-center justify-center">
                         <Image
                           src={logoPreview}
                           alt="Logo preview"
                           fill={true}
                           priority
-                          className="rounded-lg border border-gray-700 object-contain"
+                          className="rounded-lg border border-gray-700 object-contain "
                         />
                       </div>
                     ) : (
                       // Show upload button when no image is selected
-                      <div className="flex flex-col items-center justify-center">
+                      <div className="flex flex-col items-center justify-center h-[190px] md:h-auto">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           className="h-12 w-12 text-gray-400 group-hover:text-orange-500 transition-colors"

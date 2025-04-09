@@ -33,6 +33,10 @@ export const jobSchema = z.object({
       invalid_type_error: "Invalid job type selected",
     }
   ),
+  typeOfApplication: z.enum(["EMAIL", "LINK"], {
+    required_error: "Job type is required",
+    invalid_type_error: "Invalid job type selected",
+  }),
   applicationLinkOrEmail: z
     .string()
     .url("Please enter a valid URL")
@@ -56,6 +60,21 @@ const JobForm = ({ jobMethods }: JobFormProps) => {
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
   const [isSkillsOpen, setIsSkillsOpen] = useState(false);
   const [skillSearch, setSkillSearch] = useState("");
+
+  const handleApplicationInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const value = e.target.value;
+    const urlRegex =
+      /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/;
+
+    // Set the applicationType based on the input
+    jobMethods.setValue(
+      "typeOfApplication",
+      urlRegex.test(value) ? "LINK" : "EMAIL",
+      { shouldValidate: true }
+    );
+  };
 
   const handleSkillSelect = (skill: ISkill) => {
     if (!selectedSkills.find((s) => s.id === skill.id)) {
@@ -425,7 +444,9 @@ const JobForm = ({ jobMethods }: JobFormProps) => {
             </label>
             <input
               type="text"
-              {...jobMethods.register("applicationLinkOrEmail")}
+              {...jobMethods.register("applicationLinkOrEmail", {
+                onChange: handleApplicationInputChange,
+              })}
               className="w-full outline-none bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 placeholder-gray-500 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
               placeholder="https://... or email@example.com"
             />
@@ -458,7 +479,7 @@ const JobForm = ({ jobMethods }: JobFormProps) => {
           <label className="block text-sm font-medium text-gray-300 mb-4">
             Job Type *
           </label>
-          <div className="flex gap-4">
+          <div className="flex flex-wrap gap-4">
             <label className="inline-flex items-center">
               <input
                 type="radio"
