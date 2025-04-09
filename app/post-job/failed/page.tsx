@@ -74,12 +74,12 @@ export default function FailedPage() {
               >
                 Try Again
               </button>
-              <button
-                onClick={() => router.push("/support")}
+              <a
+                href="mailto:info@digital-arrow.agency"
                 className="px-6 py-3 bg-gradient-to-r from-red-600 font-semibold to-red-700 text-white rounded-xl hover:from-red-700 hover:to-red-800 transition-all"
               >
                 Contact Support
-              </button>
+              </a>
             </div>
           </div>
         </div>

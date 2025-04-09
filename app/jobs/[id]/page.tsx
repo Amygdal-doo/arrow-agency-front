@@ -270,7 +270,7 @@ export default function JobDetailsPage() {
             {job.typeOfApplication === "EMAIL" ? (
               <a
                 href={`mailto:${job.applicationLinkOrEmail}?subject=Application for ${job.name}`}
-                className="w-full bg-gradient-to-r from-orange-600 to-orange-500 hover:from-orange-500 hover:to-orange-400 text-white py-4 px-8 rounded-xl font-semibold transition-all duration-200 flex items-center justify-center gap-2"
+                className="w-full bg-orange-600 hover:bg-orange-700 hover:shadow-orange-500/25 text-white py-4 px-8 rounded-xl font-semibold transition-all duration-200 flex items-center justify-center gap-2"
               >
                 Apply Now
                 <HiOutlineMail className="w-5 h-5" />
@@ -284,7 +284,7 @@ export default function JobDetailsPage() {
                 }
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full bg-gradient-to-r from-orange-600 to-orange-500 hover:from-orange-500 hover:to-orange-400 text-white py-4 px-8 rounded-xl font-semibold transition-all duration-200 flex items-center justify-center gap-2"
+                className="w-full bg-orange-600 hover:bg-orange-700 hover:shadow-orange-500/25 text-white py-4 px-8 rounded-xl font-semibold transition-all duration-200 flex items-center justify-center gap-2"
               >
                 Apply Now
                 <FiExternalLink className="w-5 h-5" />
