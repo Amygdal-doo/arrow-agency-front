@@ -57,7 +57,7 @@ const HeroSection = () => {
           >
             <span className="text-white">Turn AI research into</span>
             <br />
-            <span className="bg-gradient-to-r from-orange-400 to-orange-200 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-orange-500 to-orange-500 bg-clip-text text-transparent">
               real-world impact
             </span>
           </motion.h1>

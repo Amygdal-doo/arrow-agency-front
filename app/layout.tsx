@@ -11,6 +11,7 @@ import { AllJobsProvider } from "@/providers/AllJobsProvider";
 import { AllCompaniesProvider } from "@/providers/AllCompaniesProvider";
 import { PackagesProvider } from "@/providers/PackagesProvider";
 import Footer from "./components/Footer";
+import ScrollToTop from "./components/ScrollToTop";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -37,6 +38,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <ScrollToTop />
         <NextAuthProvider>
           <ProfileProvider>
             <ApplicantsProvider>

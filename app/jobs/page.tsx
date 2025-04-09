@@ -104,17 +104,17 @@ export default function JobsPage() {
 
           <div className=" bg-white/5 rounded-2xl p-6">
             <div className="flex flex-col space-y-4">
-              <div className="flex gap-4 items-center">
+              <div className="flex flex-col sm:flex-row gap-4 items-center">
                 <input
                   type="text"
                   placeholder={`Search ${showMyJobs ? "my" : "all"} jobs...`}
                   value={currentSearch}
                   onChange={(e) => setCurrentSearch(e.target.value)}
-                  className="flex-1 p-4 rounded-xl bg-gray-800/50 text-white border border-gray-700/50 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+                  className="flex-1 w-full p-4 rounded-xl bg-gray-800/50 text-white border border-gray-700/50 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
                 />
                 {showMyJobs && (
-                  <Link href="/post-job">
-                    <button className="px-6 py-4 rounded-xl font-medium  bg-orange-600 hover:bg-orange-700 hover:shadow-orange-500/25 text-white transition-all">
+                  <Link href="/post-job" className="w-full sm:w-auto">
+                    <button className="px-6 w-full sm:w-auto py-4 rounded-xl font-medium  bg-orange-600 hover:bg-orange-700 hover:shadow-orange-500/25 text-white transition-all">
                       Post New Job
                     </button>
                   </Link>

@@ -76,7 +76,9 @@ export default function JobDetailsPage() {
     <div className="min-h-screen bg-gradient-to-b from-[#01070a] to-gray-900">
       <div className="container mx-auto px-4 py-24 md:pt-40">
         <button
-          onClick={() => router.back()}
+          onClick={() => {
+            router.back();
+          }}
           className="text-orange-500 hover:text-orange-600 transition-all mb-10"
         >
           ← Back to All Jobs
@@ -90,7 +92,7 @@ export default function JobDetailsPage() {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className=" bg-white/5 rounded-2xl p-8 border border-gray-700/50"
+              className=" bg-white/5 rounded-2xl p-4 md:p-8 border border-gray-700/50"
             >
               <div className="flex flex-col md:flex-row gap-4 justify-between items-start mb-6">
                 <div>
@@ -151,7 +153,7 @@ export default function JobDetailsPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className=" bg-white/5 rounded-2xl p-8 border border-gray-700/50"
+              className=" bg-white/5 rounded-2xl p-4 md:p-8 border border-gray-700/50"
             >
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                 <div className="flex items-center gap-3">
@@ -216,7 +218,7 @@ export default function JobDetailsPage() {
             className="space-y-8"
           >
             {/* Company Info */}
-            <div className=" bg-white/5 rounded-2xl p-8 border border-gray-700/50">
+            <div className=" bg-white/5 rounded-2xl p-4 md:p-8 border border-gray-700/50">
               <div className="space-y-6">
                 <div className="flex flex-col items-start gap-4 mb-6">
                   {job.organization.file && (

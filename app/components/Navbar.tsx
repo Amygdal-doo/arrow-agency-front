@@ -30,7 +30,7 @@ const Navbar = () => {
 
   const NavLinks = () => (
     <>
-      <Link href="/jobs">
+      <Link href="/jobs" onClick={() => setIsMenuOpen(false)}>
         <li
           className={`font-medium text-lg lg:text-xl transition-colors ${
             pathname === "/jobs" || pathname.startsWith("/jobs/")
@@ -41,7 +41,7 @@ const Navbar = () => {
           Jobs
         </li>
       </Link>
-      <Link href="/for-talent">
+      <Link href="/for-talent" onClick={() => setIsMenuOpen(false)}>
         <li
           className={`font-medium text-lg lg:text-xl transition-colors ${
             pathname === "/for-talent"
@@ -53,7 +53,7 @@ const Navbar = () => {
         </li>
       </Link>
       {status === "authenticated" && session?.user?.accessToken && (
-        <Link href="/applicant">
+        <Link href="/applicant" onClick={() => setIsMenuOpen(false)}>
           <li
             className={`font-medium text-lg lg:text-xl transition-colors ${
               pathname === "/applicant" || pathname.startsWith("/applicant/")
@@ -66,7 +66,7 @@ const Navbar = () => {
         </Link>
       )}
       {status === "authenticated" && session?.user?.accessToken && (
-        <Link href="/companies">
+        <Link href="/companies" onClick={() => setIsMenuOpen(false)}>
           <li
             className={`font-medium text-lg lg:text-xl transition-colors ${
               pathname === "/companies" || pathname.startsWith("/companies/")
@@ -85,7 +85,10 @@ const Navbar = () => {
     <>
       {status === "authenticated" && session?.user?.accessToken && (
         <button
-          onClick={() => router.push("/profile")}
+          onClick={() => {
+            router.push("/profile");
+            setIsMenuOpen(false);
+          }}
           className="w-12 h-12 md:w-10 md:h-10 flex items-center justify-center bg-gradient-to-r from-gray-700 to-gray-600 text-white rounded-full text-sm font-bold hover:from-gray-600 hover:to-gray-500 transition-all"
         >
           {profile?.user
@@ -103,6 +106,7 @@ const Navbar = () => {
           } else {
             setShowLoginModal(true);
           }
+          setIsMenuOpen(false);
         }}
         className="w-full md:w-auto bg-white/10 px-6 py-3 md:px-3 lg:px-6 md:py-2 rounded-xl md:rounded-md text-white font-bold hover:bg-white/20 transition-all"
       >
@@ -110,7 +114,11 @@ const Navbar = () => {
           ? "Log out"
           : "Login"}
       </button>
-      <Link href="/post-job" className="w-full md:w-auto">
+      <Link
+        href="/post-job"
+        className="w-full md:w-auto"
+        onClick={() => setIsMenuOpen(false)}
+      >
         <button className="w-full bg-orange-600 hover:bg-orange-700 hover:shadow-orange-500/25 px-6 md:px-3 lg:px-6 py-3 md:py-2 rounded-xl md:rounded-md text-white font-bold transition-all">
           Post a Job
         </button>
@@ -119,34 +127,35 @@ const Navbar = () => {
   );
 
   return (
-    <nav className="w-full bg-black p-1 fixed top-0 left-0 right-0 h-24 z-[999] shadow-lg">
-      <div className="container mx-auto flex items-center justify-between h-full px-4">
+    <nav className="w-full bg-black p-1 fixed top-0 left-0 right-0 h-20 md:h-24 z-[999] shadow-lg">
+      <div className="container mx-auto flex items-center justify-between h-full px-1 md:px-4">
         <div className="flex items-center md:space-x-16">
           <Link href="/">
             <Image
               src={"/arrow.png"}
               alt="Arrow"
-              height={3000}
-              width={4000}
-              className="w-24"
+              height={100}
+              width={100}
+              className="w-16 sm:w-20 md:w-24"
             />
           </Link>
 
           {/* Desktop Navigation */}
-          <ul className="hidden md:flex space-x-10">
+          <ul className="hidden lg:flex space-x-10">
             <NavLinks />
           </ul>
         </div>
 
         {/* Desktop Auth Buttons */}
-        <div className="hidden md:flex items-center space-x-4">
+        <div className="hidden lg:flex items-center space-x-4">
           <AuthButtons />
         </div>
 
         {/* Mobile Menu Button */}
+
         <button
           onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className="md:hidden text-white p-2"
+          className="lg:hidden text-white p-2"
         >
           <svg
             className="w-6 h-6"
@@ -175,9 +184,40 @@ const Navbar = () => {
 
       {/* Mobile Menu Modal */}
       {isMenuOpen && (
-        <div className="md:hidden fixed inset-0 z-50">
+        <div className="lg:hidden fixed inset-0 z-50">
           <div className="absolute inset-0 bg-gradient-to-b from-black/95 to-gray-900/95">
-            <div className="flex flex-col h-full pt-28 px-6">
+            <div className="flex flex-col h-full pt-24 px-6">
+              {/* Add logo and close button in the same line */}
+              <div className="absolute top-2 left-2 right-2 flex justify-between items-center">
+                <Link href="/" onClick={() => setIsMenuOpen(false)}>
+                  <Image
+                    src={"/arrow.png"}
+                    alt="Arrow"
+                    height={100}
+                    width={100}
+                    className="w-16"
+                  />
+                </Link>
+                <button
+                  onClick={() => setIsMenuOpen(false)}
+                  className="text-white p-2 rounded-full bg-white/10"
+                >
+                  <svg
+                    className="w-6 h-6"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
+              </div>
+
               <ul className="space-y-8 mb-12">
                 <NavLinks />
               </ul>
@@ -186,25 +226,6 @@ const Navbar = () => {
                 <div className="h-px w-full bg-gradient-to-r from-transparent via-gray-500/20 to-transparent mb-8" />
                 <AuthButtons />
               </div>
-
-              <button
-                onClick={() => setIsMenuOpen(false)}
-                className="absolute top-7 right-4 text-white p-2 rounded-full bg-white/10"
-              >
-                <svg
-                  className="w-6 h-6"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              </button>
             </div>
           </div>
         </div>

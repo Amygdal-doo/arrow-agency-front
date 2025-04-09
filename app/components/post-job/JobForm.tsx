@@ -116,6 +116,11 @@ const JobForm = ({ jobMethods }: JobFormProps) => {
   return (
     <FormProvider {...jobMethods}>
       <form className="space-y-6">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-2xl font-bold text-white">Job Information</h2>
+          <div className="h-px flex-1 bg-gray-700 mx-4" />
+        </div>
+
         <div className="bg-gray-800/50  rounded-xl p-6 border border-gray-700/50 shadow-lg">
           <label className="block text-sm font-medium text-gray-300 mb-2">
             Job Title *

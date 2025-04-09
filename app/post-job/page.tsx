@@ -22,6 +22,7 @@ import { useCompanies } from "@/providers/AllCompaniesProvider";
 import { usePackages } from "@/providers/PackagesProvider";
 import Packages from "../components/post-job/Packages";
 import { useRouter } from "next/navigation";
+import { scrollToTop } from "@/core/consts/scrollToTop";
 
 const steps = [
   { id: 1, name: "Job Details" },
@@ -116,6 +117,7 @@ export default function PostJob() {
   };
 
   const handleNext = async () => {
+    scrollToTop();
     if (currentStep === 1) {
       try {
         const isValid = await jobMethods.trigger();
@@ -267,9 +269,8 @@ export default function PostJob() {
 
           {/* Form */}
           {/* Scrollable form content */}
-
           <div className="flex-1 overflow-y-auto">
-            <div className="space-y-6 overflow-x-auto max-h-[80vh]">
+            <div className="space-y-6  max-h-[80vh]">
               {currentStep === 1 && <JobForm jobMethods={jobMethods} />}
               {currentStep === 2 && (
                 <CompanyForm companyMethods={companyMethods} />
@@ -290,7 +291,10 @@ export default function PostJob() {
                 {currentStep > 1 && (
                   <button
                     type="button"
-                    onClick={() => setCurrentStep(currentStep - 1)}
+                    onClick={() => {
+                      setCurrentStep(currentStep - 1);
+                      scrollToTop();
+                    }}
                     className="bg-gray-700/50 text-white px-6 py-3 rounded-lg font-medium hover:bg-gray-600/50 transition-all"
                   >
                     Previous
