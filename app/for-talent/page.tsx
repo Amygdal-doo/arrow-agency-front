@@ -89,13 +89,13 @@ export default function ForTalentPage() {
                 <>
                   <Link
                     href="/profile"
-                    className="bg-orange-600 hover:bg-orange-700 hover:shadow-orange-500/25 text-white px-8 py-4 rounded-xl font-semibold transition-all duration-200"
+                    className="bg-orange-600 text-lg hover:bg-orange-700 hover:shadow-orange-500/25 text-white px-8 py-4 rounded-xl font-semibold transition-all duration-200"
                   >
                     Update Your Profile
                   </Link>
                   <button
                     onClick={() => setShowCVModal(true)}
-                    className="bg-gray-800 hover:bg-gray-700 text-white px-8 py-4 rounded-xl font-semibold transition-all duration-200"
+                    className="bg-gray-800 text-lg hover:bg-gray-700 text-white px-8 py-4 rounded-xl font-semibold transition-all duration-200"
                   >
                     Create CV
                   </button>
@@ -103,7 +103,7 @@ export default function ForTalentPage() {
               ) : (
                 <button
                   onClick={handleGetStarted}
-                  className="bg-orange-600 hover:bg-orange-700 hover:shadow-orange-500/25 text-white px-8 py-4 rounded-xl font-semibold transition-all duration-200"
+                  className="bg-orange-600 hover:bg-orange-700 text-lg hover:shadow-orange-500/25 text-white px-8 py-4 rounded-xl font-semibold transition-all duration-200"
                 >
                   Create CV
                 </button>
@@ -155,7 +155,7 @@ export default function ForTalentPage() {
 
         <section className="bg-gray-900/50 py-20">
           <motion.div
-            initial={{ opacity: 0, x: 20 }}
+            initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
             className="container mx-auto px-4"
@@ -188,9 +188,9 @@ export default function ForTalentPage() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="grid md:grid-cols-2 gap-12 items-center"
+            className="flex flex-col lg:flex-row items-center space-y-20 lg:space-y-0 pt-20 lg:space-x-10"
           >
-            <div>
+            <div className="w-full lg:w-1/2">
               <h2 className="text-4xl font-bold text-white mb-6">
                 Find Your Dream AI Role
               </h2>
@@ -199,7 +199,7 @@ export default function ForTalentPage() {
                 startups to industry leaders, find opportunities that match your
                 expertise and career goals.
               </p>
-              <div className="grid grid-cols-2 gap-4 mb-8">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
                 <div className="bg-white/5 p-4 rounded-lg">
                   <h4 className="text-orange-500 font-semibold mb-2">
                     Remote First
@@ -227,16 +227,16 @@ export default function ForTalentPage() {
               </div>
               <Link
                 href="/jobs"
-                className="bg-orange-600 hover:bg-orange-700 hover:shadow-orange-500/250 text-white px-8 py-4 rounded-xl font-semibold transition-all duration-200 inline-block"
+                className="bg-orange-600 text-lg hover:bg-orange-700 hover:shadow-orange-500/250 text-white px-8 py-4 rounded-xl font-semibold transition-all duration-200 inline-block"
               >
                 View All Positions
               </Link>
             </div>
             <motion.div
-              initial={{ opacity: 0, x: 20 }}
+              initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="bg-white/5 rounded-2xl p-8 border border-gray-700/50"
+              className="bg-white/5  w-full lg:w-1/2 rounded-2xl p-4 md:p-8 border border-gray-700/50"
             >
               <div className="space-y-4">
                 {jobs.slice(0, 3).map((job, index) => (
