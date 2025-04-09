@@ -82,6 +82,10 @@ interface IJobsContextProps {
   myJobsLoading: boolean;
   error: string | null;
   myJobsError: string | null;
+  worldwide: boolean;
+  setWorldwide: (worldwide: boolean) => void;
+  remote: boolean;
+  setRemote: (remote: boolean) => void;
   page: number;
   setPage: (page: number) => void;
   limit: number;
@@ -111,6 +115,10 @@ export const JobsContext = createContext<IJobsContextProps>({
   myJobsLoading: false,
   error: null,
   myJobsError: null,
+  worldwide: false,
+  setWorldwide: () => {},
+  remote: false,
+  setRemote: () => {},
   page: 1,
   setPage: () => {},
   limit: 10,
@@ -143,6 +151,8 @@ export const AllJobsProvider: FC<PropsWithChildren> = ({ children }) => {
 
   // Jobs state
   const [page, setPage] = useState(1);
+  const [worldwide, setWorldwide] = useState(false);
+  const [remote, setRemote] = useState(false);
   const [limit, setLimit] = useState(10);
   const [type, setType] = useState("asc");
   const [search, setSearch] = useState("");
@@ -168,6 +178,8 @@ export const AllJobsProvider: FC<PropsWithChildren> = ({ children }) => {
             limit,
             type,
             search,
+            worldwide,
+            remote,
           },
         }
       );
@@ -194,6 +206,8 @@ export const AllJobsProvider: FC<PropsWithChildren> = ({ children }) => {
             limit: myJobsLimit,
             type: myJobsType,
             search: myJobsSearch,
+            worldwide,
+            remote,
           },
         }
       );
@@ -213,7 +227,7 @@ export const AllJobsProvider: FC<PropsWithChildren> = ({ children }) => {
     }, 300);
 
     return () => clearTimeout(debounceTimer);
-  }, [page, limit, type, search]);
+  }, [page, limit, type, search, worldwide, remote]);
 
   useEffect(() => {
     if (status === "authenticated") {
@@ -223,7 +237,16 @@ export const AllJobsProvider: FC<PropsWithChildren> = ({ children }) => {
 
       return () => clearTimeout(debounceTimer);
     }
-  }, [status, session, myJobsPage, myJobsLimit, myJobsType, myJobsSearch]);
+  }, [
+    status,
+    session,
+    myJobsPage,
+    myJobsLimit,
+    myJobsType,
+    myJobsSearch,
+    worldwide,
+    remote,
+  ]);
 
   return (
     <JobsContext.Provider
@@ -234,6 +257,10 @@ export const AllJobsProvider: FC<PropsWithChildren> = ({ children }) => {
         myJobsLoading,
         error,
         myJobsError,
+        worldwide,
+        setWorldwide,
+        remote,
+        setRemote,
         page,
         setPage,
         limit,

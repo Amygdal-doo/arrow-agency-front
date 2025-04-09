@@ -25,9 +25,11 @@ export default function JobsPage() {
     setMyJobsSearch,
     fetchJobs,
     fetchMyJobs,
+    worldwide,
+    setWorldwide,
+    remote,
+    setRemote,
   } = useJobs();
-  const [isRemoteOnly, setIsRemoteOnly] = useState(false);
-  const [isWorldwide, setIsWorldwide] = useState(false);
   const [showMyJobs, setShowMyJobs] = useState(false);
 
   const currentJobs = showMyJobs ? myJobs : jobs;
@@ -126,8 +128,8 @@ export default function JobsPage() {
                 <label className="flex items-center gap-2 cursor-pointer">
                   <input
                     type="checkbox"
-                    checked={isRemoteOnly}
-                    onChange={(e) => setIsRemoteOnly(e.target.checked)}
+                    checked={remote}
+                    onChange={(e) => setRemote(e.target.checked)}
                     className="sr-only peer"
                   />
                   <div className="w-5 h-5 rounded-full border border-gray-600/50 bg-gray-800/50 peer-checked:bg-orange-500 relative">
@@ -153,8 +155,8 @@ export default function JobsPage() {
                 <label className="flex items-center gap-2 cursor-pointer">
                   <input
                     type="checkbox"
-                    checked={isWorldwide}
-                    onChange={(e) => setIsWorldwide(e.target.checked)}
+                    checked={worldwide}
+                    onChange={(e) => setWorldwide(e.target.checked)}
                     className="sr-only peer"
                   />
                   <div className="w-5 h-5 rounded-full border border-gray-600/50 bg-gray-800/50 peer-checked:bg-orange-500 relative">
