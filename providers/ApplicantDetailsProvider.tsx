@@ -120,6 +120,7 @@ interface ICV {
   updatedAt: string;
   showPersonalInfo: boolean;
   showCompanyInfo: boolean;
+  publicCv: boolean;
   primaryColor: string;
   secondaryColor: string;
   tertiaryColor: string;
@@ -139,6 +140,7 @@ interface IApplicantDetails {
   templateId: string;
   createdAt: string;
   updatedAt: string;
+  publicCv: boolean;
 }
 
 interface ApplicantContextType {
@@ -207,6 +209,8 @@ interface ApplicantContextType {
   setShowPersonalInfo: (value: boolean) => void;
   showCompanyInfo: boolean;
   setShowCompanyInfo: (value: boolean) => void;
+  publicCv: boolean;
+  setPublicCv: (value: boolean) => void;
   updateApplicant: () => Promise<void>;
 }
 
@@ -227,6 +231,7 @@ export const ApplicantProvider = ({
   const [error, setError] = useState<string | null>(null);
 
   // Editable state for each field
+  const [publicCv, setPublicCv] = useState<boolean>(true);
   const [showPersonalInfo, setShowPersonalInfo] = useState<boolean>(true);
   const [showCompanyInfo, setShowCompanyInfo] = useState<boolean>(true);
   const [companyName, setCompanyName] = useState<string>("");
@@ -282,7 +287,7 @@ export const ApplicantProvider = ({
         const data = response.data;
         setApplicant(data);
         setTemplateId(data.templateId);
-
+        setPublicCv(data.publicCv);
         setShowPersonalInfo(data.cv.showPersonalInfo);
         setShowCompanyInfo(data.cv.showCompanyInfo);
         setPrimaryColor(data.cv.primaryColor);
@@ -335,6 +340,7 @@ export const ApplicantProvider = ({
           tertiaryColor,
           firstName,
           lastName,
+          publicCv,
           email,
           phone,
           summary,
@@ -358,7 +364,7 @@ export const ApplicantProvider = ({
             skills: deleteItems.skills,
           },
         });
-        fetchApplicant();
+        await fetchApplicant();
       }
     } catch (err) {
       setError((err as Error).message);
@@ -381,6 +387,8 @@ export const ApplicantProvider = ({
         error,
         companyName,
         setCompanyName,
+        publicCv,
+        setPublicCv,
         companyLogo,
         setCompanyLogo,
         firstName,

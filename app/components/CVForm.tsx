@@ -74,6 +74,7 @@ const CVForm = ({ onClose }: CVFormProps) => {
       technologies: [],
       logoId: "",
       templateId: "",
+      // public_cv: false,
     },
   });
 
@@ -102,6 +103,7 @@ const CVForm = ({ onClose }: CVFormProps) => {
   };
 
   const onSubmit = async (data: UserFormInputs) => {
+    console.log("data 12432", data);
     setIsSubmitting(true);
     try {
       const formData = new FormData();
@@ -117,6 +119,7 @@ const CVForm = ({ onClose }: CVFormProps) => {
       formData.append("phone", data.phone);
       formData.append("logoId", data.logoId);
       formData.append("templateId", data.templateId);
+      formData.append("publicCv", JSON.stringify(false));
 
       if (data.file) {
         formData.append("file", data.file);
@@ -270,6 +273,34 @@ const CVForm = ({ onClose }: CVFormProps) => {
             </p>
           )}
         </div>
+
+        {/* <div className="bg-gray-800/50 rounded-xl p-6 border border-gray-700/50 shadow-lg relative z-10">
+          <div className="flex items-center justify-between">
+            <label className="text-sm font-medium text-gray-300">
+              Make CV Public
+            </label>
+            <label className="inline-flex items-center cursor-pointer">
+              <input
+                type="checkbox"
+                checked={showPublicCV}
+                onChange={(e) => {
+                  setShowPublicCV(e.target.checked);
+                  setValue("public_cv", e.target.checked);
+                }}
+                className="sr-only peer"
+              />
+              <div className="relative w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-orange-600"></div>
+              <span className="ml-3 text-sm font-medium text-gray-300">
+                {showPublicCV ? "Public" : "Private"}
+              </span>
+            </label>
+          </div>
+          {errors.public_cv && (
+            <p className="mt-2 text-sm text-red-400">
+              {errors.public_cv.message}
+            </p>
+          )}
+        </div> */}
 
         <div className="bg-gray-800/50 rounded-xl p-6 border border-gray-700/50 shadow-lg relative z-10">
           <h3 className="text-lg font-medium text-white mb-6">
