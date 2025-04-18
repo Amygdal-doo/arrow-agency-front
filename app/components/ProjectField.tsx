@@ -282,11 +282,13 @@ const ProjectField = () => {
                 </div>
               </div>
               <div className="flex justify-between text-sm text-gray-400">
-                <span>
-                  {project.startDate ? project.startDate : ""}
-                  {" - "}
-                  {project.endDate ? project.endDate : "Present"}
-                </span>
+                {(project.startDate || project.endDate) && (
+                  <span>
+                    {project.startDate && project.startDate}
+                    {project.startDate && project.endDate && " - "}
+                    {project.endDate && project.endDate}
+                  </span>
+                )}
               </div>
             </div>
           ))

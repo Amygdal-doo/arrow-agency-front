@@ -276,11 +276,13 @@ const ExperienceField = () => {
               </div>
               <p className="text-gray-400 mb-3">{exp.description}</p>
               <div className="flex justify-end text-sm text-gray-400">
-                <span>
-                  {exp.startDate ? exp.startDate : ""}
-                  {" - "}
-                  {exp.endDate ? exp.endDate : "Present"}
-                </span>
+                {(exp.startDate || exp.endDate) && (
+                  <span>
+                    {exp.startDate && exp.startDate}
+                    {exp.startDate && exp.endDate && " - "}
+                    {exp.endDate && exp.endDate}
+                  </span>
+                )}
               </div>
             </div>
           ))

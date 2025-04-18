@@ -2,6 +2,7 @@
 import { usePublicCV } from "@/providers/PublicCvProvider";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 const PublicCv = () => {
   const { cv, loading } = usePublicCV();
@@ -45,6 +46,20 @@ const PublicCv = () => {
   } = cv;
   return (
     <div className="min-h-screen bg-white/[0.99] text-white py-5">
+      <div className="fixed top-8 left-8 z-50">
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.3 }}
+        >
+          <Link
+            href="/"
+            className="group flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-orange-500 to-orange-600 rounded-xl hover:shadow-orange-500/25 hover:scale-105 transition-all duration-200"
+          >
+            <span className="font-medium">Visit Arrow Agency</span>
+          </Link>
+        </motion.div>
+      </div>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -194,8 +209,8 @@ const PublicCv = () => {
                             <p className="text-gray-600">{exp.company}</p>
                             <span className="text-xs text-gray-400 font-medium">
                               {exp.startDate ? exp.startDate : ""}
-                              {exp.startDate && " - "}
-                              {exp.endDate ? exp.endDate : "Present"}
+                              {exp.startDate && exp.endDate && " - "}
+                              {exp.endDate ? exp.endDate : ""}
                             </span>
                           </div>
                           <p className="text-gray-600 leading-relaxed">
@@ -225,8 +240,8 @@ const PublicCv = () => {
                             <p className="text-gray-600">{edu.institution}</p>
                             <span className="text-xs text-gray-400 font-medium">
                               {edu.startDate ? edu.startDate : ""}
-                              {edu.startDate && " - "}
-                              {edu.endDate ? edu.endDate : "Present"}
+                              {edu.startDate && edu.endDate && " - "}
+                              {edu.endDate ? edu.endDate : ""}
                             </span>
                           </div>
                         </div>
@@ -266,8 +281,8 @@ const PublicCv = () => {
                             )}
                             <span className="text-xs text-gray-400 font-medium">
                               {project.startDate ? project.startDate : ""}
-                              {project.startDate && " - "}
-                              {project.endDate ? project.endDate : "Present"}
+                              {project.startDate && project.endDate && " - "}
+                              {project.endDate ? project.endDate : ""}
                             </span>
                           </div>
                         </div>
@@ -304,8 +319,8 @@ const PublicCv = () => {
                             )}
                             <span className="text-xs text-gray-400 font-medium">
                               {course.startDate ? course.startDate : ""}
-                              {course.startDate && " - "}
-                              {course.endDate ? course.endDate : "Present"}
+                              {course.startDate && course.endDate && " - "}
+                              {course.endDate ? course.endDate : ""}
                             </span>
                           </div>
                         </div>

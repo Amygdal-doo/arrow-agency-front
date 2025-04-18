@@ -259,7 +259,7 @@ const CourseField = () => {
                 <span>
                   {course.startDate ? course.startDate : ""}
                   {" - "}
-                  {course.endDate ? course.endDate : "Present"}
+                  {course.endDate ? course.endDate : ""}
                 </span>
               </div>
             </div>

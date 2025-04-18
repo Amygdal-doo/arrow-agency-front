@@ -285,11 +285,13 @@ const EducationField = () => {
               </div>
               <div className="flex justify-between text-sm text-gray-400">
                 <span>{education.field}</span>
-                <span>
-                  {education.startDate ? education.startDate : ""}
-                  {" - "}
-                  {education.endDate ? education.endDate : "Present"}
-                </span>
+                {(education.startDate || education.endDate) && (
+                  <span>
+                    {education.startDate && education.startDate}
+                    {education.startDate && education.endDate && " - "}
+                    {education.endDate && education.endDate}
+                  </span>
+                )}
               </div>
             </div>
           ))

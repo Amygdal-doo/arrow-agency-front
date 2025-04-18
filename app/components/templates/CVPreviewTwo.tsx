@@ -145,8 +145,8 @@ const CVPreviewTwo = () => {
                     <p className="text-base text-gray-600">{exp.company}</p>
                     <span className="text-xs text-gray-400 font-medium block mt-1">
                       {exp.startDate ? exp.startDate : ""}
-                      {exp.startDate && " - "}
-                      {exp.endDate ? exp.endDate : "Present"}
+                      {exp.startDate && exp.endDate && " - "}
+                      {exp.endDate ? exp.endDate : ""}
                     </span>
                     <p className="text-base text-gray-600 mt-2 leading-relaxed">
                       {exp.description}
@@ -185,8 +185,8 @@ const CVPreviewTwo = () => {
                     <p className="text-base text-gray-600">{edu.institution}</p>
                     <span className="text-xs text-gray-400 font-medium block mt-1">
                       {edu.startDate ? edu.startDate : ""}
-                      {edu.startDate && " - "}
-                      {edu.endDate ? edu.endDate : "Present"}
+                      {edu.startDate && edu.endDate && " - "}
+                      {edu.endDate ? edu.endDate : ""}
                     </span>
                   </div>
                 ))}
@@ -235,8 +235,8 @@ const CVPreviewTwo = () => {
                     )}
                     <span className="text-xs text-gray-400 font-medium block mt-1">
                       {project.startDate ? project.startDate : ""}
-                      {project.startDate && " - "}
-                      {project.endDate ? project.endDate : "Present"}
+                      {project.startDate && project.endDate && " - "}
+                      {project.endDate ? project.endDate : ""}
                     </span>
                   </div>
                 ))}
@@ -283,8 +283,8 @@ const CVPreviewTwo = () => {
                     )}
                     <span className="text-xs text-gray-400 font-medium block mt-1">
                       {course.startDate ? course.startDate : ""}
-                      {course.startDate && " - "}
-                      {course.endDate ? course.endDate : "Present"}
+                      {course.startDate && course.endDate && " - "}
+                      {course.endDate ? course.endDate : ""}
                     </span>
                   </div>
                 ))}
@@ -332,8 +332,8 @@ const CVPreviewTwo = () => {
                     )}
                     <span className="text-xs text-gray-400 font-medium block mt-1">
                       {cert.issueDate ? cert.issueDate : ""}
-                      {cert.issueDate && " - "}
-                      {cert.expirationDate ? cert.expirationDate : "Present"}
+                      {cert.issueDate && cert.expirationDate && " - "}
+                      {cert.expirationDate ? cert.expirationDate : ""}
                     </span>
                   </div>
                 ))}

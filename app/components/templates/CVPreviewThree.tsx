@@ -285,8 +285,8 @@ const CVPreviewThree = () => {
                   </div>
                   <div className="text-sm text-slate-400 mt-1">
                     {exp.startDate ? exp.startDate : ""}
-                    {exp.startDate && " - "}
-                    {exp.endDate ? exp.endDate : "Present"}
+                    {exp.startDate && exp.endDate && " - "}
+                    {exp.endDate ? exp.endDate : ""}
                   </div>
                   <p className="mt-4 text-slate-600">{exp.description}</p>
                 </div>
@@ -322,8 +322,8 @@ const CVPreviewThree = () => {
                   </h3>
                   <div className="text-sm text-slate-400 mt-1">
                     {project.startDate ? project.startDate : ""}
-                    {project.startDate && " - "}
-                    {project.endDate ? project.endDate : "Present"}
+                    {project.startDate && project.endDate && " - "}
+                    {project.endDate ? project.endDate : ""}
                   </div>
                   <p className="mt-4 text-slate-600">{project.description}</p>
                   {project.url && (
@@ -372,8 +372,8 @@ const CVPreviewThree = () => {
                   </h3>
                   <div className="text-sm text-slate-400 mt-1">
                     {course.startDate ? course.startDate : ""}
-                    {course.startDate && " - "}
-                    {course.endDate ? course.endDate : "Present"}
+                    {course.startDate && course.endDate && " - "}
+                    {course.endDate ? course.endDate : ""}
                   </div>
                   {course.url && (
                     <a
@@ -427,8 +427,8 @@ const CVPreviewThree = () => {
                   </div>
                   <div className="text-sm text-slate-400 mt-1">
                     {edu.startDate ? edu.startDate : ""}
-                    {edu.startDate && " - "}
-                    {edu.endDate ? edu.endDate : "Present"}
+                    {edu.startDate && edu.endDate && " - "}
+                    {edu.endDate ? edu.endDate : ""}
                   </div>
                 </div>
               ))}

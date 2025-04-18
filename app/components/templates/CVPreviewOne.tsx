@@ -130,8 +130,8 @@ const CVPreviewOne = () => {
                       <p className="text-gray-600">{exp.company}</p>
                       <span className="text-xs text-gray-400 font-medium">
                         {exp.startDate ? exp.startDate : ""}
-                        {exp.startDate && " - "}
-                        {exp.endDate ? exp.endDate : "Present"}
+                        {exp.startDate && exp.endDate && " - "}
+                        {exp.endDate ? exp.endDate : ""}
                       </span>
                     </div>
                     <p className="text-gray-600 leading-relaxed">
@@ -161,8 +161,8 @@ const CVPreviewOne = () => {
                       <p className="text-gray-600">{edu.institution}</p>
                       <span className="text-xs text-gray-400 font-medium">
                         {edu.startDate ? edu.startDate : ""}
-                        {edu.startDate && " - "}
-                        {edu.endDate ? edu.endDate : "Present"}
+                        {edu.startDate && edu.endDate && " - "}
+                        {edu.endDate ? edu.endDate : ""}
                       </span>
                     </div>
                   </div>
@@ -200,8 +200,8 @@ const CVPreviewOne = () => {
                       )}
                       <span className="text-xs text-gray-400 font-medium">
                         {project.startDate ? project.startDate : ""}
-                        {project.startDate && " - "}
-                        {project.endDate ? project.endDate : "Present"}
+                        {project.startDate && project.endDate && " - "}
+                        {project.endDate ? project.endDate : ""}
                       </span>
                     </div>
                   </div>
@@ -238,8 +238,8 @@ const CVPreviewOne = () => {
                       )}
                       <span className="text-xs text-gray-400 font-medium">
                         {course.startDate ? course.startDate : ""}
-                        {course.startDate && " - "}
-                        {course.endDate ? course.endDate : "Present"}
+                        {course.startDate && course.endDate && " - "}
+                        {course.endDate ? course.endDate : ""}
                       </span>
                     </div>
                   </div>
