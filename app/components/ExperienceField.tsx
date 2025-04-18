@@ -41,11 +41,11 @@ const ExperienceField = () => {
     setExperience([
       ...experience,
       {
-        position: newExperience.position,
-        company: newExperience.company,
-        startDate: newExperience.startDate,
-        endDate: newExperience.endDate,
-        description: newExperience.description,
+        position: newExperience.position || "",
+        company: newExperience.company || "",
+        startDate: newExperience.startDate || "",
+        endDate: newExperience.endDate || "",
+        description: newExperience.description || "",
       },
     ]);
 
@@ -111,7 +111,15 @@ const ExperienceField = () => {
   const handleEditExperience = (id: string) => {
     const experienceToEdit = currentExperience.find((exp) => exp.id === id);
     if (experienceToEdit) {
-      setNewExperience({ ...experienceToEdit });
+      // setNewExperience({ ...experienceToEdit });
+      setNewExperience({
+        ...experienceToEdit,
+        position: experienceToEdit.position || "",
+        company: experienceToEdit.company || "",
+        startDate: experienceToEdit.startDate || "",
+        endDate: experienceToEdit.endDate || "",
+        description: experienceToEdit.description || "",
+      });
     }
   };
 

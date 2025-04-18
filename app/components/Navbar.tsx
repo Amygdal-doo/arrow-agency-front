@@ -103,6 +103,7 @@ const Navbar = () => {
         onClick={() => {
           if (status === "authenticated" && session?.user?.accessToken) {
             signOut();
+            router.push("/");
           } else {
             setShowLoginModal(true);
           }

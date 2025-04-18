@@ -4,10 +4,12 @@ import React from "react";
 import CVPreviewOne from "./templates/CVPreviewOne";
 import CVPreviewTwo from "./templates/CVPreviewTwo";
 import CVPreviewThree from "./templates/CVPreviewThree";
+import { useRouter } from "next/navigation";
 // import html2canvas from "html2canvas";
 // import jsPDF from "jspdf";
 
 const CVPreview = () => {
+  const router = useRouter();
   const {
     loading,
     applicant,
@@ -198,12 +200,13 @@ const CVPreview = () => {
         <div className="flex flex-col md:flex-row gap-4">
           {applicant && (
             <button
-              onClick={() =>
-                handleDownload(applicant.file.url, applicant.file.name)
+              onClick={
+                () => router.push(`/public-cv/${applicant.cv.id}`)
+                // handleDownload(applicant.file.url, applicant.file.name)
               }
               className="mt-4 font-bold text-center bg-orange-600 hover:bg-orange-700 hover:shadow-orange-500/25 text-white py-2 px-8 rounded-md transition-colors"
             >
-              Download PDF
+              Publish CV
             </button>
           )}
           <button

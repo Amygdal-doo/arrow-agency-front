@@ -42,11 +42,11 @@ const EducationField = () => {
     setEducations([
       ...educations,
       {
-        institution: newEducation.institution,
-        degree: newEducation.degree,
-        field: newEducation.field,
-        startDate: newEducation.startDate,
-        endDate: newEducation.endDate,
+        institution: newEducation.institution || "",
+        degree: newEducation.degree || "",
+        field: newEducation.field || "",
+        startDate: newEducation.startDate || "",
+        endDate: newEducation.endDate || "",
       },
     ]);
 
@@ -113,6 +113,15 @@ const EducationField = () => {
     );
     if (educationToEdit) {
       setNewEducation({ ...educationToEdit });
+      // setNewExperience({ ...experienceToEdit });
+      setNewEducation({
+        ...educationToEdit,
+        institution: educationToEdit.institution || "",
+        degree: educationToEdit.degree || "",
+        field: educationToEdit.field || "",
+        startDate: educationToEdit.startDate || "",
+        endDate: educationToEdit.endDate || "",
+      });
     }
   };
 
