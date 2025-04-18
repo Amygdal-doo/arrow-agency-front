@@ -39,14 +39,14 @@ const CVPreview = () => {
 
   // const pdfRef = useRef<HTMLDivElement>(null);
 
-  const handleDownload = (fileUrl: string, fileName: string) => {
-    const link = document.createElement("a");
-    link.href = fileUrl;
-    link.setAttribute("download", fileName);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
+  // const handleDownload = (fileUrl: string, fileName: string) => {
+  //   const link = document.createElement("a");
+  //   link.href = fileUrl;
+  //   link.setAttribute("download", fileName);
+  //   document.body.appendChild(link);
+  //   link.click();
+  //   document.body.removeChild(link);
+  // };
 
   // const handleDownloadPdf = async () => {
   //   const element = pdfRef.current;
