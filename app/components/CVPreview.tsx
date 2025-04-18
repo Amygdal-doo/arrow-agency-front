@@ -191,10 +191,10 @@ const CVPreview = () => {
         <div className="flex flex-col md:flex-row gap-4">
           {applicant && (
             <button
-              onClick={
-                () => router.push(`/public-cv/${applicant.cv.id}`)
+              onClick={() => {
+                router.push(`/public-cv/${applicant.cv.id}`);
                 // handleDownload(applicant.file.url, applicant.file.name)
-              }
+              }}
               className="mt-4 font-bold text-center bg-orange-600 hover:bg-orange-700 hover:shadow-orange-500/25 text-white py-2 px-8 rounded-md transition-colors"
             >
               Publish CV
