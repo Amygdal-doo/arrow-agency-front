@@ -3,7 +3,7 @@ import { useApplicant } from "@/providers/ApplicantDetailsProvider";
 import { useState } from "react";
 
 const HobbyField = () => {
-  const { hobbies, setHobbies } = useApplicant();
+  const { hobbies, setHobbies, setUpdating } = useApplicant();
   const [newHobby, setNewHobby] = useState<string>("");
   const [editIndex, setEditIndex] = useState<number | null>(null);
 
@@ -16,6 +16,7 @@ const HobbyField = () => {
       setHobbies([...hobbies, newHobby]);
       setNewHobby("");
     }
+    setUpdating(true);
   };
 
   const handleEditHobby = (index: number) => {
@@ -31,10 +32,12 @@ const HobbyField = () => {
       setNewHobby("");
       setEditIndex(null);
     }
+    setUpdating(true);
   };
 
   const handleDeleteHobby = (index: number) => {
     setHobbies(hobbies.filter((_, i) => i !== index));
+    setUpdating(true);
   };
 
   return (

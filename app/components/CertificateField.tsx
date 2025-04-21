@@ -21,6 +21,7 @@ const CertificateField = () => {
     deleteItems,
     currentCertificates,
     setCurrentCertificates,
+    setUpdating,
   } = useApplicant();
 
   const [newCertificate, setNewCertificate] = useState<ICertificate>({
@@ -40,7 +41,7 @@ const CertificateField = () => {
       id: newId,
       isNew: true,
     };
-
+    setUpdating(true);
     // For BE, exclude id if it's a new certificate
     setCertificates([
       ...certificates,
@@ -68,7 +69,7 @@ const CertificateField = () => {
 
   const handleUpdateCertificate = () => {
     const updatedCertificate = { ...newCertificate };
-
+    setUpdating(true);
     setCurrentCertificates(
       currentCertificates.map((cert) =>
         cert.id === newCertificate.id ? updatedCertificate : cert
@@ -125,7 +126,7 @@ const CertificateField = () => {
       currentCertificates.filter((cert) => cert.id !== id)
     );
     setCertificates(certificates.filter((cert) => cert.id !== id));
-
+    setUpdating(true);
     if (id) {
       const updatedDeleteItems: IDelete = {
         ...deleteItems,

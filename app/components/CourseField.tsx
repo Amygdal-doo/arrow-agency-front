@@ -15,6 +15,7 @@ const CourseField = () => {
     deleteItems,
     currentCourses,
     setCurrentCourses,
+    setUpdating,
   } = useApplicant();
 
   const [newCourse, setNewCourse] = useState<ICourse & { isNew?: boolean }>({
@@ -33,7 +34,7 @@ const CourseField = () => {
       id: newId,
       isNew: true,
     };
-
+    setUpdating(true);
     setCourses([
       ...courses,
       {
@@ -58,7 +59,7 @@ const CourseField = () => {
 
   const handleUpdateCourse = () => {
     const updatedCourse = { ...newCourse };
-
+    setUpdating(true);
     setCurrentCourses(
       currentCourses.map((course) =>
         course.id === newCourse.id ? updatedCourse : course
@@ -107,7 +108,7 @@ const CourseField = () => {
   const handleDeleteCourse = (id: string) => {
     setCurrentCourses(currentCourses.filter((course) => course.id !== id));
     setCourses(courses.filter((course) => course.id !== id));
-
+    setUpdating(true);
     if (id) {
       const updatedDeleteItems: IDelete = {
         ...deleteItems,

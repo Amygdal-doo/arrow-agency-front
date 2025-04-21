@@ -10,11 +10,12 @@ import LanguageField from "@/app/components/LanguageField";
 import ProjectField from "@/app/components/ProjectField";
 import SkillField from "@/app/components/SkillField";
 import SocialField from "@/app/components/SocialField";
+import { handleDownload } from "@/core/consts/handleDownload";
 import { useApplicant } from "@/providers/ApplicantDetailsProvider";
 import { useProfile } from "@/providers/ProfileInfoProvider";
 import Image from "next/image";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const ApplicantDetails = () => {
   const {
@@ -41,26 +42,31 @@ const ApplicantDetails = () => {
     setCompanyLogo,
     publicCv,
     setPublicCv,
+    setUpdating,
   } = useApplicant();
 
   const { profile } = useProfile();
 
   const [isLogoDropdownOpen, setIsLogoDropdownOpen] = useState(false);
 
-  const handleDownload = (fileUrl: string, fileName: string) => {
-    const link = document.createElement("a");
-    link.href = fileUrl;
-    link.setAttribute("download", fileName);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
+  const [isPersonalInfoChanged, setIsPersonalInfoChanged] = useState(false);
+  const [originalInfo, setOriginalInfo] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+  });
 
-  // const handleSave = async () => {
-  //   await updateApplicant();
-  //   // You can add save functionality here (API call to update applicant data)cl
-  //   console.log("Saved Applicant:");
-  // };
+  useEffect(() => {
+    if (applicant) {
+      setOriginalInfo({
+        firstName: applicant.cv.firstName,
+        lastName: applicant.cv.lastName,
+        email: applicant.cv.email,
+        phone: applicant.cv.phone,
+      });
+    }
+  }, [applicant]);
 
   if (loading) {
     return (
@@ -96,7 +102,10 @@ const ApplicantDetails = () => {
                 <input
                   type="checkbox"
                   checked={showPersonalInfo}
-                  onChange={() => setShowPersonalInfo(!showPersonalInfo)}
+                  onChange={() => {
+                    setUpdating(true);
+                    setShowPersonalInfo(!showPersonalInfo);
+                  }}
                   className="sr-only peer"
                 />
                 <div className="relative w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-orange-600"></div>
@@ -112,14 +121,30 @@ const ApplicantDetails = () => {
                   type="text"
                   placeholder="First name"
                   value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
+                  onChange={(e) => {
+                    setFirstName(e.target.value);
+                    setIsPersonalInfoChanged(
+                      e.target.value !== originalInfo.firstName ||
+                        lastName !== originalInfo.lastName ||
+                        email !== originalInfo.email ||
+                        phone !== originalInfo.phone
+                    );
+                  }}
                   className="bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 placeholder-gray-500 outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
                 />
                 <input
                   type="text"
                   placeholder="Last Name"
                   value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
+                  onChange={(e) => {
+                    setLastName(e.target.value);
+                    setIsPersonalInfoChanged(
+                      e.target.value !== originalInfo.firstName ||
+                        lastName !== originalInfo.lastName ||
+                        email !== originalInfo.email ||
+                        phone !== originalInfo.phone
+                    );
+                  }}
                   className="bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 placeholder-gray-500 outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
                 />
               </div>
@@ -128,17 +153,49 @@ const ApplicantDetails = () => {
                   type="email"
                   placeholder="Email"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    setIsPersonalInfoChanged(
+                      e.target.value !== originalInfo.firstName ||
+                        lastName !== originalInfo.lastName ||
+                        email !== originalInfo.email ||
+                        phone !== originalInfo.phone
+                    );
+                  }}
                   className="bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 placeholder-gray-500 outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
                 />
                 <input
                   type="text"
                   placeholder="Phone Number"
                   value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
+                  onChange={(e) => {
+                    setPhone(e.target.value);
+                    setIsPersonalInfoChanged(
+                      e.target.value !== originalInfo.firstName ||
+                        lastName !== originalInfo.lastName ||
+                        email !== originalInfo.email ||
+                        phone !== originalInfo.phone
+                    );
+                  }}
                   className="bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 placeholder-gray-500 outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
                 />
               </div>
+              <button
+                onClick={() => {
+                  setUpdating(true);
+                  setIsPersonalInfoChanged(false);
+                }}
+                disabled={!isPersonalInfoChanged}
+                className={`mt-4 w-full p-3 rounded-lg font-medium transition-all duration-200 shadow-lg ${
+                  isPersonalInfoChanged
+                    ? "bg-orange-600 hover:bg-orange-700 hover:shadow-orange-500/25 text-white"
+                    : "bg-gray-600 text-gray-400 cursor-not-allowed"
+                }`}
+              >
+                {isPersonalInfoChanged
+                  ? "Update Personal Info"
+                  : "No Changes to Update"}
+              </button>
             </div>
           </div>
 
@@ -152,7 +209,10 @@ const ApplicantDetails = () => {
                 <input
                   type="checkbox"
                   checked={showCompanyInfo}
-                  onChange={() => setShowCompanyInfo(!showCompanyInfo)}
+                  onChange={() => {
+                    setUpdating(true);
+                    setShowCompanyInfo(!showCompanyInfo);
+                  }}
                   className="sr-only peer"
                 />
                 <div className="relative w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-orange-600"></div>
@@ -168,7 +228,10 @@ const ApplicantDetails = () => {
                   type="text"
                   placeholder="Company name"
                   value={companyName}
-                  onChange={(e) => setCompanyName(e.target.value)}
+                  onChange={(e) => {
+                    setUpdating(true);
+                    setCompanyName(e.target.value);
+                  }}
                   className="bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 placeholder-gray-500 outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
                 />
 
@@ -221,6 +284,7 @@ const ApplicantDetails = () => {
                         <div
                           key={logo.id}
                           onClick={() => {
+                            setUpdating(true);
                             setCompanyLogo(logo);
                             setIsLogoDropdownOpen(false);
                           }}
@@ -269,6 +333,7 @@ const ApplicantDetails = () => {
                       type="checkbox"
                       checked={publicCv}
                       onChange={(e) => {
+                        setUpdating(true);
                         setPublicCv(e.target.checked);
                       }}
                       className="sr-only peer"
@@ -317,7 +382,10 @@ const ApplicantDetails = () => {
                     rows={10}
                     placeholder="Write your CV summary here..."
                     value={summary || ""}
-                    onChange={(e) => setSummary(e.target.value)}
+                    onChange={(e) => {
+                      setUpdating(true);
+                      setSummary(e.target.value);
+                    }}
                     className="w-full bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 placeholder-gray-500 outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
                   />
                 </div>
@@ -351,12 +419,7 @@ const ApplicantDetails = () => {
                   <div className="space-y-3">
                     {applicant.file && (
                       <div
-                        onClick={() =>
-                          handleDownload(
-                            applicant.file.url,
-                            applicant.file.name
-                          )
-                        }
+                        onClick={() => handleDownload(applicant.file)}
                         className="flex items-center justify-between p-3 bg-gray-700/30 rounded-lg hover:bg-gray-700/50 cursor-pointer transition-all"
                       >
                         <span className="text-gray-300">

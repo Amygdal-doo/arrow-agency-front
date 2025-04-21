@@ -15,6 +15,7 @@ const ExperienceField = () => {
     deleteItems,
     currentExperience,
     setCurrentExperience,
+    setUpdating,
   } = useApplicant();
 
   const [newExperience, setNewExperience] = useState<
@@ -37,6 +38,7 @@ const ExperienceField = () => {
       isNew: true,
     };
 
+    setUpdating(true);
     // For BE, exclude id if it's a new experience
     setExperience([
       ...experience,
@@ -64,7 +66,7 @@ const ExperienceField = () => {
 
   const handleUpdateExperience = () => {
     const updatedExperience = { ...newExperience };
-
+    setUpdating(true);
     setCurrentExperience(
       currentExperience.map((exp) =>
         exp.id === newExperience.id ? updatedExperience : exp
@@ -110,6 +112,7 @@ const ExperienceField = () => {
 
   const handleEditExperience = (id: string) => {
     const experienceToEdit = currentExperience.find((exp) => exp.id === id);
+
     if (experienceToEdit) {
       // setNewExperience({ ...experienceToEdit });
       setNewExperience({
@@ -124,6 +127,7 @@ const ExperienceField = () => {
   };
 
   const handleDeleteExperience = (id: string) => {
+    setUpdating(true);
     setCurrentExperience(currentExperience.filter((exp) => exp.id !== id));
     setExperience(experience.filter((exp) => exp.id !== id));
 

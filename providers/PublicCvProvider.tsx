@@ -4,6 +4,7 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import { AxiosResponse } from "axios";
 import { apiService } from "@/core/services/apiService";
 import {
+  IApplicantDetails,
   ICertificate,
   ICourse,
   IEducation,
@@ -41,6 +42,7 @@ interface CVData {
   templateId: string;
   createdAt: string;
   updatedAt: string;
+  applicant: IApplicantDetails;
 }
 
 interface PublicCVContextType {

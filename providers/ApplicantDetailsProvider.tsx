@@ -11,6 +11,7 @@ import { AxiosResponse } from "axios";
 import { apiService } from "@/core/services/apiService";
 import { useSession } from "next-auth/react";
 import { ICompanyLogo } from "./ProfileInfoProvider";
+import { useDebounce } from "@/core/hooks/useDebounce";
 
 export interface IExperience {
   id?: string;
@@ -126,7 +127,7 @@ interface ICV {
   tertiaryColor: string;
 }
 
-interface IApplicantDetails {
+export interface IApplicantDetails {
   cv: ICV;
   id: string;
   firstName: string;
@@ -146,6 +147,8 @@ interface IApplicantDetails {
 interface ApplicantContextType {
   applicant?: IApplicantDetails;
   loading: boolean;
+  updating: boolean;
+  setUpdating: (value: boolean) => void;
   error: string | null;
   firstName: string;
   setFirstName: (value: string) => void;
@@ -228,6 +231,7 @@ export const ApplicantProvider = ({
   const { data: session, status } = useSession();
   const [applicant, setApplicant] = useState<IApplicantDetails | undefined>();
   const [loading, setLoading] = useState<boolean>(true);
+  const [updating, setUpdating] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
   // Editable state for each field
@@ -278,13 +282,14 @@ export const ApplicantProvider = ({
   const [tertiaryColor, setTertiaryColor] = useState<string>("");
 
   const fetchApplicant = async () => {
-    setLoading(true);
+    // setLoading(true);
     try {
       if (session?.user?.accessToken) {
         const response: AxiosResponse<IApplicantDetails> = await apiService.get(
           `applicant/${id}`
         );
         const data = response.data;
+
         setApplicant(data);
         setTemplateId(data.templateId);
         setPublicCv(data.publicCv);
@@ -318,6 +323,8 @@ export const ApplicantProvider = ({
         setCurrentSocials(data.cv.socials);
         setLanguages(data.cv.languages);
         setCurrentLanguages(data.cv.languages);
+
+        setUpdating(false);
       }
     } catch (err) {
       setError((err as Error).message);
@@ -328,7 +335,7 @@ export const ApplicantProvider = ({
 
   const updateApplicant = async () => {
     try {
-      setLoading(true);
+      setUpdating(true);
       if (applicant) {
         await apiService.put(`/cv/${applicant.cvId}?templateId=${templateId}`, {
           showPersonalInfo,
@@ -373,11 +380,23 @@ export const ApplicantProvider = ({
     }
   };
 
+  const debouncedUpdate = useDebounce(async () => {
+    if (!loading && applicant) {
+      await updateApplicant();
+    }
+  }, 500);
+
   useEffect(() => {
     if (status === "authenticated") {
       fetchApplicant();
     }
   }, [status, session, id]);
+
+  useEffect(() => {
+    if (updating) {
+      debouncedUpdate();
+    }
+  }, [updating]);
 
   return (
     <ApplicantContext.Provider
@@ -450,6 +469,8 @@ export const ApplicantProvider = ({
         showCompanyInfo,
         setShowCompanyInfo,
         updateApplicant,
+        updating,
+        setUpdating,
       }}
     >
       {children}

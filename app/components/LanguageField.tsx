@@ -27,6 +27,7 @@ const LanguageField = () => {
     deleteItems,
     currentLanguages,
     setCurrentLanguages,
+    setUpdating,
   } = useApplicant();
 
   const [newLanguage, setNewLanguage] = useState<ILanguage>({
@@ -51,7 +52,7 @@ const LanguageField = () => {
       id: newId,
       isNew: true,
     };
-
+    setUpdating(true);
     // For BE, exclude id if it's a new language
     setLanguages([
       ...languages,
@@ -79,7 +80,7 @@ const LanguageField = () => {
         lang.id === newLanguage.id ? updatedLanguage : lang
       )
     );
-
+    setUpdating(true);
     // For BE, only include id if it's not a new language
     setLanguages(
       languages.map((lang) =>
@@ -120,7 +121,7 @@ const LanguageField = () => {
   const handleDeleteLanguage = (id: string) => {
     setCurrentLanguages(currentLanguages.filter((lang) => lang.id !== id));
     setLanguages(languages.filter((lang) => lang.id !== id));
-
+    setUpdating(true);
     if (id) {
       const updatedDeleteItems: IDelete = {
         ...deleteItems,

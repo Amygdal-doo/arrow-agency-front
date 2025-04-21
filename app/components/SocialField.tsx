@@ -18,6 +18,7 @@ const SocialField = () => {
     deleteItems,
     currentSocials,
     setCurrentSocials,
+    setUpdating,
   } = useApplicant();
 
   const [newSocial, setNewSocial] = useState<ISocial>({
@@ -34,7 +35,7 @@ const SocialField = () => {
       id: newId,
       isNew: true,
     };
-
+    setUpdating(true);
     // For BE, exclude id if it's a new social
     setSocials([
       ...socials,
@@ -56,7 +57,7 @@ const SocialField = () => {
 
   const handleUpdateSocial = () => {
     const updatedSocial = { ...newSocial };
-
+    setUpdating(true);
     setCurrentSocials(
       currentSocials.map((social) =>
         social.id === newSocial.id ? updatedSocial : social
@@ -103,7 +104,7 @@ const SocialField = () => {
   const handleDeleteSocial = (id: string) => {
     setCurrentSocials(currentSocials.filter((social) => social.id !== id));
     setSocials(socials.filter((social) => social.id !== id));
-
+    setUpdating(true);
     if (id) {
       const updatedDeleteItems: IDelete = {
         ...deleteItems,

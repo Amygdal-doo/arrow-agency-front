@@ -5,39 +5,31 @@ import CVPreviewOne from "./templates/CVPreviewOne";
 import CVPreviewTwo from "./templates/CVPreviewTwo";
 import CVPreviewThree from "./templates/CVPreviewThree";
 import { useRouter } from "next/navigation";
-// import html2canvas from "html2canvas";
-// import jsPDF from "jspdf";
 
 const CVPreview = () => {
   const router = useRouter();
   const {
-    loading,
     applicant,
-    updateApplicant,
-    firstName,
-    lastName,
-    email,
-    phone,
-    summary,
-    skills,
-    hobbies,
-    experience,
-    projects,
-    educations,
-    certificates,
-    courses,
-    socials,
-    languages,
-    deleteItems,
     templateId,
     setTemplateId,
     primaryColor,
     setPrimaryColor,
     setSecondaryColor,
     setTertiaryColor,
+    publicCv,
+    setPublicCv,
   } = useApplicant();
 
   // const pdfRef = useRef<HTMLDivElement>(null);
+
+  // const handleDownload = (fileUrl: string, fileName: string) => {
+  //   const link = document.createElement("a");
+  //   link.href = fileUrl;
+  //   link.setAttribute("download", fileName);
+  //   document.body.appendChild(link);
+  //   link.click();
+  //   document.body.removeChild(link);
+  // };
 
   // const handleDownloadPdf = async () => {
   //   const element = pdfRef.current;
@@ -79,26 +71,26 @@ const CVPreview = () => {
   //   pdf.save(`${firstName}_${lastName}_CV.pdf`);
   // };
 
-  const handleSave = async () => {
-    console.log("update ", {
-      firstName,
-      lastName,
-      email,
-      phone,
-      summary,
-      skills,
-      hobbies,
-      experience,
-      projects,
-      educations,
-      certificates,
-      courses,
-      socials,
-      languages,
-      deleteItems,
-    });
-    await updateApplicant();
-  };
+  // const handleSave = async () => {
+  //   console.log("update ", {
+  //     firstName,
+  //     lastName,
+  //     email,
+  //     phone,
+  //     summary,
+  //     skills,
+  //     hobbies,
+  //     experience,
+  //     projects,
+  //     educations,
+  //     certificates,
+  //     courses,
+  //     socials,
+  //     languages,
+  //     deleteItems,
+  //   });
+  //   await updateApplicant();
+  // };
 
   const templates = [
     { id: "cv2", name: "Modern Template" },
@@ -191,21 +183,25 @@ const CVPreview = () => {
         <div className="flex flex-col md:flex-row gap-4">
           {applicant && (
             <button
-              onClick={() => {
-                router.push(`/public-cv/${applicant.cv.id}`);
-                // handleDownload(applicant.file.url, applicant.file.name)
+              onClick={async () => {
+                setPublicCv(true);
+                // await updateApplicant();
+                if (publicCv) {
+                  router.push(`/public-cv/${applicant.cv.id}`);
+                }
+                // handleDownload(applicant.file.url, applicant.file.name);
               }}
-              className="mt-4 font-bold text-center bg-orange-600 hover:bg-orange-700 hover:shadow-orange-500/25 text-white py-2 px-8 rounded-md transition-colors"
+              className="mt-4 font-bold text-center bg-orange-600  hover:bg-orange-700 hover:shadow-orange-500/25 text-white py-2 px-8 rounded-md transition-colors"
             >
               Publish CV
             </button>
           )}
-          <button
+          {/* <button
             onClick={handleSave}
             className="md:mt-4 font-bold text-center bg-orange-600 hover:bg-orange-700 hover:shadow-orange-500/25 text-white py-2 px-8 rounded-md transition-colors"
           >
             {loading ? "Saving..." : "Save"}
-          </button>
+          </button> */}
         </div>
       </div>
       <div className="flex flex-col md:flex-row gap-4 py-8">

@@ -3,6 +3,7 @@ import { usePublicCV } from "@/providers/PublicCvProvider";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { handleDownload } from "@/core/consts/handleDownload";
 
 const PublicCv = () => {
   const { cv, loading } = usePublicCV();
@@ -43,7 +44,9 @@ const PublicCv = () => {
     phone,
     companyLogo,
     primaryColor,
+    applicant,
   } = cv;
+
   return (
     <div className="min-h-screen bg-white/[0.99] text-white py-5">
       <div className="fixed top-8 left-8 z-50">
@@ -67,7 +70,7 @@ const PublicCv = () => {
       >
         <div className="bg-white/10 backdrop-blur-lg p-2 rounded-2xl shadow-xl border border-white/20">
           <button
-            // onClick={() => window.print()}
+            onClick={() => handleDownload(applicant.file)}
             className="group flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-orange-500 to-orange-600 rounded-xl hover:shadow-orange-500/25 hover:scale-105 transition-all duration-200"
           >
             <svg

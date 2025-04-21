@@ -31,6 +31,7 @@ const SkillField = () => {
     deleteItems,
     currentSkills,
     setCurrentSkills,
+    setUpdating,
   } = useApplicant();
 
   const [newSkill, setNewSkill] = useState<ISkill & { isNew?: boolean }>({
@@ -47,7 +48,7 @@ const SkillField = () => {
       id: newId,
       isNew: true,
     };
-
+    setUpdating(true);
     setSkills([
       ...(skills || []), // Add fallback empty array if skills is undefined
       {
@@ -74,7 +75,7 @@ const SkillField = () => {
         skill.id === newSkill.id ? updatedSkill : skill
       )
     );
-
+    setUpdating(true);
     setSkills(
       skills.map((skill) =>
         skill.id === newSkill.id
@@ -113,7 +114,7 @@ const SkillField = () => {
   const handleDeleteSkill = (id: string) => {
     setCurrentSkills(currentSkills.filter((skill) => skill.id !== id));
     setSkills(skills.filter((skill) => skill.id !== id));
-
+    setUpdating(true);
     if (id) {
       const updatedDeleteItems: IDelete = {
         ...deleteItems,

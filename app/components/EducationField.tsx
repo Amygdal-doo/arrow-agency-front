@@ -16,6 +16,7 @@ const EducationField = () => {
     currentEducations,
     setCurrentEducations,
     deleteItems,
+    setUpdating,
   } = useApplicant();
 
   const [newEducation, setNewEducation] = useState<
@@ -38,6 +39,7 @@ const EducationField = () => {
       isNew: true,
     };
 
+    setUpdating(true);
     // For BE, exclude id if it's a new education
     setEducations([
       ...educations,
@@ -71,6 +73,8 @@ const EducationField = () => {
         education.id === newEducation.id ? updatedEducation : education
       )
     );
+
+    setUpdating(true);
 
     // For BE, only include id if it's not a new education
     setEducations(
@@ -126,6 +130,7 @@ const EducationField = () => {
   };
 
   const handleDeleteEducation = (id: string) => {
+    setUpdating(true);
     setCurrentEducations(
       currentEducations.filter((education) => education.id !== id)
     );

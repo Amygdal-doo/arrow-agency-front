@@ -15,6 +15,7 @@ const ProjectField = () => {
     setCurrentProjects,
     setDeleteItems,
     deleteItems,
+    setUpdating,
   } = useApplicant();
 
   const [newProject, setNewProject] = useState<IProject & { isNew?: boolean }>({
@@ -48,7 +49,7 @@ const ProjectField = () => {
     ]);
 
     setCurrentProjects([...currentProjects, newProjectWithId]);
-
+    setUpdating(true);
     setNewProject({
       id: "",
       name: "",
@@ -68,6 +69,8 @@ const ProjectField = () => {
         project.id === newProject.id ? updatedProject : project
       )
     );
+
+    setUpdating(true);
 
     setProjects(
       projects.map((project) =>
@@ -122,7 +125,7 @@ const ProjectField = () => {
   const handleDeleteProject = (id: string) => {
     setCurrentProjects(currentProjects.filter((project) => project.id !== id));
     setProjects(projects.filter((project) => project.id !== id));
-
+    setUpdating(true);
     if (id) {
       const updatedDeleteItems: IDelete = {
         ...deleteItems,
