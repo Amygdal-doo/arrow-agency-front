@@ -1,31 +1,60 @@
-"use client";
-import { useApplicant } from "@/providers/ApplicantDetailsProvider";
+import {
+  ICertificate,
+  ICourse,
+  IEducation,
+  IExperience,
+  ILanguage,
+  IProject,
+  ISkill,
+  ISocial,
+} from "@/providers/ApplicantDetailsProvider";
+import { ICompanyLogo } from "@/providers/ProfileInfoProvider";
 import Image from "next/image";
 import React from "react";
 
-const CVPreviewTwo = () => {
-  const {
-    summary,
-    currentSkills,
-    hobbies,
-    currentExperience,
-    currentProjects,
-    currentEducations,
-    currentCertificates,
-    currentCourses,
-    currentSocials,
-    companyName,
-    currentLanguages,
-    showPersonalInfo,
-    showCompanyInfo,
-    companyLogo,
-    primaryColor,
-    firstName,
-    lastName,
-    email,
-    phone,
-  } = useApplicant();
+type CVPreviewTwoProps = {
+  summary: string;
+  currentSkills: ISkill[];
+  hobbies: string[];
+  currentExperience: IExperience[];
+  currentProjects: IProject[];
+  currentEducations: IEducation[];
+  currentCertificates: ICertificate[];
+  currentCourses: ICourse[];
+  currentSocials: ISocial[];
+  companyName: string;
+  currentLanguages: ILanguage[];
+  showPersonalInfo: boolean;
+  showCompanyInfo: boolean;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  companyLogo: ICompanyLogo | null;
+  primaryColor: string;
+};
 
+const CVPreviewTwo = ({
+  summary,
+  currentSkills,
+  hobbies,
+  currentExperience,
+  currentProjects,
+  currentEducations,
+  currentCertificates,
+  currentCourses,
+  currentSocials,
+  companyName,
+  currentLanguages,
+  showPersonalInfo,
+  showCompanyInfo,
+  firstName,
+  lastName,
+  email,
+  phone,
+  companyLogo,
+  primaryColor,
+}: CVPreviewTwoProps) => {
   return (
     <div className="w-full h-auto mx-auto bg-white shadow-md rounded-xl overflow-hidden">
       {/* Header */}

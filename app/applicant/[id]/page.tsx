@@ -11,6 +11,8 @@ import ProjectField from "@/app/components/ProjectField";
 import SkillField from "@/app/components/SkillField";
 import SocialField from "@/app/components/SocialField";
 import { handleDownload } from "@/core/consts/handleDownload";
+import { templateColors } from "@/core/consts/templateColors";
+import { templates } from "@/core/consts/templates";
 import { useApplicant } from "@/providers/ApplicantDetailsProvider";
 import { useProfile } from "@/providers/ProfileInfoProvider";
 import Image from "next/image";
@@ -43,6 +45,12 @@ const ApplicantDetails = () => {
     publicCv,
     setPublicCv,
     setUpdating,
+    primaryColor,
+    setPrimaryColor,
+    setSecondaryColor,
+    setTertiaryColor,
+    templateId,
+    setTemplateId,
   } = useApplicant();
 
   const { profile } = useProfile();
@@ -56,6 +64,8 @@ const ApplicantDetails = () => {
     email: "",
     phone: "",
   });
+
+  const [isTemplateChanged, setIsTemplateChanged] = useState(false);
 
   useEffect(() => {
     if (applicant) {
@@ -92,6 +102,93 @@ const ApplicantDetails = () => {
       <div className="container mx-auto px-4 xl:flex xl:space-x-5 space-y-8 xl:space-y-0">
         <div className="w-full xl:w-1/2 overflow-y-auto max-h-[80vh] scrollbar-hide">
           {/* Header Section */}
+
+          <div className="space-y-6 mb-8">
+            <div className="flex items-center justify-between">
+              <h2 className="text-2xl font-bold text-gray-300">
+                CV Template & Style
+              </h2>
+              <div className="h-px flex-1 bg-gray-700 mx-4" />
+            </div>
+
+            <div className="bg-gray-800/50 rounded-xl p-6 border border-gray-700/50 shadow-lg space-y-6">
+              <div className="space-y-4">
+                <h3 className="text-lg font-semibold text-gray-300">
+                  Template
+                </h3>
+                <div className="flex flex-wrap gap-4">
+                  {templates.map((template) => (
+                    <button
+                      key={template.id}
+                      onClick={() => {
+                        setTemplateId(template.id);
+                        setIsTemplateChanged(true);
+                      }}
+                      className={`px-4 py-3 rounded-md transition-all  w-full sm:w-auto ${
+                        templateId === template.id
+                          ? "bg-orange-600 hover:bg-orange-700 hover:shadow-orange-500/25 text-white"
+                          : "bg-gray-700 text-gray-300 hover:bg-gray-600"
+                      }`}
+                    >
+                      {template.name}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                <h3 className="text-lg font-semibold text-gray-300">
+                  Color Theme
+                </h3>
+                <div className="flex space-x-4 justify-start overflow-x-auto bg-gray-800 rounded-xl p-3 border border-gray-700/50 shadow-lg">
+                  {templateColors.map((color) => (
+                    <div
+                      key={color.id}
+                      onClick={() => {
+                        setPrimaryColor(color.primary);
+                        setSecondaryColor(color.secondary);
+                        setTertiaryColor(color.tertiary);
+                        setIsTemplateChanged(true);
+                      }}
+                      className="group cursor-pointer relative"
+                    >
+                      <div className="flex flex-col items-center gap-3">
+                        <div
+                          className={`w-4 h-4 rounded-xl shadow-lg transition-all duration-300 ${
+                            primaryColor === color.primary
+                              ? "ring-2 ring-offset-2 ring-offset-gray-800 ring-orange-500 scale-110"
+                              : "hover:scale-105"
+                          }`}
+                        >
+                          <div
+                            className="w-full h-full rounded-xl"
+                            style={{ backgroundColor: color.primary }}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <button
+                onClick={() => {
+                  setUpdating(true);
+                  setIsTemplateChanged(false);
+                }}
+                disabled={!isTemplateChanged}
+                className={`w-full p-3 rounded-lg font-medium transition-all duration-200 shadow-lg ${
+                  isTemplateChanged
+                    ? "bg-orange-600 hover:bg-orange-700 hover:shadow-orange-500/25 text-white"
+                    : "bg-gray-600 text-gray-400 cursor-not-allowed"
+                }`}
+              >
+                {isTemplateChanged
+                  ? "Save Template Changes"
+                  : "No Changes to Update"}
+              </button>
+            </div>
+          </div>
           <div className="space-y-6 mb-8">
             <div className="flex items-center justify-between">
               <h2 className="text-2xl font-bold text-gray-300">
