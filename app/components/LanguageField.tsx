@@ -1,4 +1,5 @@
 "use client";
+import { scrollToTop } from "@/core/consts/scrollToTop";
 import { IDelete, useApplicant } from "@/providers/ApplicantDetailsProvider";
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
@@ -111,6 +112,7 @@ const LanguageField = () => {
   };
 
   const handleEditLanguage = (id: string) => {
+    scrollToTop("language-form-section", 120, "smooth", true);
     const languageToEdit = currentLanguages.find((lang) => lang.id === id);
     if (languageToEdit) {
       // @ts-expect-error Expected type error due to potential undefined id
@@ -140,7 +142,7 @@ const LanguageField = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between language-form-section">
         <h2 className="text-2xl font-bold text-gray-300">Languages</h2>
         <div className="h-px flex-1 bg-gray-700 mx-4" />
       </div>

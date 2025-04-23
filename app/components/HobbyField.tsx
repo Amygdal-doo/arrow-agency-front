@@ -1,4 +1,5 @@
 "use client";
+import { scrollToTop } from "@/core/consts/scrollToTop";
 import { useApplicant } from "@/providers/ApplicantDetailsProvider";
 import { useState } from "react";
 
@@ -20,6 +21,7 @@ const HobbyField = () => {
   };
 
   const handleEditHobby = (index: number) => {
+    scrollToTop("hobby-form-section", 120, "smooth", true);
     setEditIndex(index);
     setNewHobby(hobbies[index]);
   };
@@ -42,7 +44,7 @@ const HobbyField = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between hobby-form-section">
         <h2 className="text-2xl font-bold text-gray-300">Hobbies</h2>
         <div className="h-px flex-1 bg-gray-700 mx-4" />
       </div>

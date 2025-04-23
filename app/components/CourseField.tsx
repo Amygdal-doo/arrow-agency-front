@@ -1,4 +1,5 @@
 "use client";
+import { scrollToTop } from "@/core/consts/scrollToTop";
 import {
   IDelete,
   ICourse,
@@ -99,6 +100,7 @@ const CourseField = () => {
   };
 
   const handleEditCourse = (id: string) => {
+    scrollToTop("course-form-section", 120, "smooth", true);
     const courseToEdit = currentCourses.find((course) => course.id === id);
     if (courseToEdit) {
       setNewCourse({ ...courseToEdit });
@@ -127,7 +129,7 @@ const CourseField = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between course-form-section">
         <h2 className="text-2xl font-bold text-gray-300">Courses</h2>
         <div className="h-px flex-1 bg-gray-700 mx-4" />
       </div>

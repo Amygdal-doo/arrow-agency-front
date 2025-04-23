@@ -1,4 +1,5 @@
 "use client";
+import { scrollToTop } from "@/core/consts/scrollToTop";
 import {
   IDelete,
   IExperience,
@@ -111,6 +112,7 @@ const ExperienceField = () => {
   };
 
   const handleEditExperience = (id: string) => {
+    scrollToTop("experience-form-section", 120, "smooth", true);
     const experienceToEdit = currentExperience.find((exp) => exp.id === id);
 
     if (experienceToEdit) {
@@ -149,7 +151,7 @@ const ExperienceField = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between experience-form-section">
         <h2 className="text-2xl font-bold text-gray-300">Experience History</h2>
         <div className="h-px flex-1 bg-gray-700 mx-4" />
       </div>

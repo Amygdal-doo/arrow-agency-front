@@ -1,4 +1,5 @@
 "use client";
+import { scrollToTop } from "@/core/consts/scrollToTop";
 import {
   IDelete,
   IProject,
@@ -109,6 +110,7 @@ const ProjectField = () => {
   };
 
   const handleEditProject = (id: string) => {
+    scrollToTop("projects-form-section", 120, "smooth", true);
     const projectToEdit = currentProjects.find((project) => project.id === id);
     if (projectToEdit) {
       setNewProject({
@@ -144,7 +146,7 @@ const ProjectField = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between projects-form-section">
         <h2 className="text-2xl font-bold text-gray-300">Projects</h2>
         <div className="h-px flex-1 bg-gray-700 mx-4" />
       </div>

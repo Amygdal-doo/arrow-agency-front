@@ -1,4 +1,5 @@
 "use client";
+import { scrollToTop } from "@/core/consts/scrollToTop";
 import {
   IDelete,
   ISkill,
@@ -105,6 +106,7 @@ const SkillField = () => {
   };
 
   const handleEditSkill = (id: string) => {
+    scrollToTop("skill-form-section", 120, "smooth", true);
     const skillToEdit = currentSkills.find((skill) => skill.id === id);
     if (skillToEdit) {
       setNewSkill({ ...skillToEdit });
@@ -133,7 +135,7 @@ const SkillField = () => {
 
   return (
     <div className="space-y-6 ">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between skill-form-section">
         <h2 className="text-2xl font-bold text-gray-300">Skills</h2>
         <div className="h-px flex-1 bg-gray-700 mx-4" />
       </div>

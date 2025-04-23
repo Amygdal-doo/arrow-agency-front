@@ -117,7 +117,7 @@ export default function PostJob() {
   };
 
   const handleNext = async () => {
-    scrollToTop();
+    scrollToTop("overflow-y-auto");
     if (currentStep === 1) {
       try {
         const isValid = await jobMethods.trigger();
@@ -293,7 +293,7 @@ export default function PostJob() {
                     type="button"
                     onClick={() => {
                       setCurrentStep(currentStep - 1);
-                      scrollToTop();
+                      scrollToTop("overflow-y-auto");
                     }}
                     className="bg-gray-700/50 text-white px-6 py-3 rounded-lg font-medium hover:bg-gray-600/50 transition-all"
                   >
