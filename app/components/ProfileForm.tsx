@@ -1,7 +1,9 @@
 "use client";
+import { countries } from "@/core/consts/countries";
+import { projectTypeList } from "@/core/consts/projectTypeList";
 import { apiService } from "@/core/services/apiService";
 import { useProfile } from "@/providers/ProfileInfoProvider";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 interface ProfileFormData {
@@ -9,11 +11,150 @@ interface ProfileFormData {
   lastName: string;
   phoneNumber: string;
   address: string;
+  countryOrigin: string;
+  preferredWorkCountries: string[];
+  nonPreferredWorkCountries: string[];
+  nonPreferredProjects: string[];
 }
 
 const ProfileForm = () => {
   const { profile, fetchProfile } = useProfile();
+  const [preferredCountriesOpen, setPreferredCountriesOpen] = useState(false);
+  const [nonPreferredCountriesOpen, setNonPreferredCountriesOpen] =
+    useState(false);
+  const [countrySearch, setCountrySearch] = useState("");
+  const [nonPreferredProjectsOpen, setNonPreferredProjectsOpen] =
+    useState(false);
+  const [projectSearch, setProjectSearch] = useState("");
+  const [selectedNonPreferredProjects, setSelectedNonPreferredProjects] =
+    useState<string[]>(profile?.nonPreferredProjects || []);
+  const [countryOriginOpen, setCountryOriginOpen] = useState(false);
+  const [countryOriginSearch, setCountryOriginSearch] = useState("");
+  const [selectedCountryOrigin, setSelectedCountryOrigin] = useState(
+    profile?.countryOrigin || ""
+  );
+  const [selectedPreferredCountries, setSelectedPreferredCountries] = useState<
+    string[]
+  >(profile?.preferredWorkCountries || []);
+  const [selectedNonPreferredCountries, setSelectedNonPreferredCountries] =
+    useState<string[]>(profile?.nonPreferredWorkCountries || []);
+  const [availableCountries, setAvailableCountries] =
+    useState<string[]>(countries);
 
+  // Add these handlers after other handlers
+  const handleCountryOriginSelect = (country: string) => {
+    setSelectedCountryOrigin(country);
+    setValue("countryOrigin", country, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
+    setCountryOriginOpen(false);
+    setCountryOriginSearch("");
+  };
+
+  const filteredOriginCountries = countries.filter((country) =>
+    country.toLowerCase().includes(countryOriginSearch.toLowerCase())
+  );
+
+  // Add this effect to handle clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (!target.closest(".country-origin-container")) {
+        setCountryOriginOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  // Add these handlers after other handlers
+  const handleNonPreferredProjectSelect = (project: string) => {
+    if (!selectedNonPreferredProjects.includes(project)) {
+      const updatedSelected = [...selectedNonPreferredProjects, project];
+      setSelectedNonPreferredProjects(updatedSelected);
+      setValue("nonPreferredProjects", updatedSelected, {
+        shouldValidate: true,
+        shouldDirty: true,
+      });
+    }
+    setNonPreferredProjectsOpen(false);
+    setProjectSearch("");
+  };
+
+  const handleRemoveNonPreferredProject = (projectToRemove: string) => {
+    const updatedSelected = selectedNonPreferredProjects.filter(
+      (project) => project !== projectToRemove
+    );
+    setSelectedNonPreferredProjects(updatedSelected);
+    setValue("nonPreferredProjects", updatedSelected, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
+  };
+
+  useEffect(() => {
+    // Update available countries when selected countries change
+    const usedCountries = [
+      ...selectedPreferredCountries,
+      ...selectedNonPreferredCountries,
+    ];
+    setAvailableCountries(
+      countries.filter((country) => !usedCountries.includes(country))
+    );
+  }, [selectedPreferredCountries, selectedNonPreferredCountries]);
+
+  // Add these handlers
+  const handlePreferredCountrySelect = (country: string) => {
+    if (!selectedPreferredCountries.includes(country)) {
+      const updatedSelected = [...selectedPreferredCountries, country];
+      setSelectedPreferredCountries(updatedSelected);
+      setValue("preferredWorkCountries", updatedSelected, {
+        shouldValidate: true,
+        shouldDirty: true,
+      });
+    }
+    setPreferredCountriesOpen(false);
+    setCountrySearch("");
+  };
+
+  const handleNonPreferredCountrySelect = (country: string) => {
+    if (!selectedNonPreferredCountries.includes(country)) {
+      const updatedSelected = [...selectedNonPreferredCountries, country];
+      setSelectedNonPreferredCountries(updatedSelected);
+      setValue("nonPreferredWorkCountries", updatedSelected, {
+        shouldValidate: true,
+        shouldDirty: true,
+      });
+    }
+    setNonPreferredCountriesOpen(false);
+    setCountrySearch("");
+  };
+
+  const handleRemovePreferredCountry = (countryToRemove: string) => {
+    const updatedSelected = selectedPreferredCountries.filter(
+      (country) => country !== countryToRemove
+    );
+    setSelectedPreferredCountries(updatedSelected);
+    setValue("preferredWorkCountries", updatedSelected, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
+  };
+
+  const handleRemoveNonPreferredCountry = (countryToRemove: string) => {
+    const updatedSelected = selectedNonPreferredCountries.filter(
+      (country) => country !== countryToRemove
+    );
+    setSelectedNonPreferredCountries(updatedSelected);
+    setValue("nonPreferredWorkCountries", updatedSelected, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
+  };
   const {
     register,
     handleSubmit,
@@ -25,6 +166,10 @@ const ProfileForm = () => {
       address: profile?.address || "",
       firstName: profile?.user?.firstName || "",
       lastName: profile?.user?.lastName || "",
+      countryOrigin: profile?.countryOrigin || "",
+      preferredWorkCountries: profile?.preferredWorkCountries || [],
+      nonPreferredWorkCountries: profile?.nonPreferredWorkCountries || [],
+      nonPreferredProjects: profile?.nonPreferredProjects || [],
     },
   });
 
@@ -33,6 +178,17 @@ const ProfileForm = () => {
     setValue("address", profile?.address || "");
     setValue("firstName", profile?.user?.firstName || "");
     setValue("lastName", profile?.user?.lastName || "");
+    setSelectedCountryOrigin(profile?.countryOrigin || "");
+    setValue("countryOrigin", profile?.countryOrigin || "");
+    setValue("preferredWorkCountries", profile?.preferredWorkCountries || []);
+    setSelectedPreferredCountries(profile?.preferredWorkCountries || []);
+    setSelectedNonPreferredCountries(profile?.nonPreferredWorkCountries || []);
+    setValue(
+      "nonPreferredWorkCountries",
+      profile?.nonPreferredWorkCountries || []
+    );
+    setValue("nonPreferredProjects", profile?.nonPreferredProjects || []);
+    setSelectedNonPreferredProjects(profile?.nonPreferredProjects || []);
   }, [profile, setValue]);
 
   const onSubmit = async (data: ProfileFormData) => {
@@ -43,6 +199,10 @@ const ProfileForm = () => {
         address: data.address,
         firstName: data.firstName,
         lastName: data.lastName,
+        countryOrigin: data.countryOrigin,
+        preferredWorkCountries: data.preferredWorkCountries,
+        nonPreferredWorkCountries: data.nonPreferredWorkCountries,
+        nonPreferredProjects: data.nonPreferredProjects,
       });
 
       fetchProfile();
@@ -124,28 +284,359 @@ const ProfileForm = () => {
           </div>
         </div>
 
-        {/* Read-only Fields */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-          <div>
-            {profile && (
-              <div className="group bg-gray-800/30  rounded-lg p-3 border border-gray-700/50">
-                <div className="text-sm text-gray-400">Created At</div>
-                <div className="text-gray-300">
-                  {new Date(profile.user?.createdAt).toLocaleDateString()}
-                </div>
+        <div className="space-y-4 mb-6">
+          <div className="country-origin-container">
+            <label className="block text-sm font-medium text-gray-300 mb-2">
+              Country of Origin *
+            </label>
+            <div className="relative">
+              <div
+                onClick={() => setCountryOriginOpen(!countryOriginOpen)}
+                className={`w-full bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 cursor-pointer flex justify-between items-center ${
+                  countryOriginOpen ? "ring-2 ring-orange-500" : ""
+                }`}
+              >
+                <span
+                  className={
+                    errors.countryOrigin ? "text-red-400" : "text-gray-300"
+                  }
+                >
+                  {selectedCountryOrigin || "Select a country"}
+                </span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className={`h-5 w-5 transition-transform ${
+                    countryOriginOpen ? "rotate-180" : ""
+                  }`}
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 9l-7 7-7-7"
+                  />
+                </svg>
               </div>
+
+              {countryOriginOpen && (
+                <div className="absolute z-50 w-full mt-2 bg-gray-800 border border-gray-700 rounded-lg shadow-xl">
+                  <input
+                    type="text"
+                    placeholder="Search countries..."
+                    className="w-full p-3 bg-gray-700/50 border-b border-gray-600 rounded-t-lg text-gray-300"
+                    value={countryOriginSearch}
+                    onChange={(e) => setCountryOriginSearch(e.target.value)}
+                    onClick={(e) => e.stopPropagation()}
+                  />
+                  <div className="max-h-60 overflow-y-auto">
+                    {filteredOriginCountries.map((country) => (
+                      <div
+                        key={country}
+                        onClick={() => handleCountryOriginSelect(country)}
+                        className="px-4 py-2 hover:bg-gray-700 cursor-pointer text-gray-300"
+                      >
+                        {country}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+            {errors.countryOrigin && (
+              <p className="mt-1 text-red-400 text-sm">
+                {errors.countryOrigin.message}
+              </p>
             )}
           </div>
 
+          {/* Preferred Work Countries */}
           <div>
-            {profile && (
-              <div className="group bg-gray-800/30 rounded-lg p-3 border border-gray-700/50">
-                <div className="text-sm text-gray-400">Updated At</div>
-                <div className="text-gray-300">
-                  {new Date(profile.user?.updatedAt).toLocaleDateString()}
+            <label className="block text-sm font-medium text-gray-300 mb-2">
+              Preferred Work Countries
+            </label>
+            <div className="relative">
+              <div
+                onClick={() =>
+                  setPreferredCountriesOpen(!preferredCountriesOpen)
+                }
+                className="w-full bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 cursor-pointer"
+              >
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-400">Select Countries</span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className={`h-5 w-5 transition-transform ${
+                      preferredCountriesOpen ? "rotate-180" : ""
+                    }`}
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
                 </div>
               </div>
-            )}
+
+              {preferredCountriesOpen && (
+                <div className="absolute z-50 w-full mt-2 bg-gray-800 border border-gray-700 rounded-lg shadow-xl">
+                  <input
+                    type="text"
+                    placeholder="Search countries..."
+                    className="w-full p-3 bg-gray-700/50 border-b border-gray-600 rounded-t-lg text-gray-300"
+                    value={countrySearch}
+                    onChange={(e) => setCountrySearch(e.target.value)}
+                    onClick={(e) => e.stopPropagation()}
+                  />
+                  <div className="max-h-60 overflow-y-auto">
+                    {availableCountries
+                      .filter((country) =>
+                        country
+                          .toLowerCase()
+                          .includes(countrySearch.toLowerCase())
+                      )
+                      .map((country) => (
+                        <div
+                          key={country}
+                          onClick={() => handlePreferredCountrySelect(country)}
+                          className="px-4 py-2 hover:bg-gray-700 cursor-pointer text-gray-300"
+                        >
+                          {country}
+                        </div>
+                      ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+          <div className="flex flex-wrap gap-2 mb-2">
+            {selectedPreferredCountries.map((country) => (
+              <div
+                key={country}
+                className="group flex items-center gap-2 bg-gray-700/50 px-3 py-1.5 rounded-lg text-gray-300 hover:bg-gray-600/50 transition-all"
+              >
+                <span>{country}</span>
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleRemovePreferredCountry(country);
+                  }}
+                  className="text-gray-400 group-hover:text-white transition-colors"
+                >
+                  ×
+                </button>
+              </div>
+            ))}
+          </div>
+
+          {/* Non-Preferred Work Countries */}
+          <div>
+            <label className="block text-sm font-medium text-gray-300 mb-2">
+              Non-Preferred Work Countries
+            </label>
+            <div className="relative">
+              <div
+                onClick={() =>
+                  setNonPreferredCountriesOpen(!nonPreferredCountriesOpen)
+                }
+                className="w-full bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 cursor-pointer"
+              >
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-400">Select Countries</span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className={`h-5 w-5 transition-transform ${
+                      nonPreferredCountriesOpen ? "rotate-180" : ""
+                    }`}
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
+                </div>
+              </div>
+
+              {nonPreferredCountriesOpen && (
+                <div className="absolute z-50 w-full mt-2 bg-gray-800 border border-gray-700 rounded-lg shadow-xl">
+                  <input
+                    type="text"
+                    placeholder="Search countries..."
+                    className="w-full p-3 bg-gray-700/50 border-b border-gray-600 rounded-t-lg text-gray-300"
+                    value={countrySearch}
+                    onChange={(e) => setCountrySearch(e.target.value)}
+                    onClick={(e) => e.stopPropagation()}
+                  />
+                  <div className="max-h-60 overflow-y-auto">
+                    {availableCountries
+                      .filter((country) =>
+                        country
+                          .toLowerCase()
+                          .includes(countrySearch.toLowerCase())
+                      )
+                      .map((country) => (
+                        <div
+                          key={country}
+                          onClick={() =>
+                            handleNonPreferredCountrySelect(country)
+                          }
+                          className="px-4 py-2 hover:bg-gray-700 cursor-pointer text-gray-300"
+                        >
+                          {country}
+                        </div>
+                      ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+          <div className="flex flex-wrap gap-2 mb-2">
+            {selectedNonPreferredCountries.map((country) => (
+              <div
+                key={country}
+                className="group flex items-center gap-2 bg-gray-700/50 px-3 py-1.5 rounded-lg text-gray-300 hover:bg-gray-600/50 transition-all"
+              >
+                <span>{country}</span>
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleRemoveNonPreferredCountry(country);
+                  }}
+                  className="text-gray-400 group-hover:text-white transition-colors"
+                >
+                  ×
+                </button>
+              </div>
+            ))}
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-300 mb-2">
+              Non-Preferred Project Types
+            </label>
+            <div className="relative">
+              <div
+                onClick={() =>
+                  setNonPreferredProjectsOpen(!nonPreferredProjectsOpen)
+                }
+                className="w-full bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 cursor-pointer"
+              >
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-400">Select Project Types</span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className={`h-5 w-5 transition-transform ${
+                      nonPreferredProjectsOpen ? "rotate-180" : ""
+                    }`}
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
+                </div>
+              </div>
+
+              {nonPreferredProjectsOpen && (
+                <div className="absolute z-50 w-full mt-2 bg-gray-800 border border-gray-700 rounded-lg shadow-xl">
+                  <input
+                    type="text"
+                    placeholder="Search project types..."
+                    className="w-full p-3 bg-gray-700/50 border-b border-gray-600 rounded-t-lg text-gray-300"
+                    value={projectSearch}
+                    onChange={(e) => setProjectSearch(e.target.value)}
+                    onClick={(e) => e.stopPropagation()}
+                  />
+                  <div className="max-h-60 overflow-y-auto">
+                    {projectTypeList
+                      .filter((project) =>
+                        project
+                          .toLowerCase()
+                          .includes(projectSearch.toLowerCase())
+                      )
+                      .filter(
+                        (project) =>
+                          !selectedNonPreferredProjects.includes(project)
+                      )
+                      .map((project) => (
+                        <div
+                          key={project}
+                          onClick={() =>
+                            handleNonPreferredProjectSelect(project)
+                          }
+                          className="px-4 py-2 hover:bg-gray-700 cursor-pointer text-gray-300"
+                        >
+                          {project}
+                        </div>
+                      ))}
+                  </div>
+                </div>
+              )}
+            </div>
+            <div className="flex flex-wrap gap-2 mt-2">
+              {selectedNonPreferredProjects.map((project) => (
+                <div
+                  key={project}
+                  className="group flex items-center gap-2 bg-gray-700/50 px-3 py-1.5 rounded-lg text-gray-300 hover:bg-gray-600/50 transition-all"
+                >
+                  <span>{project}</span>
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleRemoveNonPreferredProject(project);
+                    }}
+                    className="text-gray-400 group-hover:text-white transition-colors"
+                  >
+                    ×
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Read-only Fields */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            <div>
+              {profile && (
+                <div className="group bg-gray-800/30  rounded-lg p-3 border border-gray-700/50">
+                  <div className="text-sm text-gray-400">Created At</div>
+                  <div className="text-gray-300">
+                    {new Date(profile.user?.createdAt).toLocaleDateString()}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div>
+              {profile && (
+                <div className="group bg-gray-800/30 rounded-lg p-3 border border-gray-700/50">
+                  <div className="text-sm text-gray-400">Updated At</div>
+                  <div className="text-gray-300">
+                    {new Date(profile.user?.updatedAt).toLocaleDateString()}
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </div>
 

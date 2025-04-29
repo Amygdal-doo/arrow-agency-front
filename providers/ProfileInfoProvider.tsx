@@ -20,8 +20,6 @@ interface IUser {
   role: string;
   createdAt: string;
   updatedAt: string;
-  applicants: any[];
-  files: any[];
 }
 
 export interface ICompanyLogo {
@@ -46,6 +44,10 @@ export interface IUserProfile {
   userId: string;
   user: IUser;
   companyLogos: ICompanyLogo[];
+  countryOrigin: string | null;
+  preferredWorkCountries: string[];
+  nonPreferredWorkCountries: string[];
+  nonPreferredProjects: string[];
 }
 interface IProfileContextProps {
   profile: IUserProfile | null;

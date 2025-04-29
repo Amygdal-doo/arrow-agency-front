@@ -7,6 +7,7 @@ import { z } from "zod";
 export const jobSchema = z.object({
   worldwide: z.boolean().default(false),
   remote: z.boolean().default(false),
+  workWithB2b: z.boolean().default(false),
   name: z.string().min(1, "Job title is required"),
   description: z
     .string()
@@ -139,21 +140,90 @@ const JobForm = ({ jobMethods }: JobFormProps) => {
           <h2 className="text-2xl font-bold text-white">Job Information</h2>
           <div className="h-px flex-1 bg-gray-700 mx-4" />
         </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 relative z-10">
+          <div className="bg-gray-800/50  rounded-xl p-6 border border-gray-700/50 shadow-lg">
+            <label className="block text-sm font-medium text-gray-300 mb-2">
+              Job Title *
+            </label>
+            <input
+              {...jobMethods.register("name")}
+              className="w-full bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 placeholder-gray-500 outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+              placeholder="e.g. Senior Frontend Developer"
+            />
+            {jobMethods.formState.errors.name && (
+              <p className="mt-1 text-red-400 text-sm">
+                {jobMethods.formState.errors.name.message}
+              </p>
+            )}
+          </div>
 
-        <div className="bg-gray-800/50  rounded-xl p-6 border border-gray-700/50 shadow-lg">
-          <label className="block text-sm font-medium text-gray-300 mb-2">
-            Job Title *
-          </label>
-          <input
-            {...jobMethods.register("name")}
-            className="w-full bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 placeholder-gray-500 outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
-            placeholder="e.g. Senior Frontend Developer"
-          />
-          {jobMethods.formState.errors.name && (
-            <p className="mt-1 text-red-400 text-sm">
-              {jobMethods.formState.errors.name.message}
-            </p>
-          )}
+          <div className="bg-gray-800/50 rounded-xl p-6 border border-gray-700/50 shadow-lg flex flex-col justify-center">
+            <label className="block text-sm font-medium text-gray-300 mb-4">
+              Is this role available as a B2B engagement? *
+            </label>
+            <div className="flex gap-4">
+              <button
+                type="button"
+                onClick={() =>
+                  jobMethods.setValue("workWithB2b", true, {
+                    shouldValidate: true,
+                  })
+                }
+                className={`inline-flex items-center ${
+                  jobMethods.watch("workWithB2b") === true
+                    ? "text-orange-500"
+                    : "text-gray-300"
+                }`}
+              >
+                <div
+                  className={`w-4 h-4 rounded-full border ${
+                    jobMethods.watch("workWithB2b") === true
+                      ? "border-orange-500"
+                      : "border-gray-600"
+                  } bg-gray-700 relative`}
+                >
+                  <div
+                    className={`absolute w-2 h-2 rounded-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-orange-500 transition-all ${
+                      jobMethods.watch("workWithB2b") === true
+                        ? "scale-100"
+                        : "scale-0"
+                    }`}
+                  ></div>
+                </div>
+                <span className="ml-2">Yes</span>
+              </button>
+              <button
+                type="button"
+                onClick={() =>
+                  jobMethods.setValue("workWithB2b", false, {
+                    shouldValidate: true,
+                  })
+                }
+                className={`inline-flex items-center ${
+                  jobMethods.watch("workWithB2b") === false
+                    ? "text-orange-500"
+                    : "text-gray-300"
+                }`}
+              >
+                <div
+                  className={`w-4 h-4 rounded-full border ${
+                    jobMethods.watch("workWithB2b") === false
+                      ? "border-orange-500"
+                      : "border-gray-600"
+                  } bg-gray-700 relative`}
+                >
+                  <div
+                    className={`absolute w-2 h-2 rounded-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-orange-500 transition-all ${
+                      jobMethods.watch("workWithB2b") === false
+                        ? "scale-100"
+                        : "scale-0"
+                    }`}
+                  ></div>
+                </div>
+                <span className="ml-2">No</span>
+              </button>
+            </div>
+          </div>
         </div>
         {/* Category and Skills */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 relative z-20">

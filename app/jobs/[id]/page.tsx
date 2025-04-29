@@ -15,9 +15,11 @@ import { FiExternalLink } from "react-icons/fi";
 import { GiSkills } from "react-icons/gi";
 import { RiMoneyDollarCircleLine } from "react-icons/ri";
 import Link from "next/link";
+import EasyApplyModal from "@/app/components/EasyApplyModal";
 
 interface JobDetails {
   id: string;
+  workWithB2b: boolean;
   worldwide: boolean;
   remote: boolean;
   name: string;
@@ -39,6 +41,8 @@ interface JobDetails {
 
 export default function JobDetailsPage() {
   const router = useRouter();
+
+  const [showModal, setShowModal] = useState(false);
   const formatDate = (dateString: string) => {
     return new Intl.DateTimeFormat("en-US", {
       year: "numeric",
@@ -46,14 +50,18 @@ export default function JobDetailsPage() {
       day: "numeric",
     }).format(new Date(dateString));
   };
-  const { id } = useParams();
+  const params = useParams();
+
+  const jobId = typeof params.id === "string" ? params.id : "";
   const [job, setJob] = useState<JobDetails | null>(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchJob = async () => {
       try {
-        const response = await apiService.get<JobDetails>(`jobs/{id}?id=${id}`);
+        const response = await apiService.get<JobDetails>(
+          `jobs/{id}?id=${jobId}`
+        );
         setJob(response.data);
       } catch (error) {
         console.error("Error fetching job:", error);
@@ -62,7 +70,7 @@ export default function JobDetailsPage() {
       }
     };
     fetchJob();
-  }, [id]);
+  }, [jobId]);
 
   if (loading || !job) {
     return (
@@ -112,6 +120,11 @@ export default function JobDetailsPage() {
                   {job.worldwide && (
                     <span className="px-4 py-2 rounded-xl text-sm font-medium bg-blue-500/10 text-blue-400">
                       Worldwide
+                    </span>
+                  )}
+                  {job.workWithB2b && (
+                    <span className="px-4 py-2 rounded-xl text-sm font-medium bg-green-500/10 text-green-400">
+                      B2B
                     </span>
                   )}
                 </div>
@@ -268,13 +281,14 @@ export default function JobDetailsPage() {
 
             {/* Apply Button */}
             {job.typeOfApplication === "EMAIL" ? (
-              <a
-                href={`mailto:${job.applicationLinkOrEmail}?subject=Application for ${job.name}`}
+              <button
+                onClick={() => setShowModal(true)}
+                // href={`mailto:${job.applicationLinkOrEmail}?subject=Application for ${job.name}`}
                 className="w-full bg-orange-600 hover:bg-orange-700 hover:shadow-orange-500/25 text-white py-4 px-8 rounded-xl font-semibold transition-all duration-200 flex items-center justify-center gap-2"
               >
                 Apply Now
                 <HiOutlineMail className="w-5 h-5" />
-              </a>
+              </button>
             ) : (
               <Link
                 href={
@@ -293,6 +307,12 @@ export default function JobDetailsPage() {
           </motion.div>
         </div>
       </div>
+
+      <EasyApplyModal
+        setShowModal={setShowModal}
+        isOpen={showModal}
+        jobId={jobId}
+      />
     </div>
   );
 }

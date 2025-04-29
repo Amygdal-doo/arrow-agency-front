@@ -1,0 +1,16 @@
+export const projectTypeList: string[] = [
+  "Gambling / Betting",
+  "Adult / Pornographic Content",
+  "Crypto / Blockchain",
+  "Military / Defense",
+  "Tobacco / Vaping",
+  "Alcohol / Brewing",
+  "Political Campaigns",
+  "Religious Content",
+  "Violent / Weapon-related Projects",
+  "Surveillance / Tracking",
+  "AI & Facial Recognition",
+  "Financial Trading / High-Risk Investments",
+  "Casino / Online Slots",
+  "Cannabis / CBD",
+];
