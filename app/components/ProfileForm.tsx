@@ -41,7 +41,6 @@ const ProfileForm = () => {
   const [availableCountries, setAvailableCountries] =
     useState<string[]>(countries);
 
-  // Add these handlers after other handlers
   const handleCountryOriginSelect = (country: string) => {
     setSelectedCountryOrigin(country);
     setValue("countryOrigin", country, {
@@ -56,7 +55,6 @@ const ProfileForm = () => {
     country.toLowerCase().includes(countryOriginSearch.toLowerCase())
   );
 
-  // Add this effect to handle clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
@@ -71,7 +69,6 @@ const ProfileForm = () => {
     };
   }, []);
 
-  // Add these handlers after other handlers
   const handleNonPreferredProjectSelect = (project: string) => {
     if (!selectedNonPreferredProjects.includes(project)) {
       const updatedSelected = [...selectedNonPreferredProjects, project];
@@ -107,7 +104,6 @@ const ProfileForm = () => {
     );
   }, [selectedPreferredCountries, selectedNonPreferredCountries]);
 
-  // Add these handlers
   const handlePreferredCountrySelect = (country: string) => {
     if (!selectedPreferredCountries.includes(country)) {
       const updatedSelected = [...selectedPreferredCountries, country];
@@ -192,7 +188,6 @@ const ProfileForm = () => {
   }, [profile, setValue]);
 
   const onSubmit = async (data: ProfileFormData) => {
-    console.log("data");
     try {
       await apiService.put(`user/profile`, {
         phoneNumber: data.phoneNumber,
@@ -225,6 +220,9 @@ const ProfileForm = () => {
         {/* First & Last Name */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
           <div>
+            <label className="block text-sm font-medium text-gray-300 mb-2">
+              First Name
+            </label>
             <input
               {...register("firstName", {
                 required: "First name is required",
@@ -240,6 +238,9 @@ const ProfileForm = () => {
           </div>
 
           <div>
+            <label className="block text-sm font-medium text-gray-300 mb-2">
+              Last Name
+            </label>
             <input
               placeholder="Last Name"
               {...register("lastName", { required: "Last name is required" })}
@@ -256,6 +257,9 @@ const ProfileForm = () => {
         {/* Phone & Address */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
           <div>
+            <label className="block text-sm font-medium text-gray-300 mb-2">
+              Phone Number
+            </label>
             <input
               {...register("phoneNumber", {
                 required: "Phone number is required",
@@ -271,6 +275,9 @@ const ProfileForm = () => {
           </div>
 
           <div>
+            <label className="block text-sm font-medium text-gray-300 mb-2">
+              Address
+            </label>
             <input
               {...register("address", { required: "Address is required" })}
               placeholder="Address"
@@ -289,25 +296,27 @@ const ProfileForm = () => {
             <label className="block text-sm font-medium text-gray-300 mb-2">
               Country of Origin *
             </label>
-            <div className="relative">
-              <div
-                onClick={() => setCountryOriginOpen(!countryOriginOpen)}
-                className={`w-full bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 cursor-pointer flex justify-between items-center ${
-                  countryOriginOpen ? "ring-2 ring-orange-500" : ""
-                }`}
-              >
-                <span
-                  className={
-                    errors.countryOrigin ? "text-red-400" : "text-gray-300"
-                  }
-                >
-                  {selectedCountryOrigin || "Select a country"}
-                </span>
+            <div
+              className="relative"
+              onClick={() => setCountryOriginOpen(!countryOriginOpen)}
+            >
+              <div className="relative flex items-center">
+                <input
+                  type="text"
+                  value={countryOriginSearch}
+                  onChange={(e) => setCountryOriginSearch(e.target.value)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setCountryOriginOpen(true);
+                  }}
+                  className="w-full bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 placeholder-gray-300 focus:ring-2 focus:ring-orange-500 outline-none focus:border-transparent transition-all pr-10"
+                  placeholder={selectedCountryOrigin || "Select a country"}
+                />
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className={`h-5 w-5 transition-transform ${
+                  className={`h-5 w-5 absolute right-3 transition-transform ${
                     countryOriginOpen ? "rotate-180" : ""
-                  }`}
+                  } text-gray-300`}
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -320,28 +329,17 @@ const ProfileForm = () => {
                   />
                 </svg>
               </div>
-
               {countryOriginOpen && (
-                <div className="absolute z-50 w-full mt-2 bg-gray-800 border border-gray-700 rounded-lg shadow-xl">
-                  <input
-                    type="text"
-                    placeholder="Search countries..."
-                    className="w-full p-3 bg-gray-700/50 border-b border-gray-600 rounded-t-lg text-gray-300"
-                    value={countryOriginSearch}
-                    onChange={(e) => setCountryOriginSearch(e.target.value)}
-                    onClick={(e) => e.stopPropagation()}
-                  />
-                  <div className="max-h-60 overflow-y-auto">
-                    {filteredOriginCountries.map((country) => (
-                      <div
-                        key={country}
-                        onClick={() => handleCountryOriginSelect(country)}
-                        className="px-4 py-2 hover:bg-gray-700 cursor-pointer text-gray-300"
-                      >
-                        {country}
-                      </div>
-                    ))}
-                  </div>
+                <div className="absolute z-50 w-full mt-2 bg-gray-800 border border-gray-700 rounded-lg shadow-xl max-h-60 overflow-y-auto">
+                  {filteredOriginCountries.map((country) => (
+                    <div
+                      key={country}
+                      onClick={() => handleCountryOriginSelect(country)}
+                      className="px-4 py-3 cursor-pointer hover:bg-gray-700 first:rounded-t-lg last:rounded-b-lg text-gray-300"
+                    >
+                      {country}
+                    </div>
+                  ))}
                 </div>
               )}
             </div>
@@ -357,61 +355,57 @@ const ProfileForm = () => {
             <label className="block text-sm font-medium text-gray-300 mb-2">
               Preferred Work Countries
             </label>
-            <div className="relative">
-              <div
-                onClick={() =>
-                  setPreferredCountriesOpen(!preferredCountriesOpen)
-                }
-                className="w-full bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 cursor-pointer"
-              >
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-400">Select Countries</span>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className={`h-5 w-5 transition-transform ${
-                      preferredCountriesOpen ? "rotate-180" : ""
-                    }`}
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M19 9l-7 7-7-7"
-                    />
-                  </svg>
-                </div>
-              </div>
 
-              {preferredCountriesOpen && (
-                <div className="absolute z-50 w-full mt-2 bg-gray-800 border border-gray-700 rounded-lg shadow-xl">
-                  <input
-                    type="text"
-                    placeholder="Search countries..."
-                    className="w-full p-3 bg-gray-700/50 border-b border-gray-600 rounded-t-lg text-gray-300"
-                    value={countrySearch}
-                    onChange={(e) => setCountrySearch(e.target.value)}
-                    onClick={(e) => e.stopPropagation()}
+            <div
+              className="relative"
+              onClick={() => setPreferredCountriesOpen(!preferredCountriesOpen)}
+            >
+              <div className="relative flex items-center">
+                <input
+                  type="text"
+                  value={countrySearch}
+                  onChange={(e) => setCountrySearch(e.target.value)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setPreferredCountriesOpen(true);
+                  }}
+                  className="w-full bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 placeholder-gray-500 focus:ring-2 focus:ring-orange-500 outline-none focus:border-transparent transition-all pr-10"
+                  placeholder="Search or select preferred countries"
+                />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className={`h-5 w-5 absolute right-3 transition-transform ${
+                    preferredCountriesOpen ? "rotate-180" : ""
+                  } text-gray-300`}
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 9l-7 7-7-7"
                   />
-                  <div className="max-h-60 overflow-y-auto">
-                    {availableCountries
-                      .filter((country) =>
-                        country
-                          .toLowerCase()
-                          .includes(countrySearch.toLowerCase())
-                      )
-                      .map((country) => (
-                        <div
-                          key={country}
-                          onClick={() => handlePreferredCountrySelect(country)}
-                          className="px-4 py-2 hover:bg-gray-700 cursor-pointer text-gray-300"
-                        >
-                          {country}
-                        </div>
-                      ))}
-                  </div>
+                </svg>
+              </div>
+              {preferredCountriesOpen && (
+                <div className="absolute z-50 w-full mt-2 bg-gray-800 border border-gray-700 rounded-lg shadow-xl max-h-60 overflow-y-auto">
+                  {availableCountries
+                    .filter((country) =>
+                      country
+                        .toLowerCase()
+                        .includes(countrySearch.toLowerCase())
+                    )
+                    .map((country) => (
+                      <div
+                        key={country}
+                        onClick={() => handlePreferredCountrySelect(country)}
+                        className="px-4 py-3 cursor-pointer hover:bg-gray-700 first:rounded-t-lg last:rounded-b-lg text-gray-300"
+                      >
+                        {country}
+                      </div>
+                    ))}
                 </div>
               )}
             </div>
@@ -442,63 +436,58 @@ const ProfileForm = () => {
             <label className="block text-sm font-medium text-gray-300 mb-2">
               Non-Preferred Work Countries
             </label>
-            <div className="relative">
-              <div
-                onClick={() =>
-                  setNonPreferredCountriesOpen(!nonPreferredCountriesOpen)
-                }
-                className="w-full bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 cursor-pointer"
-              >
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-400">Select Countries</span>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className={`h-5 w-5 transition-transform ${
-                      nonPreferredCountriesOpen ? "rotate-180" : ""
-                    }`}
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M19 9l-7 7-7-7"
-                    />
-                  </svg>
-                </div>
-              </div>
-
-              {nonPreferredCountriesOpen && (
-                <div className="absolute z-50 w-full mt-2 bg-gray-800 border border-gray-700 rounded-lg shadow-xl">
-                  <input
-                    type="text"
-                    placeholder="Search countries..."
-                    className="w-full p-3 bg-gray-700/50 border-b border-gray-600 rounded-t-lg text-gray-300"
-                    value={countrySearch}
-                    onChange={(e) => setCountrySearch(e.target.value)}
-                    onClick={(e) => e.stopPropagation()}
+            <div
+              className="relative"
+              onClick={() =>
+                setNonPreferredCountriesOpen(!nonPreferredCountriesOpen)
+              }
+            >
+              <div className="relative flex items-center">
+                <input
+                  type="text"
+                  value={countrySearch}
+                  onChange={(e) => setCountrySearch(e.target.value)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setNonPreferredCountriesOpen(true);
+                  }}
+                  className="w-full bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 placeholder-gray-500 focus:ring-2 focus:ring-orange-500 outline-none focus:border-transparent transition-all pr-10"
+                  placeholder="Search or select non-preferred countries"
+                />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className={`h-5 w-5 absolute right-3 transition-transform ${
+                    nonPreferredCountriesOpen ? "rotate-180" : ""
+                  } text-gray-300`}
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 9l-7 7-7-7"
                   />
-                  <div className="max-h-60 overflow-y-auto">
-                    {availableCountries
-                      .filter((country) =>
-                        country
-                          .toLowerCase()
-                          .includes(countrySearch.toLowerCase())
-                      )
-                      .map((country) => (
-                        <div
-                          key={country}
-                          onClick={() =>
-                            handleNonPreferredCountrySelect(country)
-                          }
-                          className="px-4 py-2 hover:bg-gray-700 cursor-pointer text-gray-300"
-                        >
-                          {country}
-                        </div>
-                      ))}
-                  </div>
+                </svg>
+              </div>
+              {nonPreferredCountriesOpen && (
+                <div className="absolute z-50 w-full mt-2 bg-gray-800 border border-gray-700 rounded-lg shadow-xl max-h-60 overflow-y-auto">
+                  {availableCountries
+                    .filter((country) =>
+                      country
+                        .toLowerCase()
+                        .includes(countrySearch.toLowerCase())
+                    )
+                    .map((country) => (
+                      <div
+                        key={country}
+                        onClick={() => handleNonPreferredCountrySelect(country)}
+                        className="px-4 py-3 cursor-pointer hover:bg-gray-700 first:rounded-t-lg last:rounded-b-lg text-gray-300"
+                      >
+                        {country}
+                      </div>
+                    ))}
                 </div>
               )}
             </div>
@@ -528,67 +517,60 @@ const ProfileForm = () => {
             <label className="block text-sm font-medium text-gray-300 mb-2">
               Non-Preferred Project Types
             </label>
-            <div className="relative">
-              <div
-                onClick={() =>
-                  setNonPreferredProjectsOpen(!nonPreferredProjectsOpen)
-                }
-                className="w-full bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 cursor-pointer"
-              >
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-400">Select Project Types</span>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className={`h-5 w-5 transition-transform ${
-                      nonPreferredProjectsOpen ? "rotate-180" : ""
-                    }`}
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M19 9l-7 7-7-7"
-                    />
-                  </svg>
-                </div>
-              </div>
-
-              {nonPreferredProjectsOpen && (
-                <div className="absolute z-50 w-full mt-2 bg-gray-800 border border-gray-700 rounded-lg shadow-xl">
-                  <input
-                    type="text"
-                    placeholder="Search project types..."
-                    className="w-full p-3 bg-gray-700/50 border-b border-gray-600 rounded-t-lg text-gray-300"
-                    value={projectSearch}
-                    onChange={(e) => setProjectSearch(e.target.value)}
-                    onClick={(e) => e.stopPropagation()}
+            <div
+              className="relative"
+              onClick={() =>
+                setNonPreferredProjectsOpen(!nonPreferredProjectsOpen)
+              }
+            >
+              <div className="relative flex items-center">
+                <input
+                  type="text"
+                  value={projectSearch}
+                  onChange={(e) => setProjectSearch(e.target.value)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setNonPreferredProjectsOpen(true);
+                  }}
+                  className="w-full bg-gray-700/50 border border-gray-600/50 rounded-lg p-3 text-gray-300 placeholder-gray-500 focus:ring-2 focus:ring-orange-500 outline-none focus:border-transparent transition-all pr-10"
+                  placeholder="Search or select project types"
+                />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className={`h-5 w-5 absolute right-3 transition-transform ${
+                    nonPreferredProjectsOpen ? "rotate-180" : ""
+                  } text-gray-300`}
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 9l-7 7-7-7"
                   />
-                  <div className="max-h-60 overflow-y-auto">
-                    {projectTypeList
-                      .filter((project) =>
+                </svg>
+              </div>
+              {nonPreferredProjectsOpen && (
+                <div className="absolute z-50 w-full mt-2 bg-gray-800 border border-gray-700 rounded-lg shadow-xl max-h-60 overflow-y-auto">
+                  {projectTypeList
+                    .filter(
+                      (project) =>
                         project
                           .toLowerCase()
-                          .includes(projectSearch.toLowerCase())
-                      )
-                      .filter(
-                        (project) =>
-                          !selectedNonPreferredProjects.includes(project)
-                      )
-                      .map((project) => (
-                        <div
-                          key={project}
-                          onClick={() =>
-                            handleNonPreferredProjectSelect(project)
-                          }
-                          className="px-4 py-2 hover:bg-gray-700 cursor-pointer text-gray-300"
-                        >
-                          {project}
-                        </div>
-                      ))}
-                  </div>
+                          .includes(projectSearch.toLowerCase()) &&
+                        !selectedNonPreferredProjects.includes(project)
+                    )
+                    .map((project) => (
+                      <div
+                        key={project}
+                        onClick={() => handleNonPreferredProjectSelect(project)}
+                        className="px-4 py-3 cursor-pointer hover:bg-gray-700 first:rounded-t-lg last:rounded-b-lg text-gray-300"
+                      >
+                        {project}
+                      </div>
+                    ))}
                 </div>
               )}
             </div>
@@ -611,31 +593,6 @@ const ProfileForm = () => {
                   </button>
                 </div>
               ))}
-            </div>
-          </div>
-
-          {/* Read-only Fields */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-            <div>
-              {profile && (
-                <div className="group bg-gray-800/30  rounded-lg p-3 border border-gray-700/50">
-                  <div className="text-sm text-gray-400">Created At</div>
-                  <div className="text-gray-300">
-                    {new Date(profile.user?.createdAt).toLocaleDateString()}
-                  </div>
-                </div>
-              )}
-            </div>
-
-            <div>
-              {profile && (
-                <div className="group bg-gray-800/30 rounded-lg p-3 border border-gray-700/50">
-                  <div className="text-sm text-gray-400">Updated At</div>
-                  <div className="text-gray-300">
-                    {new Date(profile.user?.updatedAt).toLocaleDateString()}
-                  </div>
-                </div>
-              )}
             </div>
           </div>
         </div>
