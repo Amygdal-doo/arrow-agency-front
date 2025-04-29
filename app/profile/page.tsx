@@ -10,8 +10,10 @@ import { apiService } from "@/core/services/apiService";
 import Image from "next/image";
 import Modal from "../components/Modal";
 import CVForm from "../components/CVForm";
+import PremiumRequiredModal from "../components/PremiumRequiredModal";
 
 export default function Profile() {
+  const [showPremiumModal, setShowPremiumModal] = useState(false);
   const [showCVModal, setShowCVModal] = useState(false);
   const { data: session, status } = useSession();
   const router = useRouter();
@@ -146,11 +148,21 @@ export default function Profile() {
         {/* Applicants Section */}
 
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold  text-white">Applicants</h2>
+          <h2 className="text-2xl font-bold text-white">Applicants</h2>
           <div className="h-px flex-1 bg-gray-700 mx-4" />
           <button
-            onClick={() => setShowCVModal(true)}
-            className="inline-flex items-center px-4 py-2 bg-orange-600 hover:bg-orange-700 hover:shadow-orange-500/25 text-white rounded-lg font-medium  transition-all duration-200 shadow-lg disabled:opacity-50"
+            onClick={() => {
+              if (
+                profile?.user?.role === "USER" &&
+                applicants &&
+                applicants.length >= 1
+              ) {
+                setShowPremiumModal(true);
+              } else {
+                setShowCVModal(true);
+              }
+            }}
+            className="inline-flex items-center px-4 py-2 bg-orange-600 hover:bg-orange-700 hover:shadow-orange-500/25 text-white rounded-lg font-medium transition-all duration-200 shadow-lg disabled:opacity-50"
           >
             Add New Applicant
           </button>
@@ -214,6 +226,10 @@ export default function Profile() {
       <Modal isOpen={showCVModal} onClose={() => setShowCVModal(false)}>
         <CVForm onClose={() => setShowCVModal(false)} />
       </Modal>
+      <PremiumRequiredModal
+        isOpen={showPremiumModal}
+        setShowModal={setShowPremiumModal}
+      />
     </div>
   );
 }
