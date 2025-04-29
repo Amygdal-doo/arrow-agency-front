@@ -43,6 +43,7 @@ export interface IApplicant {
   file: string;
   createdAt: string;
   updatedAt: string;
+  publicCv: boolean;
 }
 
 interface ApplicantsResponse {

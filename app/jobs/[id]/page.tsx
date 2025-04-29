@@ -16,6 +16,8 @@ import { GiSkills } from "react-icons/gi";
 import { RiMoneyDollarCircleLine } from "react-icons/ri";
 import Link from "next/link";
 import EasyApplyModal from "@/app/components/EasyApplyModal";
+import { useSession } from "next-auth/react";
+import RegisterRequiredModal from "@/app/components/RegisterRequiredModal";
 
 interface JobDetails {
   id: string;
@@ -42,6 +44,8 @@ interface JobDetails {
 export default function JobDetailsPage() {
   const router = useRouter();
 
+  const { status } = useSession();
+  const [showRegisterModal, setShowRegisterModal] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const formatDate = (dateString: string) => {
     return new Intl.DateTimeFormat("en-US", {
@@ -282,7 +286,13 @@ export default function JobDetailsPage() {
             {/* Apply Button */}
             {job.typeOfApplication === "EMAIL" ? (
               <button
-                onClick={() => setShowModal(true)}
+                onClick={() => {
+                  if (status === "authenticated") {
+                    setShowModal(true);
+                  } else {
+                    setShowRegisterModal(true);
+                  }
+                }}
                 // href={`mailto:${job.applicationLinkOrEmail}?subject=Application for ${job.name}`}
                 className="w-full bg-orange-600 hover:bg-orange-700 hover:shadow-orange-500/25 text-white py-4 px-8 rounded-xl font-semibold transition-all duration-200 flex items-center justify-center gap-2"
               >
@@ -312,6 +322,11 @@ export default function JobDetailsPage() {
         setShowModal={setShowModal}
         isOpen={showModal}
         jobId={jobId}
+      />
+
+      <RegisterRequiredModal
+        setShowModal={setShowRegisterModal}
+        isOpen={showRegisterModal}
       />
     </div>
   );
