@@ -8,10 +8,15 @@ import { useSession } from "next-auth/react";
 import LoginForm from "./LoginForm";
 import RegistrationForm from "./RegistrationForm";
 import { motion } from "framer-motion";
+import { useProfile } from "@/providers/ProfileInfoProvider";
+import { useApplicants } from "@/providers/ApplicantsProvider";
+import { useRouter } from "next/navigation";
 
 const HeroSection = () => {
   const { data: session, status } = useSession();
-
+  const router = useRouter();
+  const { profile } = useProfile();
+  const { applicants } = useApplicants();
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showLoginForm, setShowLoginForm] = useState(false);
   const [showCVModal, setShowCVModal] = useState(false);
@@ -98,7 +103,41 @@ const HeroSection = () => {
 
       {/* Modals */}
       <Modal isOpen={showCVModal} onClose={() => setShowCVModal(false)}>
-        <CVForm onClose={() => setShowCVModal(false)} />
+        {profile?.user?.role === "USER" &&
+        applicants &&
+        applicants.length >= 1 ? (
+          <div className="bg-gray-800 p-8 rounded-xl w-full">
+            <div className="text-center px-2 lg:px-8">
+              <h3 className="text-2xl font-bold text-white mb-4">
+                Premium Subscription Required
+              </h3>
+              <p className="text-gray-300 mb-8">
+                You have reached the maximum number of applicants for a free
+                account. Upgrade to premium to add unlimited applicants and
+                access more features.
+              </p>
+              <div className="flex gap-4">
+                <button
+                  onClick={() => {
+                    router.push("/pricing");
+                    setShowCVModal(false);
+                  }}
+                  className="flex-1 bg-orange-600 hover:bg-orange-700 text-white font-semibold py-3 px-2 md:px-6 rounded-lg transition-colors text-center"
+                >
+                  Subscribe
+                </button>
+                <button
+                  onClick={() => setShowCVModal(false)}
+                  className="flex-1 bg-gray-700 hover:bg-gray-600 text-gray-300 font-semibold py-3 px-2 md:px-6 rounded-lg transition-colors text-center"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <CVForm onClose={() => setShowCVModal(false)} />
+        )}
       </Modal>
       <Modal
         isOpen={showLoginModal}
