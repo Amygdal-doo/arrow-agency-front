@@ -11,6 +11,7 @@ import { useApplicants } from "@/providers/ApplicantsProvider";
 import { useProfile } from "@/providers/ProfileInfoProvider";
 import { useSubscriptionPlans } from "@/providers/SubscriptionPlansProvider";
 import SubscriptionModal from "../components/SubscriptionModal";
+import { useSubscriptionStatus } from "@/providers/SubscriptionStatusProvider";
 
 export default function Pricing() {
   const [showSubscriptionModal, setShowSubscriptionModal] = useState(false);
@@ -22,6 +23,7 @@ export default function Pricing() {
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showLoginForm, setShowLoginForm] = useState(false);
   const [showCVModal, setShowCVModal] = useState(false);
+  const { subscription } = useSubscriptionStatus();
 
   useEffect(() => {
     fetchPlans();
@@ -41,13 +43,33 @@ export default function Pricing() {
         }
         break;
       case "HR Subscription":
-        setShowSubscriptionModal(true);
-        setSelectedPlanId(planId);
+        if (status === "authenticated" && session?.user?.accessToken) {
+          setShowSubscriptionModal(true);
+          setSelectedPlanId(planId);
+        } else {
+          setShowLoginModal(true);
+        }
+        break;
+
         break;
       case "Enterprise":
         window.location.href = `mailto:info@amygdal.com?subject=Enterprise Plan Inquiry`;
         break;
     }
+  };
+
+  const getButtonText = (planName: string) => {
+    if (planName === "Free Plan") return "Get Started";
+    if (planName === "Enterprise") return "Contact Sales";
+    if (planName === "HR Subscription") {
+      if (subscription?.status === "ACTIVE") {
+        return subscription.customerCancelled
+          ? "Subscribe"
+          : "Cancel Subscription";
+      }
+      return "Subscribe";
+    }
+    return "Subscribe";
   };
 
   if (loading)
@@ -175,9 +197,7 @@ export default function Pricing() {
                       : "bg-gray-800 hover:bg-gray-700 text-white"
                   }`}
                 >
-                  {plan.name === "Free Plan" && "Get Started"}
-                  {plan.name === "HR Subscription" && "Subscribe"}
-                  {plan.name === "Enterprise" && "Contact Sales"}
+                  {getButtonText(plan.name)}
                 </button>
               </div>
             </motion.div>

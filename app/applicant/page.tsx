@@ -4,11 +4,20 @@ import { motion } from "framer-motion";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import Modal from "../components/Modal";
+import CVForm from "../components/CVForm";
+import { useProfile } from "@/providers/ProfileInfoProvider";
+import PremiumRequiredModal from "../components/PremiumRequiredModal";
 
 export default function ApplicantsPage() {
+  const [showCVModal, setShowCVModal] = useState(false);
+
+  const [showPremiumModal, setShowPremiumModal] = useState(false);
   const { data: session, status } = useSession();
   const router = useRouter();
+
+  const { profile } = useProfile();
   const { applicants, page, setPage, pages, fetchApplicants } = useApplicants();
 
   useEffect(() => {
@@ -24,22 +33,25 @@ export default function ApplicantsPage() {
     <div className="min-h-screen bg-gradient-to-b from-[#01070a] to-gray-900">
       <div className="container mx-auto px-4 pb-24 pt-40">
         {/* Hero Section */}
-        <div className="mx-auto text-start mb-16">
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-5xl md:text-6xl font-bold text-white mb-6 bg-clip-text text-transparent bg-gradient-to-r from-orange-500 to-orange-300"
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-2xl font-bold text-white">Applicants</h2>
+          <div className="h-px flex-1 bg-gray-700 mx-4" />
+          <button
+            onClick={() => {
+              if (
+                profile?.user?.role === "USER" &&
+                applicants &&
+                applicants.length >= 1
+              ) {
+                setShowPremiumModal(true);
+              } else {
+                setShowCVModal(true);
+              }
+            }}
+            className="inline-flex items-center px-4 py-2 bg-orange-600 hover:bg-orange-700 hover:shadow-orange-500/25 text-white rounded-lg font-medium transition-all duration-200 shadow-lg disabled:opacity-50"
           >
-            Find Your Next AI Talent
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="text-xl text-gray-400"
-          >
-            Browse through our pool of AI-specialized candidates
-          </motion.p>
+            Add New Applicant
+          </button>
         </div>
 
         {/* Applicants Grid */}
@@ -153,6 +165,14 @@ export default function ApplicantsPage() {
           </div>
         )}
       </div>
+
+      <Modal isOpen={showCVModal} onClose={() => setShowCVModal(false)}>
+        <CVForm onClose={() => setShowCVModal(false)} />
+      </Modal>
+      <PremiumRequiredModal
+        isOpen={showPremiumModal}
+        setShowModal={setShowPremiumModal}
+      />
     </div>
   );
 }

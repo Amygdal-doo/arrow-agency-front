@@ -12,6 +12,7 @@ import { PackagesProvider } from "@/providers/PackagesProvider";
 import ScrollToTop from "./components/ScrollToTop";
 import LayoutWrapper from "./components/LayoutWrapper";
 import { SubscriptionProvider } from "@/providers/SubscriptionPlansProvider";
+import { SubscriptionStatusProvider } from "@/providers/SubscriptionStatusProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -47,7 +48,9 @@ export default function RootLayout({
                   <CreateJobProvider>
                     <PackagesProvider>
                       <SubscriptionProvider>
-                        <LayoutWrapper>{children}</LayoutWrapper>
+                        <SubscriptionStatusProvider>
+                          <LayoutWrapper>{children}</LayoutWrapper>
+                        </SubscriptionStatusProvider>
                       </SubscriptionProvider>
                     </PackagesProvider>
                   </CreateJobProvider>

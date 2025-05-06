@@ -6,19 +6,16 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import ProfileForm from "../components/ProfileForm";
 import { useApplicants } from "@/providers/ApplicantsProvider";
-import { apiService } from "@/core/services/apiService";
-import Image from "next/image";
-import Modal from "../components/Modal";
-import CVForm from "../components/CVForm";
-import PremiumRequiredModal from "../components/PremiumRequiredModal";
+import { useSubscriptionStatus } from "@/providers/SubscriptionStatusProvider";
+import SubscriptionModal from "../components/SubscriptionModal";
 
 export default function Profile() {
-  const [showPremiumModal, setShowPremiumModal] = useState(false);
-  const [showCVModal, setShowCVModal] = useState(false);
+  const [showSubscriptionModal, setShowSubscriptionModal] = useState(false);
   const { data: session, status } = useSession();
   const router = useRouter();
-  const { profile, fetchProfile } = useProfile();
-  const { applicants, fetchApplicants } = useApplicants();
+  const { subscription } = useSubscriptionStatus();
+  const { profile } = useProfile();
+  const { fetchApplicants } = useApplicants();
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -29,51 +26,146 @@ export default function Profile() {
     }
   }, [status, session, router]);
 
-  const [isUploading, setIsUploading] = useState(false);
+  // const [isUploading, setIsUploading] = useState(false);
 
-  const handleLogoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file || !(file instanceof File)) return;
+  // const handleLogoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const file = e.target.files?.[0];
+  //   if (!file || !(file instanceof File)) return;
 
-    try {
-      setIsUploading(true);
-      const formData = new FormData();
-      formData.append("file", file);
+  //   try {
+  //     setIsUploading(true);
+  //     const formData = new FormData();
+  //     formData.append("file", file);
 
-      await apiService.put("user/profile/company-logos", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+  //     await apiService.put("user/profile/company-logos", formData, {
+  //       headers: {
+  //         "Content-Type": "multipart/form-data",
+  //       },
+  //     });
 
-      // Refresh profile data to get updated logos
-      await fetchProfile();
-    } catch (error) {
-      console.error("Error uploading logo:", error);
-    } finally {
-      setIsUploading(false);
-    }
-  };
+  //     await fetchProfile();
+  //   } catch (error) {
+  //     console.error("Error uploading logo:", error);
+  //   } finally {
+  //     setIsUploading(false);
+  //   }
+  // };
 
   return (
     <div className="min-h-screen bg-[#01070a] text-white pb-12 pt-40">
       <div className="container mx-auto px-4">
         {/* Header Section */}
+        {/* <pre className="text-white">
+          {JSON.stringify(subscription, null, 2)}
+        </pre> */}
         {/* <pre className="text-white">{JSON.stringify(profile, null, 2)}</pre> */}
-        <div className="bg-gray-800/50 flex justify-between items-start rounded-lg p-8 mb-8 border border-gray-700">
+        <div className=" flex flex-col lg:flex-row justify-between gap-8 rounded-lg py-8 mb-8 ">
+          <div className="flex-1">
+            <h1 className="text-4xl font-bold mb-4 text-white">Profile</h1>
+            <p className="text-gray-300">{profile?.user?.email}</p>
+            <div className="bg-orange-600 text-gray-300 px-3 py-1 rounded-full font-semibold text-sm mt-2 inline-block">
+              {profile?.user?.role}
+            </div>
+          </div>
+
+          {subscription && (
+            <div className="flex-1 bg-gray-900/50 rounded-xl p-6 border border-gray-700">
+              <div className="flex justify-between items-start mb-6">
+                <div>
+                  <h2 className="text-xl font-semibold text-white mb-2">
+                    {subscription.plan.name}
+                  </h2>
+                  <div className="flex items-center gap-2">
+                    <span
+                      className={`px-3 py-1 rounded-full text-sm font-medium ${
+                        subscription.status === "ACTIVE"
+                          ? "bg-green-500/20 text-green-400"
+                          : subscription.status === "PAST_DUE"
+                          ? "bg-yellow-500/20 text-yellow-400"
+                          : subscription.status === "CANCELED"
+                          ? "bg-red-500/20 text-red-400"
+                          : subscription.status === "PENDING"
+                          ? "bg-blue-500/20 text-blue-400"
+                          : "bg-gray-500/20 text-gray-400"
+                      }`}
+                    >
+                      {subscription.status}
+                    </span>
+                    <span className="text-2xl font-bold text-white">
+                      ${subscription.ammount}
+                      <span className="text-sm text-gray-400">
+                        /{subscription.plan.period}
+                      </span>
+                    </span>
+                  </div>
+                </div>
+                {subscription.status === "ACTIVE" &&
+                  !subscription.customerCancelled && (
+                    <button
+                      onClick={() => setShowSubscriptionModal(true)}
+                      className="inline-flex items-center px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium transition-all duration-200"
+                    >
+                      Cancel
+                    </button>
+                  )}
+              </div>
+
+              <p className="text-sm text-gray-400 mb-4">
+                {subscription.plan.description}
+              </p>
+
+              <div className="grid grid-cols-2 gap-4 text-sm">
+                <div>
+                  <p className="text-gray-400">Start Date</p>
+                  <p className="text-white">
+                    {new Date(subscription.startDate).toLocaleDateString()}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-gray-400">Next Billing</p>
+                  <p className="text-white">
+                    {new Date(
+                      subscription.nextBillingDate
+                    ).toLocaleDateString()}
+                  </p>
+                </div>
+                {subscription.cancelledAt && (
+                  <div className="col-span-2">
+                    <p className="text-gray-400">Cancelled On</p>
+                    <p className="text-red-400">
+                      {new Date(subscription.cancelledAt).toLocaleDateString()}
+                    </p>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* <div className="bg-gray-800/50 flex justify-between items-start rounded-lg p-8 mb-8 border border-gray-700">
           <div>
             <h1 className="text-4xl font-bold mb-4 text-white">Profile</h1>
             <p className="text-gray-300">{profile?.user?.email}</p>
           </div>
-          <div className="bg-green-700 text-gray-300 px-3 py-1 rounded-full text-sm mt-2 inline-block">
-            {profile?.user?.role}
+          <div className="flex flex-col space-y-4 items-end">
+            <div>
+              <div className="bg-green-700 text-gray-300 px-3 py-1 rounded-full text-sm mt-2 inline-block">
+                {profile?.user?.role}
+              </div>
+            </div>
+            <button
+              onClick={() => {}}
+              className="inline-flex items-center px-4 py-2 bg-orange-600 hover:bg-orange-700 hover:shadow-orange-500/25 text-white rounded-full font-medium transition-all duration-200 shadow-lg disabled:opacity-50"
+            >
+              Cancel subscription
+            </button>
           </div>
-        </div>
+        </div> */}
 
         {/* Profile Form */}
         <ProfileForm />
 
-        <div className="flex items-center justify-between my-8">
+        {/* <div className="flex items-center justify-between my-8">
           <h2 className="text-2xl font-bold text-white">Company Logos</h2>
           <div className="h-px flex-1 bg-gray-700 mx-4" />
           <label className="relative cursor-pointer">
@@ -106,9 +198,9 @@ export default function Profile() {
               )}
             </span>
           </label>
-        </div>
+        </div> */}
 
-        <div className="bg-gray-800/50 rounded-xl p-6 border border-gray-700/50 shadow-lg my-8">
+        {/* <div className="bg-gray-800/50 rounded-xl p-6 border border-gray-700/50 shadow-lg my-8">
           {profile?.companyLogos && profile.companyLogos.length > 0 ? (
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {profile.companyLogos.map((logo) => (
@@ -116,7 +208,6 @@ export default function Profile() {
                   key={logo.id}
                   className="group relative bg-gray-800/30 rounded-lg p-4 border border-gray-700/50 hover:bg-gray-800/50 transition-all duration-200"
                 >
-                  {/* <pre>{JSON.stringify(logo, null, 2)}</pre> */}
                   <Image
                     src={logo.url}
                     alt={logo.name}
@@ -143,11 +234,11 @@ export default function Profile() {
               No company logos uploaded yet
             </div>
           )}
-        </div>
+        </div> */}
 
         {/* Applicants Section */}
 
-        <div className="flex items-center justify-between mb-6">
+        {/* <div className="flex items-center justify-between mb-6">
           <h2 className="text-2xl font-bold text-white">Applicants</h2>
           <div className="h-px flex-1 bg-gray-700 mx-4" />
           <button
@@ -166,11 +257,9 @@ export default function Profile() {
           >
             Add New Applicant
           </button>
-        </div>
+        </div> */}
 
-        {/* <pre>{JSON.stringify(applicants, null, 2)}</pre> */}
-
-        {applicants?.length > 0 ? (
+        {/* {applicants?.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {applicants.map((applicant) => (
               <div
@@ -184,13 +273,7 @@ export default function Profile() {
                     </h3>
                     <p className="text-gray-400">Position</p>
                   </div>
-                  {/* <span
-                  className={`px-3 py-1 rounded-full text-sm font-medium bg-gray-600 text-gray-200
-                    
-                    `}
-                >
-                  hired
-                </span> */}
+                
                 </div>
                 <p className="text-gray-300 mb-4">{applicant.email}</p>
                 <p className="text-gray-300 mb-4">{applicant.phone}</p>
@@ -220,15 +303,11 @@ export default function Profile() {
           </div>
         ) : (
           <></>
-        )}
+        )} */}
       </div>
-
-      <Modal isOpen={showCVModal} onClose={() => setShowCVModal(false)}>
-        <CVForm onClose={() => setShowCVModal(false)} />
-      </Modal>
-      <PremiumRequiredModal
-        isOpen={showPremiumModal}
-        setShowModal={setShowPremiumModal}
+      <SubscriptionModal
+        setShowModal={setShowSubscriptionModal}
+        isOpen={showSubscriptionModal}
       />
     </div>
   );

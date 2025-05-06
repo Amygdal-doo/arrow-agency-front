@@ -32,7 +32,7 @@ const Navbar = () => {
     <>
       <Link href="/jobs" onClick={() => setIsMenuOpen(false)}>
         <li
-          className={`font-medium text-lg lg:text-xl transition-colors ${
+          className={`font-medium text-lg xl:text-xl transition-colors ${
             pathname === "/jobs" || pathname.startsWith("/jobs/")
               ? "text-orange-500 font-semibold"
               : "text-white hover:text-orange-500"
@@ -43,7 +43,7 @@ const Navbar = () => {
       </Link>
       <Link href="/for-talent" onClick={() => setIsMenuOpen(false)}>
         <li
-          className={`font-medium text-lg lg:text-xl transition-colors ${
+          className={`font-medium text-lg xl:text-xl transition-colors ${
             pathname === "/for-talent"
               ? "text-orange-500 font-semibold"
               : "text-white hover:text-orange-500"
@@ -55,7 +55,7 @@ const Navbar = () => {
       {status === "authenticated" && session?.user?.accessToken && (
         <Link href="/applicant" onClick={() => setIsMenuOpen(false)}>
           <li
-            className={`font-medium text-lg lg:text-xl transition-colors ${
+            className={`font-medium text-lg xl:text-xl transition-colors ${
               pathname === "/applicant" || pathname.startsWith("/applicant/")
                 ? "text-orange-500 font-semibold"
                 : "text-white hover:text-orange-500"
@@ -68,7 +68,7 @@ const Navbar = () => {
       {status === "authenticated" && session?.user?.accessToken && (
         <Link href="/companies" onClick={() => setIsMenuOpen(false)}>
           <li
-            className={`font-medium text-lg lg:text-xl transition-colors ${
+            className={`font-medium text-lg xl:text-xl transition-colors ${
               pathname === "/companies" || pathname.startsWith("/companies/")
                 ? "text-orange-500 font-semibold"
                 : "text-white hover:text-orange-500"
@@ -78,6 +78,17 @@ const Navbar = () => {
           </li>
         </Link>
       )}
+      <Link href="/pricing" onClick={() => setIsMenuOpen(false)}>
+        <li
+          className={`font-medium text-lg xl:text-xl transition-colors ${
+            pathname === "/pricing"
+              ? "text-orange-500 font-semibold"
+              : "text-white hover:text-orange-500"
+          }`}
+        >
+          Pricing
+        </li>
+      </Link>
     </>
   );
 
@@ -142,7 +153,7 @@ const Navbar = () => {
           </Link>
 
           {/* Desktop Navigation */}
-          <ul className="hidden lg:flex space-x-10">
+          <ul className="hidden lg:flex space-x-5 xl:space-x-10">
             <NavLinks />
           </ul>
         </div>
