@@ -1,0 +1,212 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>New Easy Application Received</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --primary: #ea580c;
+        --text: #0f172a;
+        --text-secondary: #64748b;
+        --border: #e2e8f0;
+        --background: #f8fafc;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        line-height: 1.6;
+        background-color: var(--background);
+        margin: 0;
+        padding: 0;
+        color: var(--text);
+      }
+
+      .container {
+        max-width: 600px;
+        margin: 40px auto;
+        padding: 32px;
+        background: #ffffff;
+        border-radius: 16px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      }
+
+      .header {
+        text-align: center;
+        margin-bottom: 32px;
+        padding-bottom: 24px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      h1 {
+        color: var(--text);
+        font-size: 24px;
+        font-weight: 700;
+        margin: 0;
+      }
+
+      .content {
+        margin-bottom: 32px;
+      }
+
+      .button {
+        display: inline-block;
+        background: linear-gradient(135deg, var(--primary), #fb923c);
+        color: white;
+        padding: 16px 32px;
+        text-decoration: none;
+        border-radius: 12px;
+        font-weight: 600;
+        text-align: center;
+        transition: all 0.3s ease;
+        margin: 24px 0;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      .button:hover {
+        background: linear-gradient(135deg, #fb923c, var(--primary));
+        transform: translateY(-2px);
+      }
+
+      .footer {
+        text-align: center;
+        color: var(--text-secondary);
+        font-size: 14px;
+        margin-top: 32px;
+        padding-top: 24px;
+        border-top: 1px solid var(--border);
+      }
+
+      .signature {
+        margin-top: 24px;
+        color: var(--text-secondary);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>New Easy Application Received</h1>
+      </div>
+
+      <div class="content">
+        <p>Dear {{employerName}},</p>
+        <p>
+          A new candidate has submitted an easy application for your job
+          posting: <strong>{{jobTitle}}</strong>
+        </p>
+
+        <p>You can review the applicant's CV by clicking the button below:</p>
+
+        <a href="{{cvUrl}}" class="button">View Applicant's CV</a>
+      </div>
+
+      <div class="footer">
+        <p>
+          This is an automated message, please do not reply directly to this
+          email.
+        </p>
+        <div class="signature">
+          <p>Best regards,<br />Digital Arrow Team</p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html> -->
+
+<!-- sendgrid template with inline style  -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>New Easy Application Received</title>
+  </head>
+  <body
+    style="
+      margin: 0;
+      padding: 0;
+      background-color: #f8fafc;
+      font-family: Inter, sans-serif;
+      color: #0f172a;
+      line-height: 1.6;
+    "
+  >
+    <div
+      style="
+        max-width: 600px;
+        margin: 40px auto;
+        padding: 32px;
+        background-color: #ffffff;
+        border-radius: 16px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      "
+    >
+      <!-- Header -->
+      <div
+        style="
+          text-align: center;
+          margin-bottom: 32px;
+          padding-bottom: 24px;
+          border-bottom: 1px solid #e2e8f0;
+        "
+      >
+        <h1 style="font-size: 24px; font-weight: 700; margin: 0">
+          New Easy Application Received
+        </h1>
+      </div>
+
+      <!-- Content -->
+      <div style="margin-bottom: 32px; font-size: 17px">
+        <p>Dear {{employerName}},</p>
+        <p style="padding-top: 10px; padding-bottom: 10px">
+          A new candidate has submitted an easy application for your job
+          posting: <strong>{{jobTitle}}</strong>
+        </p>
+        <p>You can review the applicant's CV by clicking the button below:</p>
+
+        <a
+          href="{{cvUrl}}"
+          style="
+            display: inline-block;
+            background: linear-gradient(135deg, #ea580c, #fb923c);
+            color: white;
+            padding: 16px 32px;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+            text-align: center;
+            margin: 24px 0;
+            width: 100%;
+            box-sizing: border-box;
+          "
+          >View Applicant's CV</a
+        >
+      </div>
+
+      <!-- Footer -->
+      <div
+        style="
+          text-align: center;
+          color: #64748b;
+          font-size: 14px;
+          margin-top: 32px;
+          padding-top: 24px;
+          border-top: 1px solid #e2e8f0;
+        "
+      >
+        <p>
+          This is an automated message, please do not reply directly to this
+          email.
+        </p>
+        <div style="margin-top: 24px; color: #64748b">
+          <p>Best regards,<br />Digital Arrow Team</p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
