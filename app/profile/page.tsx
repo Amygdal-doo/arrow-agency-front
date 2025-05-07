@@ -52,7 +52,7 @@ export default function Profile() {
   // };
 
   return (
-    <div className="min-h-screen bg-[#01070a] text-white pb-12 pt-40">
+    <div className="min-h-screen bg-[#01070a] text-white pb-12 pt-20 lg:pt-40">
       <div className="container mx-auto px-4">
         {/* Header Section */}
         {/* <pre className="text-white">

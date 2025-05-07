@@ -57,7 +57,7 @@ export default function ApplicantsPage() {
         {/* Applicants Grid */}
         <motion.div
           layout
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mx-auto"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mx-auto mt-16"
         >
           {applicants.map((applicant) => (
             <motion.div
