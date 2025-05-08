@@ -5,9 +5,20 @@ import { FormProvider, UseFormReturn } from "react-hook-form";
 import { z } from "zod";
 
 export const jobSchema = z.object({
-  worldwide: z.boolean().default(false),
-  remote: z.boolean().default(false),
-  workWithB2b: z.boolean().default(false),
+  worldwide: z.boolean({
+    required_error: "Please specify if this position is worldwide",
+    invalid_type_error: "Please specify if this position is worldwide",
+  }),
+  remote: z.boolean({
+    required_error: "Please specify if this position is remote",
+    invalid_type_error: "Please specify if this position is remote",
+  }),
+  workWithB2b: z.boolean({
+    required_error:
+      "Please specify if this position is available as a B2B engagement",
+    invalid_type_error:
+      "Please specify if this position is available as a B2B engagement",
+  }),
   name: z.string().min(1, "Job title is required"),
   description: z
     .string()
@@ -223,6 +234,11 @@ const JobForm = ({ jobMethods }: JobFormProps) => {
                 <span className="ml-2">No</span>
               </button>
             </div>
+            {jobMethods.formState.errors.workWithB2b && (
+              <p className="mt-2 text-red-400 text-sm">
+                {jobMethods.formState.errors.workWithB2b.message}
+              </p>
+            )}
           </div>
         </div>
         {/* Category and Skills */}
@@ -437,6 +453,11 @@ const JobForm = ({ jobMethods }: JobFormProps) => {
                 <span className="ml-2">No</span>
               </button>
             </div>
+            {jobMethods.formState.errors.worldwide && (
+              <p className="mt-2 text-red-400 text-sm">
+                {jobMethods.formState.errors.worldwide.message}
+              </p>
+            )}
           </div>
 
           <div className="bg-gray-800/50 rounded-xl p-6 border border-gray-700/50 shadow-lg">
@@ -505,6 +526,11 @@ const JobForm = ({ jobMethods }: JobFormProps) => {
                 <span className="ml-2">No</span>
               </button>
             </div>
+            {jobMethods.formState.errors.remote && (
+              <p className="mt-2 text-red-400 text-sm">
+                {jobMethods.formState.errors.remote.message}
+              </p>
+            )}
           </div>
 
           {/* Application Link */}

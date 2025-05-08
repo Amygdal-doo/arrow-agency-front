@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { Eye, EyeOff } from "lucide-react";
+import { useToast } from "@/providers/ToastProvider";
 
 const loginSchema = z.object({
   email: z.string().email({ message: "Invalid email address." }),
@@ -21,6 +22,7 @@ type LoginFormProps = {
 };
 
 const LoginForm = ({ toggleContent, onClose }: LoginFormProps) => {
+  const { showError, showSuccess } = useToast();
   const [loading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -36,20 +38,20 @@ const LoginForm = ({ toggleContent, onClose }: LoginFormProps) => {
   const onSubmit = async (data: LoginInputs) => {
     // setLoading(true);
     setErrorMessage("");
-    console.log("login data", data);
 
-    // Call the signIn method from next-auth
     const res = await signIn("credentials", {
       email: data.email,
       password: data.password,
       redirect: false,
     });
-    if (res) {
+    if (res?.status === 200) {
       onClose();
+      showSuccess("You logged in successfully!");
     }
 
     if (res?.error) {
-      console.error("Sign-in error:", res.error);
+      showError(res.error);
+      console.log("error", res.error);
       setErrorMessage(res.error);
       return;
     }

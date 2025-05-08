@@ -115,20 +115,24 @@ export default function Profile() {
               </p>
 
               <div className="grid grid-cols-2 gap-4 text-sm">
-                <div>
-                  <p className="text-gray-400">Start Date</p>
-                  <p className="text-white">
-                    {new Date(subscription.startDate).toLocaleDateString()}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-gray-400">Next Billing</p>
-                  <p className="text-white">
-                    {new Date(
-                      subscription.nextBillingDate
-                    ).toLocaleDateString()}
-                  </p>
-                </div>
+                {subscription.plan.name != "Free Plan" && (
+                  <div>
+                    <p className="text-gray-400">Start Date</p>
+                    <p className="text-white">
+                      {new Date(subscription.startDate).toLocaleDateString()}
+                    </p>
+                  </div>
+                )}
+                {subscription.plan.name != "Free Plan" && (
+                  <div>
+                    <p className="text-gray-400">Next Billing</p>
+                    <p className="text-white">
+                      {new Date(
+                        subscription.nextBillingDate
+                      ).toLocaleDateString()}
+                    </p>
+                  </div>
+                )}
                 {subscription.cancelledAt && (
                   <div className="col-span-2">
                     <p className="text-gray-400">Cancelled On</p>

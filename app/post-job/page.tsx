@@ -23,6 +23,7 @@ import { usePackages } from "@/providers/PackagesProvider";
 import Packages from "../components/post-job/Packages";
 import { useRouter } from "next/navigation";
 import { scrollToTop } from "@/core/consts/scrollToTop";
+import { useToast } from "@/providers/ToastProvider";
 
 const steps = [
   { id: 1, name: "Job Details" },
@@ -42,7 +43,7 @@ interface JobResponse {
 export default function PostJob() {
   const router = useRouter();
   const { data: session, status } = useSession();
-
+  const { showError } = useToast();
   const { fetchCategories, fetchSkills, setSelectedSkills } = useCreateJob();
   const { fetchMyCompanies, selectedCompany } = useCompanies();
   const { fetchPackages, packageId } = usePackages();
@@ -121,8 +122,6 @@ export default function PostJob() {
     if (currentStep === 1) {
       try {
         const isValid = await jobMethods.trigger();
-        console.log("Validation errors:", jobMethods.formState.errors);
-        console.log("data job", jobMethods.getValues());
         if (isValid) {
           setCurrentStep(2);
         } else {
@@ -134,7 +133,7 @@ export default function PostJob() {
           );
         }
       } catch (error) {
-        console.error("Form validation error:", error);
+        showError(error);
       }
     } else if (currentStep === 2) {
       const isValid = await companyMethods.trigger();
@@ -179,7 +178,7 @@ export default function PostJob() {
             setCurrentStep(3);
           }
         } catch (error) {
-          console.error("Error creating organization:", error);
+          showError(error);
         }
       }
     } else if (currentStep === 3) {
@@ -193,7 +192,7 @@ export default function PostJob() {
           setCurrentStep(4);
         }
       } catch (error) {
-        console.error("Error creating job:", error);
+        showError(error);
       }
     }
   };
@@ -213,7 +212,7 @@ export default function PostJob() {
         router.push("/jobs");
       }
     } catch (error) {
-      console.error("Error initializing payment:", error);
+      showError(error);
     } finally {
       setLoading(false);
     }

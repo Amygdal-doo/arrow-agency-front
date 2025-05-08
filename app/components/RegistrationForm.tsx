@@ -5,6 +5,8 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Eye, EyeOff } from "lucide-react";
 import { z } from "zod";
+import { useToast } from "@/providers/ToastProvider";
+import { IApiError } from "@/core/interfaces/apiError.interface";
 
 const registrationSchema = z.object({
   firstName: z
@@ -26,6 +28,8 @@ type RegistrationFormProps = {
 };
 
 const RegistrationForm = ({ toggleContent }: RegistrationFormProps) => {
+  const { showError, showSuccess } = useToast();
+
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -44,11 +48,12 @@ const RegistrationForm = ({ toggleContent }: RegistrationFormProps) => {
     setErrorMessage("");
     try {
       await apiService.post("auth/register", data);
+      showSuccess("You ");
       toggleContent();
-    } catch (error) {
-      setErrorMessage(
-        `Failed to register. Please try again. Error: ${JSON.stringify(error)}`
-      );
+    } catch (error: unknown) {
+      const apiError = error as IApiError;
+      showError(apiError.errors[0]);
+      setErrorMessage(apiError.errors[0]);
     } finally {
       setLoading(false);
     }

@@ -13,6 +13,7 @@ import ScrollToTop from "./components/ScrollToTop";
 import LayoutWrapper from "./components/LayoutWrapper";
 import { SubscriptionProvider } from "@/providers/SubscriptionPlansProvider";
 import { SubscriptionStatusProvider } from "@/providers/SubscriptionStatusProvider";
+import { ToastProvider } from "@/providers/ToastProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -40,25 +41,27 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ScrollToTop />
-        <NextAuthProvider>
-          <ProfileProvider>
-            <ApplicantsProvider>
-              <AllCompaniesProvider>
-                <AllJobsProvider>
-                  <CreateJobProvider>
-                    <PackagesProvider>
-                      <SubscriptionProvider>
-                        <SubscriptionStatusProvider>
-                          <LayoutWrapper>{children}</LayoutWrapper>
-                        </SubscriptionStatusProvider>
-                      </SubscriptionProvider>
-                    </PackagesProvider>
-                  </CreateJobProvider>
-                </AllJobsProvider>
-              </AllCompaniesProvider>
-            </ApplicantsProvider>
-          </ProfileProvider>
-        </NextAuthProvider>
+        <ToastProvider>
+          <NextAuthProvider>
+            <ProfileProvider>
+              <ApplicantsProvider>
+                <AllCompaniesProvider>
+                  <AllJobsProvider>
+                    <CreateJobProvider>
+                      <PackagesProvider>
+                        <SubscriptionProvider>
+                          <SubscriptionStatusProvider>
+                            <LayoutWrapper>{children}</LayoutWrapper>
+                          </SubscriptionStatusProvider>
+                        </SubscriptionProvider>
+                      </PackagesProvider>
+                    </CreateJobProvider>
+                  </AllJobsProvider>
+                </AllCompaniesProvider>
+              </ApplicantsProvider>
+            </ProfileProvider>
+          </NextAuthProvider>
+        </ToastProvider>
       </body>
     </html>
   );
