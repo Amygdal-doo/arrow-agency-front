@@ -275,29 +275,31 @@ export default function ForTalentPage() {
               </Link>
             </motion.div>
           </div>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="bg-white/5 w-full lg:w-1/2 rounded-2xl p-4 md:p-8 border border-gray-700/50"
-          >
-            <div className="space-y-4">
-              {jobs.slice(0, 3).map((job, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, x: 20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  whileHover={{ x: 10 }}
-                  onClick={() => router.push(`/jobs/${job.id}`)}
-                  className="flex items-center justify-between p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-all duration-200 cursor-pointer"
-                >
-                  <span className="text-white font-medium">{job.name}</span>
-                  <span className="text-orange-500">→</span>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
+          {jobs.length > 0 && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="bg-white/5 w-full lg:w-1/2 rounded-2xl p-4 md:p-8 border border-gray-700/50"
+            >
+              <div className="space-y-4">
+                {jobs.slice(0, 3).map((job, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, x: 20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                    whileHover={{ x: 10 }}
+                    onClick={() => router.push(`/jobs/${job.id}`)}
+                    className="flex items-center justify-between p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-all duration-200 cursor-pointer"
+                  >
+                    <span className="text-white font-medium">{job.name}</span>
+                    <span className="text-orange-500">→</span>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+          )}
         </motion.div>
       </motion.section>
 
