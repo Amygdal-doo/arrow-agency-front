@@ -43,7 +43,6 @@ const RegistrationForm = ({ toggleContent }: RegistrationFormProps) => {
   });
 
   const onSubmit = async (data: RegistrationInputs) => {
-    console.log("Registration successful:", data);
     setLoading(true);
     setErrorMessage("");
     try {

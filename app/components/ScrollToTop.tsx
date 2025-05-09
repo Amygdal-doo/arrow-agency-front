@@ -8,7 +8,6 @@ export default function ScrollToTop() {
 
   useEffect(() => {
     requestAnimationFrame(() => {
-      console.log("scroll to top");
       window.scrollTo({ top: 0, behavior: "smooth" });
     });
   }, [pathname]);

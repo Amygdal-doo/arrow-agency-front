@@ -33,8 +33,6 @@ const Navbar = () => {
     return `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
   };
 
-  console.log("pathname", pathname);
-
   const NavLinks = () => (
     <>
       <Link href="/jobs" onClick={() => setIsMenuOpen(false)}>

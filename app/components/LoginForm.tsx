@@ -6,6 +6,7 @@ import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { Eye, EyeOff } from "lucide-react";
 import { useToast } from "@/providers/ToastProvider";
+import { IApiError } from "@/core/interfaces/apiError.interface";
 
 const loginSchema = z.object({
   email: z.string().email({ message: "Invalid email address." }),
@@ -51,7 +52,6 @@ const LoginForm = ({ toggleContent, onClose }: LoginFormProps) => {
 
     if (res?.error) {
       showError(res.error);
-      console.log("error", res.error);
       setErrorMessage(res.error);
       return;
     }

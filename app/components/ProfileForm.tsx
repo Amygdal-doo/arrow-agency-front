@@ -1,8 +1,10 @@
 "use client";
 import { countries } from "@/core/consts/countries";
 import { projectTypeList } from "@/core/consts/projectTypeList";
+import { IApiError } from "@/core/interfaces/apiError.interface";
 import { apiService } from "@/core/services/apiService";
 import { useProfile } from "@/providers/ProfileInfoProvider";
+import { useToast } from "@/providers/ToastProvider";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
@@ -18,6 +20,7 @@ interface ProfileFormData {
 }
 
 const ProfileForm = () => {
+  const { showError } = useToast();
   const { profile, fetchProfile } = useProfile();
   const [preferredCountriesOpen, setPreferredCountriesOpen] = useState(false);
   const [nonPreferredCountriesOpen, setNonPreferredCountriesOpen] =
@@ -202,7 +205,8 @@ const ProfileForm = () => {
 
       fetchProfile();
     } catch (error) {
-      console.log("Error updating profile", error);
+      const apiError = error as IApiError;
+      showError(apiError.errors[0]);
     }
   };
 

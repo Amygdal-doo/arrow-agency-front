@@ -24,6 +24,7 @@ import Packages from "../components/post-job/Packages";
 import { useRouter } from "next/navigation";
 import { scrollToTop } from "@/core/consts/scrollToTop";
 import { useToast } from "@/providers/ToastProvider";
+import { IApiError } from "@/core/interfaces/apiError.interface";
 
 const steps = [
   { id: 1, name: "Job Details" },
@@ -133,7 +134,8 @@ export default function PostJob() {
           );
         }
       } catch (error) {
-        showError(error);
+        const apiError = error as IApiError;
+        showError(apiError.errors[0]);
       }
     } else if (currentStep === 2) {
       const isValid = await companyMethods.trigger();
@@ -157,13 +159,12 @@ export default function PostJob() {
             if (data.file) {
               formData.append("file", data.file);
             }
-            console.log("company", data);
+
             // setOrganizationId(data.id);
 
             const response = await handleOrganizationCreate(formData);
 
             if (response) {
-              console.log("response company", response);
               jobMethods.setValue("organization", response.data.id, {
                 shouldValidate: true,
                 shouldDirty: true,
@@ -178,7 +179,8 @@ export default function PostJob() {
             setCurrentStep(3);
           }
         } catch (error) {
-          showError(error);
+          const apiError = error as IApiError;
+          showError(apiError.errors[0]);
         }
       }
     } else if (currentStep === 3) {
@@ -187,7 +189,6 @@ export default function PostJob() {
         // Make a request to backend API
         const response = await handleJobCreate(jobData);
         if (response?.data) {
-          console.log("response company", response);
           setJobId(response.data.id);
           setCurrentStep(4);
         }
@@ -212,7 +213,8 @@ export default function PostJob() {
         router.push("/jobs");
       }
     } catch (error) {
-      showError(error);
+      const apiError = error as IApiError;
+      showError(apiError.errors[0]);
     } finally {
       setLoading(false);
     }

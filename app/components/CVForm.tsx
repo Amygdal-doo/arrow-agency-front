@@ -9,6 +9,8 @@ import { apiService } from "@/core/services/apiService";
 import { ICompanyLogo, useProfile } from "@/providers/ProfileInfoProvider";
 import Image from "next/image";
 import { useApplicants } from "@/providers/ApplicantsProvider";
+import { IApiError } from "@/core/interfaces/apiError.interface";
+import { useToast } from "@/providers/ToastProvider";
 
 const userFormSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
@@ -37,6 +39,7 @@ type CVFormProps = {
 };
 
 const CVForm = ({ onClose }: CVFormProps) => {
+  const { showError } = useToast();
   const { profile, fetchProfile } = useProfile();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
@@ -103,7 +106,6 @@ const CVForm = ({ onClose }: CVFormProps) => {
   };
 
   const onSubmit = async (data: UserFormInputs) => {
-    console.log("data 12432", data);
     setIsSubmitting(true);
     try {
       const formData = new FormData();
@@ -143,14 +145,14 @@ const CVForm = ({ onClose }: CVFormProps) => {
         }
       );
 
-      console.log("CV Saved Successfully:", response.data);
       onClose();
       reset();
       fetchApplicants();
       return response.data;
     } catch (error) {
-      console.error("Error saving CV:", error);
-      throw error;
+      const apiError = error as IApiError;
+      showError(apiError.errors[0]);
+      // throw error;
     } finally {
       setIsSubmitting(false);
     }

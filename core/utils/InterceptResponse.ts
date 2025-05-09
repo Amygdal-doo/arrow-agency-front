@@ -10,15 +10,11 @@ const interceptResponse = async (httpClient: AxiosInstance) => {
   httpClient.interceptors.response.use(
     (response) => response,
     async (error) => {
-      console.log("2 refresh ::::");
       if (!error.response) {
-        console.log("3 refresh ::::");
         if (error.message === "Network Error") {
-          console.log("4 refresh ::::");
           console.error("Network error - server is probably down");
           throw error;
         } else {
-          console.log("5 refresh ::::");
           console.error("Unknown error", error);
           throw error;
         }
