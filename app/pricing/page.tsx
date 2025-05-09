@@ -124,20 +124,20 @@ export default function Pricing() {
 
       <section className="py-20 container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {plans.map((plan, index) => (
+          {plans.map((plan) => (
             <motion.div
               key={plan.id}
               initial={{ opacity: 1, y: 0 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0 }}
               className={`relative bg-white/5 rounded-2xl p-8 border ${
-                index === 1
+                plan.name === "HR Subscription"
                   ? "border-orange-500/50 shadow-orange-500/20 shadow-lg"
                   : "border-gray-700/50"
               }`}
             >
-              {index === 1 && (
-                <div className="absolute -top-4 left-1/2  md:left-1/3 lg:left-1/2 -translate-x-1/2">
+              {plan.name === "HR Subscription" && (
+                <div className="absolute -top-4 left-1/2 -translate-x-1/2">
                   <span className="bg-orange-500 text-white px-4 py-1 rounded-full text-sm">
                     Most Popular
                   </span>
@@ -152,47 +152,124 @@ export default function Pricing() {
                 </div>
 
                 <div className="flex items-baseline">
-                  <span className="text-4xl font-bold text-white">
-                    {plan.price === "Custom" ? (
-                      "Custom"
-                    ) : (
-                      <>
-                        ${plan.price}
-                        <span className="text-lg text-gray-400">
-                          /{plan.period}
-                        </span>
-                      </>
-                    )}
-                  </span>
+                  {plan.name === "Enterprise" ? (
+                    <span className="text-4xl font-bold text-white">
+                      Custom
+                    </span>
+                  ) : (
+                    <span className="text-4xl font-bold text-white">
+                      ${plan.price}
+                      <span className="text-lg text-gray-400">
+                        /{plan.period}
+                      </span>
+                    </span>
+                  )}
                 </div>
 
                 <ul className="space-y-4">
-                  {Object.entries(plan.features).map(([key, value]) => (
-                    <li
-                      key={key}
-                      className={`flex items-center gap-3 ${
-                        value ? "text-gray-300" : "text-gray-500 line-through"
-                      }`}
-                    >
-                      <BsCheckCircleFill
-                        className={value ? "text-orange-500" : "text-gray-700"}
-                      />
-                      {key === "unlimitedCVEdits" && "Unlimited CV Edits"}
-                      {key === "unlimitedCVStorage" && "Unlimited CV Storage"}
-                      {key === "accessToAllJobPostings" &&
-                        "Access to All Job Postings"}
-                      {key === "unlimitedCVScanningTools" &&
-                        "Unlimited CV Scanning Tools"}
-                      {key === "advancedCandidateFilteringAndSearch" &&
-                        "Advanced Candidate Filtering And Search"}
+                  {plan.features.cvEdits !== null ? (
+                    <li className="flex items-center gap-3 text-gray-300">
+                      <BsCheckCircleFill className="text-orange-500" />
+                      {`${plan.features.cvEdits} CV Edits`}
                     </li>
-                  ))}
+                  ) : (
+                    <li className="flex items-center gap-3 text-gray-300">
+                      <BsCheckCircleFill className="text-orange-500" />
+                      Infinite CV Edits
+                    </li>
+                  )}
+                  {plan.features.cvCreations !== null ? (
+                    <li className="flex items-center gap-3 text-gray-300">
+                      <BsCheckCircleFill className="text-orange-500" />
+                      {`${plan.features.cvCreations} CV Creations`}
+                    </li>
+                  ) : (
+                    <li className="flex items-center gap-3 text-gray-300">
+                      <BsCheckCircleFill className="text-orange-500" />
+                      Infinite CV Creations
+                    </li>
+                  )}
+                  {plan.features.jobUploads !== null ? (
+                    <li className="flex items-center gap-3 text-gray-300">
+                      <BsCheckCircleFill className="text-orange-500" />
+                      {`${plan.features.jobUploads} Job Uploads`}
+                    </li>
+                  ) : (
+                    <li className="flex items-center gap-3 text-gray-300">
+                      <BsCheckCircleFill className="text-orange-500" />
+                      Infinite Job Uploads
+                    </li>
+                  )}
+                  <li
+                    className={`flex items-center gap-3 ${
+                      plan.features.unlimitedCVStorage
+                        ? "text-gray-300"
+                        : "text-gray-500 line-through"
+                    }`}
+                  >
+                    <BsCheckCircleFill
+                      className={
+                        plan.features.unlimitedCVStorage
+                          ? "text-orange-500"
+                          : "text-gray-700"
+                      }
+                    />
+                    Unlimited CV Storage
+                  </li>
+                  <li
+                    className={`flex items-center gap-3 ${
+                      plan.features.accessToAllJobPostings
+                        ? "text-gray-300"
+                        : "text-gray-500 line-through"
+                    }`}
+                  >
+                    <BsCheckCircleFill
+                      className={
+                        plan.features.accessToAllJobPostings
+                          ? "text-orange-500"
+                          : "text-gray-700"
+                      }
+                    />
+                    Access to All Job Postings
+                  </li>
+                  <li
+                    className={`flex items-center gap-3 ${
+                      plan.features.unlimitedCVScanningTools
+                        ? "text-gray-300"
+                        : "text-gray-500 line-through"
+                    }`}
+                  >
+                    <BsCheckCircleFill
+                      className={
+                        plan.features.unlimitedCVScanningTools
+                          ? "text-orange-500"
+                          : "text-gray-700"
+                      }
+                    />
+                    Unlimited CV Scanning Tools
+                  </li>
+                  <li
+                    className={`flex items-center gap-3 ${
+                      plan.features.advancedCandidateFilteringAndSearch
+                        ? "text-gray-300"
+                        : "text-gray-500 line-through"
+                    }`}
+                  >
+                    <BsCheckCircleFill
+                      className={
+                        plan.features.advancedCandidateFilteringAndSearch
+                          ? "text-orange-500"
+                          : "text-gray-700"
+                      }
+                    />
+                    Advanced Candidate Filtering And Search
+                  </li>
                 </ul>
 
                 <button
                   onClick={() => handlePlanClick(plan.name, plan.id)}
                   className={`w-full py-4 rounded-xl font-semibold transition-all duration-200 ${
-                    index === 1
+                    plan.name === "HR Subscription"
                       ? "bg-orange-600 hover:bg-orange-700 text-white"
                       : "bg-gray-800 hover:bg-gray-700 text-white"
                   }`}

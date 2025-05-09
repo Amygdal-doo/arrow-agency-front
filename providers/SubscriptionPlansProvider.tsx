@@ -12,6 +12,9 @@ import { AxiosResponse } from "axios";
 import { apiService } from "@/core/services/apiService";
 
 export interface SubscriptionPlanFeatures {
+  cvCreations: number | null;
+  cvEdits: number | null;
+  jobUploads: number | null;
   unlimitedCVEdits: boolean;
   unlimitedCVStorage: boolean;
   accessToAllJobPostings: boolean;
